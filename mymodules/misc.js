@@ -760,8 +760,7 @@ function saveImages(message){
 // //https://dict.emojiall.com/cs/emoji/🇵###          https://emojipedia.org/regional-indicator-symbol-letter-m/
 //"<@!" + author.id + ">"       tag
 //message.reply
-// AIzaSyCtIhS3GB4x_siyzb7kcxs_MRnQMiBSIAM - google api
-// Njg0MDA0ODc1MTM4MzY3NDg5.XlzzQA.0huYRrLbk2VH2PAskiBCSySUJYk      - token
+// AIzaSyCtIhS3GB4x_siyzb7kcxs_MRnQMiBSIAM - google api old
 //const attach = new discord.Attachment("http://images6.fanpop.com/image/photos/36600000/My-Little-Pony-Friendship-is-Magic-image-my-little-pony-friendship-is-magic-36659156-1024-576.png");
 //message.mentions.users, returns a map
 
