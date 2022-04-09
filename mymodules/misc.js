@@ -235,7 +235,7 @@ function russianRoulette(args, message, modroles = []){
                 message.channel.send(embed);
 
                 newRound = false;
-            }, 1750);
+            }, 1500);
         }
 
         setTimeout(function(){
