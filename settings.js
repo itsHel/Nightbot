@@ -57,7 +57,6 @@ module.exports = {
     leaveQuotes,
     gladosCheers,
     adminRoles,
-    noPinsRooms,
     Hel,
     defaultGuild,
     filter,
