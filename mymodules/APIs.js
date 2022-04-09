@@ -31,7 +31,7 @@ function yandexTranslate(message, args){
             secondLang = Object.keys(langs).find(key => langs[key].toLowerCase() == secondLang);
     ***REMOVED***
     text[0] = specChars(text[0]);
-    let url = "https://translate.yandex.net/api/v1.5/tr.json/translate?" + settings.yandexKey + "&text=" + text[0] + "&lang=" + firstLang + "-" + secondLang;
+    let url = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + settings.yandexKey + "&text=" + text[0] + "&lang=" + firstLang + "-" + secondLang;
     request({
         method: "GET", json: true, url: url
     ***REMOVED***, (err, resp, data) => {
