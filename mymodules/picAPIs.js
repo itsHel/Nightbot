@@ -20,7 +20,7 @@ function gifs(cmd, args, channel){
     let words = temp.map(word => {
         return word;
     }).join("+");
-    let url = tenorUrlBase + words + keys.tenorKey + limit;
+    let url = tenorUrlBase + words + "&key=" + keys.tenorKey + limit;
     request.get(url, {json:true}, (err, res, resp) => {
         if (err)
             return console.error(err);
