@@ -57,7 +57,6 @@ const goodbyes = ["Goodbye", "Farewell", "So long"***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-    noPinsRooms,
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
