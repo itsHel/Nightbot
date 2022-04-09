@@ -1,7 +1,7 @@
 const token = "";
-const yandexKey = "key=";
+const yandexKey = "";
 const imdbKey = "";
-const tenorKey = "&key=";
+const tenorKey = "";
 const owlKey = "";
 
 module.exports = {  
