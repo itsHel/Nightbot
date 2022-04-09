@@ -53,7 +53,13 @@ client.on("ready", async () => {
     console.log(channels);
     
     // Refresh reddits and send quote
-    reddit.redditAll(client.channels.cache.get(channels[guilds[i]].reddittheatre), client.channels.cache.get(channels[guilds[i]].reddittext), client.channels.cache.get(channels[guilds[i]].redditnsfw), reddits[guilds[i]], guilds[i]);
+    for(let i = 0; i < guilds.length; i++){
+	if(reddits[guilds[i]]){
+	    try{
+		reddit.redditAll(client.channels.cache.get(channels[guilds[i]].reddittheatre), client.channels.cache.get(channels[guilds[i]].reddittext), client.channels.cache.get(channels[guilds[i]].redditnsfw), reddits[guilds[i]], guilds[i]);
+	    ***REMOVED*** catch(err){console.log(err)***REMOVED***
+	***REMOVED***
+    ***REMOVED***
     quotes.simpsons(channels[settings.defaultGuild].generalroom);
 
     setIntervalsAll(guilds);
