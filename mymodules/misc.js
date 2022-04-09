@@ -235,7 +235,7 @@ function russianRoulette(args, message, modroles = []){
                 message.channel.send(embed);
 
                 newRound = false;
-            ***REMOVED***, 1750);
+            ***REMOVED***, 1500);
         ***REMOVED***
 
         setTimeout(function(){
