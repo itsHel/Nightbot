@@ -552,6 +552,7 @@ client.on("messageDelete", async message => {
             limit: 1,
             type: 'MESSAGE_DELETE',
     ***REMOVED***
+	    
         let deleteLog = fetchedLog.entries.first();
         let footer = "";
 
@@ -569,9 +570,11 @@ client.on("messageDelete", async message => {
         let files = message.attachments.array();
         let img = files.length ? files[0].url : "";
         let hasImg = "";
+	    
         if(img){
             hasImg = "\n*IMG*";
         ***REMOVED***
+	    
         let embed = new discord.MessageEmbed()
             .setColor(color)
             .setTitle(message.channel.name)
@@ -684,37 +687,46 @@ async function loadBans(){
     
     for(const prop in bans){
         let newBans = [***REMOVED***
+	    
         for(let i = 0; i < bans[prop].length; i++){
             let temp = bans[prop][i].split(";;");
             let guild = client.guilds.cache.get(prop);
             let dateNow = new Date();
             let dateUnban = new Date(temp[1]);
             let timer = dateUnban - dateNow;
+		
             if(timer < 0)
                 continue;
+		
             newBans.push(bans[prop][i]);
+		
             setTimeout(function(){
                 guild.members.unban(temp[0])
                     .then(user => console.log(`Unbanned ${user.username***REMOVED*** from ${guild.name***REMOVED***`))
                     .catch(err => { console.log(err); mine.log("Ban error:\n" + err.message); ***REMOVED***);
             ***REMOVED***, timer);
+		
             console.log("unban in " + timer/1000 + " s");
         ***REMOVED***
+	    
         mongo.updateSchema({bans: newBans***REMOVED***,"settings", prop, true);
     ***REMOVED***
 ***REMOVED***
 
 function listenerError(err){
-    console.log("*************************************************** On listener error ***************************************************");
+    console.log("****************** On listener error ******************");
     console.log(err);
-    console.log("***************************************************  ***************************************************");
+    console.log("****************** ******************");
+	
     mine.log("On listener error:\n" + err.message);
 ***REMOVED***
+
 function commandError(message, err){
     message.channel.send(wrongCommandMessage).then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
-    console.log("*************************************************** On message error ***************************************************");
+    console.log("****************** On message error ******************");
     console.log(err);
-    console.log("***************************************************  ***************************************************");
+    console.log("****************** ******************");
+	
     mine.log("On message error:\n" + err.message);
 ***REMOVED***
 
