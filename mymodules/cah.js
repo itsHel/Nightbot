@@ -39,6 +39,7 @@ function cardsAgainstHumanity(channel, modroles){
     ***REMOVED***
 
     let devMode = true;
+    let logMode = true;
 
     let historyBlackcards = [***REMOVED***
     let nextRoundTimeout;
@@ -476,7 +477,7 @@ function cardsAgainstHumanity(channel, modroles){
                         const mess = collected.first();
                         blank = mess.content;
                     ***REMOVED***).catch(err => {
-                        if(devMode){
+                        if(devMode || logMode){
                             mine.log("Player didnt answer blank:" + err.message, undefined, mine.getLine(), mine.getFunc());
                             console.log("Player didnt answer blank:");
                             console.log(err);
@@ -496,10 +497,10 @@ function cardsAgainstHumanity(channel, modroles){
         for(let i = 0; i < this.players.length; i++){
             this.players[i].collector.stop();
 
-            devMode && mine.log("collector stopped for: " + this.players[i].nick + "", undefined, mine.getLine(), mine.getFunc());   
+            (devMode || logMode) && mine.log("collector stopped for: " + this.players[i].nick + "", undefined, mine.getLine(), mine.getFunc());   
         ***REMOVED***
         
-        devMode && console.log("All players picked");
+        (devMode || logMode) && console.log("All players picked");
 
         this.settings.round++;
         const czarId = this.players[this.settings.czar].id;
@@ -569,7 +570,7 @@ function cardsAgainstHumanity(channel, modroles){
                     if(this.settings.end)
                         return;
                     
-                    if(devMode){
+                    if(devMode || logMode){
                         mine.log("CZAR REACTED", undefined, mine.getLine(), mine.getFunc());
                         console.log("CZAR REACTED");                
                     ***REMOVED***
@@ -601,7 +602,7 @@ function cardsAgainstHumanity(channel, modroles){
                         return;
 
                     if(collected.size == 0){
-                        devMode && console.log("Czar collected size is 0")
+                        (devMode || logMode) && console.log("Czar collected size is 0")
 
                         // AFK CZAR
                         for(let i = 0; i < this.players.length; i++){
@@ -645,7 +646,7 @@ function cardsAgainstHumanity(channel, modroles){
         let playerEmbed = new discord.MessageEmbed().setDescription(playerText);
 
         player.playerAlert = setTimeout(() => {
-            devMode && console.log("TIMEOUT for " + player.nick);
+            (devMode || logMode) && console.log("TIMEOUT for " + player.nick);
 
             if(this.isInGame(player.discordPlayer)){
                 let embed = new discord.MessageEmbed().setDescription("You have only " + (20) + " seconds to answer.");
@@ -681,7 +682,7 @@ function cardsAgainstHumanity(channel, modroles){
                     if(player.ready)                                                            // Player answered already
                         return;
 
-                    if(devMode){
+                    if(devMode || logMode){
                         mine.log("Player " + player.nick + " REACTED", undefined, mine.getLine(), mine.getFunc());
                         console.log("Player " + player.nick + " REACTED");
                     ***REMOVED***
@@ -690,7 +691,7 @@ function cardsAgainstHumanity(channel, modroles){
                         if(r.emoji.name == emojis[o] || player.cards.length == o + 1){
                             // Player picked blank
                             if(r.emoji.name == blankemoji && this.settings.blankOn){      
-                                if(devMode){
+                                if(devMode || logMode){
                                     mine.log("BLANK PICKED", undefined, mine.getLine(), mine.getFunc());
                                     console.log("BLANK PICKED");
                                 ***REMOVED***
@@ -713,7 +714,7 @@ function cardsAgainstHumanity(channel, modroles){
     
                             answers++;
 
-                            if(devMode){
+                            if(devMode || logMode){
                                 console.log("answers picked: "+answers);
                                 console.log("need to answer: "+this.activeBlackcard.pick);
                             ***REMOVED***
@@ -724,10 +725,9 @@ function cardsAgainstHumanity(channel, modroles){
                                 player.activeCards.push(player.cards[o]);       // Make sure its not repeated?   - takes answers from old messages too
                             ***REMOVED***
 
-                            devMode && console.log("Active cards: " + player.activeCards);
+                            (devMode || logMode) && console.log("Active cards: " + player.activeCards);
 
                             if(answers == this.activeBlackcard.pick){
-                                devMode && console.log("player answered");
                                 // Player answered
                                 clearTimeout(player.playerAlert);
 
@@ -756,7 +756,7 @@ function cardsAgainstHumanity(channel, modroles){
                 if(!this.isInGame(player.discordPlayer) || player.ready)
                     return;
 
-                if(devMode){
+                if(devMode || logMode){
                     mine.log("Player " + player.nick + " is afk", undefined, mine.getLine(), mine.getFunc());
                     console.log("Player " + player.nick + " IS AFK");
                 ***REMOVED***
@@ -772,7 +772,7 @@ function cardsAgainstHumanity(channel, modroles){
                 if(thisRound != this.settings.round)
                     return;
 
-                if(devMode){
+                if(devMode || logMode){
                     mine.log("reaction removed: " + removed.emoji.name , undefined, mine.getLine(), mine.getFunc());
                     console.log("reaction removed: " + removed.emoji.name);
                 ***REMOVED***
@@ -807,7 +807,7 @@ function cardsAgainstHumanity(channel, modroles){
                     ***REMOVED***
                 ***REMOVED***
 
-                if(devMode){
+                if(devMode || logMode){
                     console.log("activecards for " + player.nick);
                     console.log(player.activeCards);
                 ***REMOVED***
@@ -816,7 +816,7 @@ function cardsAgainstHumanity(channel, modroles){
             // Kick no DM player from game
             let embed = new discord.MessageEmbed().setDescription(player.discordPlayer.user.toString() + " you need to allow private DMs to play.");
 
-            if(devMode){
+            if(devMode || logMode){
                 mine.log("Kicked no DM player from game:" + err.message, undefined, mine.getLine(), mine.getFunc());
                 console.log("Kicked no DM player from game");
                 console.log(err);
