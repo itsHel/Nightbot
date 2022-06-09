@@ -19,13 +19,6 @@ mongo.mongoDb();
 
 const roomList = ["generalroom", "pinroom", "rolesroom", "pollroom", "confessroom", "delroom", "welcomeroom", "announceroom", "reddittheatre", "reddittext", "redditnsfw", "rateroom"]
 const wrongCommandMessage = "```Wrong command syntax, try " + settings.prefix + "help command```";
-// * = italic, ** = bold
-// DM - only message.author exists
-// "_ _" = empty line
-
-// user.toString()          - mention
-// <@!530704313581043713>   - mention
-// https://dict.emojiall.com/cs/emoji/🇵###     https://emojipedia.org/regional-indicator-symbol-letter-m/ - emojis
 
 // Globals
 var reddits = {***REMOVED***
@@ -54,12 +47,13 @@ client.on("ready", async () => {
     
     // Refresh reddits and send quote
     for(let i = 0; i < guilds.length; i++){
-	if(reddits[guilds[i]]){
-	    try{
-		reddit.redditAll(client.channels.cache.get(channels[guilds[i]].reddittheatre), client.channels.cache.get(channels[guilds[i]].reddittext), client.channels.cache.get(channels[guilds[i]].redditnsfw), reddits[guilds[i]], guilds[i]);
-	    ***REMOVED*** catch(err){console.log(err)***REMOVED***
-	***REMOVED***
+        if(reddits[guilds[i]]){
+            try{
+                reddit.redditAll(client.channels.cache.get(channels[guilds[i]].reddittheatre), client.channels.cache.get(channels[guilds[i]].reddittext), client.channels.cache.get(channels[guilds[i]].redditnsfw), reddits[guilds[i]], guilds[i]);
+            ***REMOVED*** catch(err){console.log(err)***REMOVED***
+        ***REMOVED***
     ***REMOVED***
+    
     quotes.simpsons(channels[settings.defaultGuild].generalroom);
 
     setIntervalsAll(guilds);
@@ -83,10 +77,12 @@ client.on("message", async message => {
         if(message.type == "PINS_ADD" && guildSettings[guildId].pinning && channels[guildId].pinroom){
             mine.autoPin(message.channel, client.channels.cache.get(channels[guildId].pinroom), guildId);
         ***REMOVED***
-        if(message.content.slice(0, settings.prefix.length) == settings.prefix && message.content.slice(0, 3) != "_ _")
+        if(message.content.slice(0, settings.prefix.length) == settings.prefix && message.content.slice(0, 3) != "_ _"){
             console.log(message.content);
-        else
+		***REMOVED*** else {
             return;
+		***REMOVED***
+		
         let cmd = message.content.toLowerCase().split(" ")[0].substring(settings.prefix.length);
         let args = message.content.substring(cmd.length + settings.prefix.length + 1);                      // String
 
@@ -118,6 +114,7 @@ client.on("message", async message => {
                     help.commandHelp("remind", message.channel);
                     break;
                 ***REMOVED***
+				
                 reminder.remind(message);       
                 break;
             case "cah":
@@ -125,6 +122,7 @@ client.on("message", async message => {
                     cah.help(message.channel);
                     return;
                 ***REMOVED***
+				
                 if(args == "set" || args == "settings"){
                     cah.settingsHelp(message.channel);
                     return;
@@ -144,6 +142,7 @@ client.on("message", async message => {
                         game: new cah.cardsAgainstHumanity(message.channel, guildSettings[guildId].modroles),
                         channel: message.channel
                 ***REMOVED***
+					
                     cahGames[cahGames.length -1].game.cahSwitch(args, message);
                 ***REMOVED*** else if(args.substr(0,4).toLowerCase() == "end"){
                     if(cahGames[gameIndex].game.cahSwitch(args, message)){
@@ -151,6 +150,7 @@ client.on("message", async message => {
                     ***REMOVED*** else {
                         console.log("Cah error");
                     ***REMOVED***
+					
                     return;
                 ***REMOVED*** else {
                     // Command
@@ -170,10 +170,11 @@ client.on("message", async message => {
                 list.listAll(message.channel);
                 break;
             case "l":
-                if(args.length == 0)
+                if(args.length == 0){
                     list.showList(lastList, message.channel);
-                else
+				***REMOVED*** else {
                     lastList = list.listFunctions(cmd, args, message, guildSettings[guildId]);
+				***REMOVED***
                 break;
             case "gif": case "gifa":
                 picapis.gifs(cmd, args, message.channel);
@@ -220,6 +221,7 @@ client.on("message", async message => {
                     help.commandHelp("movie", message.channel);
                     return;
                 ***REMOVED***
+				
                 apis.imdb(cmd, args, message.channel);
                 break;
             case "search":
@@ -227,6 +229,7 @@ client.on("message", async message => {
                     help.commandHelp("movie", message.channel);
                     return;
                 ***REMOVED***
+				
                 apis.imdbSearch(args, message.channel);
                 break;
             case "vocabulary": case "word": case "words": case "definition": case "def":             // Definition of word
@@ -234,6 +237,7 @@ client.on("message", async message => {
                     help.commandHelp("words", message.channel);
                     return;
                 ***REMOVED***
+				
                 apis.vocabulary(args, message.channel, message.author);
                 break;
             case "syn":             // Synonyms
@@ -241,6 +245,7 @@ client.on("message", async message => {
                     help.commandHelp("words", message.channel);
                     return;
                 ***REMOVED***
+				
                 apis.words("words?rel_syn=", 10, args, message.channel);
                 break;
             case "rhyme":           // Rhyme words
@@ -248,6 +253,7 @@ client.on("message", async message => {
                     help.commandHelp("words", message.channel);
                     return;
                 ***REMOVED***
+				
                 apis.words("words?rel_rhy=", 8, args, message.channel);
                 break;
             case "sug":             // Suggestions for typos
@@ -255,6 +261,7 @@ client.on("message", async message => {
                     help.commandHelp("words", message.channel);
                     return;
                 ***REMOVED***
+				
                 apis.words("sug?s=", 6, args, message.channel);
                 break;
             case "duel":
@@ -262,6 +269,7 @@ client.on("message", async message => {
                     help.commandHelp("duels", message.channel);
                     return;
                 ***REMOVED***
+				
                 duel.duel(args, message.guild, message.author, message.channel, client);
                 break;
             case "rate":
@@ -289,10 +297,12 @@ client.on("message", async message => {
                         message.channel.send("```Not a number```");
                         return;
                     ***REMOVED***
+					
                     if(args > 24){
                         message.channel.send("```24 days is maximum```");
                         return;
                     ***REMOVED***
+					
                     guildSettings[guildId].leavebandays = args;
                     mongo.updateSchema({leavebandays: args***REMOVED***, "settings", guildId);
                     message.channel.send("```Leave ban set to " + args + " days```");
@@ -304,6 +314,7 @@ client.on("message", async message => {
                         message.channel.send("```Not a number```");
                         return;
                     ***REMOVED***
+					
                     guildSettings[guildId].ratepeoplecount = args;
                     mongo.updateSchema({ratepeoplecount: args***REMOVED***, "settings", guildId);
                     message.channel.send("```Rate people count set to " + args + " humans```");
@@ -323,6 +334,7 @@ client.on("message", async message => {
                         help.commandHelp("pins", message.channel);
                         return;
                     ***REMOVED***
+					
                     let channel = message.guild.channels.cache.find(channel => channel.id == args.match(/\d+/));
                     if(channel == undefined){
                         message.channel.send("```Room not found```").then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
@@ -339,6 +351,7 @@ client.on("message", async message => {
                 let rooms = guildSettings[guildId].nopinsrooms.map(room => client.channels.cache.get(room).name).join(", ");
                 if(rooms.length == 0)
                     rooms = "empty";
+				
                 message.channel.send("```" + rooms + "```");
                 break;
             case "baserole": case "defaultrole":
@@ -360,6 +373,7 @@ client.on("message", async message => {
                     help.commandHelp("kickrole", message.channel);
                     break;
                 ***REMOVED***
+				
                 if(mine.isAdmin(message, guildSettings[guildId].modroles)){
                     mine.kickOnlyRole(message); //client.channels.cache.get(channels[guildId].rolesroom));
                 ***REMOVED***
@@ -369,9 +383,8 @@ client.on("message", async message => {
                 if(mine.isAdmin(message, guildSettings[guildId].modroles)){
                     if(!reddits[guildId])
                         reddits[guildId] = [***REMOVED***
+					
                     reddit.addRedditToGuild(reddits[guildId], args, message);                       // Modifies reddits[guildId] array
-                    console.log("reddits:");
-                    console.log(reddits[guildId]);
                 ***REMOVED***
                 break;
             case "removereddit": case "deletereddit":
@@ -390,6 +403,7 @@ client.on("message", async message => {
                 // Format: _removeroom confessChannel
                 if(mine.isAdmin(message, guildSettings[guildId].modroles)){
                     args = args.toLowerCase().split(" ");
+					
                     if(args.length != 1){
                         help.commandHelp("room", message.channel);
                         return;
@@ -410,6 +424,7 @@ client.on("message", async message => {
                 // Format: _addroom decadence #the-dungeon
                 if(mine.isAdmin(message, guildSettings[guildId].modroles)){
                     args = args.toLowerCase().split(" ");
+					
                     if(args.length != 2){
                         help.commandHelp("room", message.channel);
                         break;
@@ -423,6 +438,7 @@ client.on("message", async message => {
                     if(newChannel){
                         if(!channels[guildId])
                             channels[guildId] = {***REMOVED***
+						
                         channels[guildId][args[0]] = newChannel.id;
                         let values = {[args[0]]: newChannel.id***REMOVED***
 
@@ -486,12 +502,13 @@ client.on("message", async message => {
 							message.channel.send("```Role '" + newRole + "' not found```").then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
 							break;
 						***REMOVED***
-						
+
 						guildSettings[guildId].modroles = guildSettings[guildId].modroles.filter(role => role != modRole.name);
 						mongo.updateSchema({modroles: guildSettings[guildId].modroles***REMOVED***, "settings", guildId, true);
 					***REMOVED***
+
 					let embed = new discord.MessageEmbed().setDescription("**Mod roles:** " +  guildSettings[guildId].modroles.join(", "));
-                    message.channel.send(embed);
+					message.channel.send(embed);
                 ***REMOVED***
                 break;
             case "dm": case "senddm":
@@ -506,7 +523,6 @@ client.on("message", async message => {
                 mine.russianRoulette(args, message, guildSettings[guildId].modroles);
                 break;
             case "save":
-                // Save pics
                 if(mine.isAdmin(message, guildSettings[guildId].modroles)){
                     mine.saveImages(message);
                 ***REMOVED***
@@ -604,6 +620,7 @@ client.on("guildMemberRemove", (member) => {
             ***REMOVED*** while(quoteIndex == guildSettings[member.guild.id].leaveQuoteLastIndex);
             
             guildSettings[member.guild.id].leaveQuoteLastIndex = quoteIndex;
+		
             let quote = settings.getLeaveQuote(quoteIndex);
             client.channels.cache.get(channels[member.guild.id].welcomeroom).send(quote[0] + "**" + member.user.username + "**" + quote[1]);
         ***REMOVED***
@@ -723,12 +740,21 @@ function listenerError(err){
 
 function commandError(message, err){
     message.channel.send(wrongCommandMessage).then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
+	
     console.log("****************** On message error ******************");
     console.log(err);
     console.log("****************** ******************");
 	
     mine.log("On message error:\n" + err.message);
 ***REMOVED***
+
+// * = italic, ** = bold
+// DM - only message.author exists
+// "_ _" = empty line
+
+// user.toString()          - mention
+// <@!530704313581043713>   - mention
+// https://dict.emojiall.com/cs/emoji/🇵###     https://emojipedia.org/regional-indicator-symbol-letter-m/ - emojis
 
 /*      
 MEMBER                                      USER
