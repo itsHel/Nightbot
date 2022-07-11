@@ -1,5 +1,4 @@
 const discord = require("discord.js");
-
 const reminder = require("./mymodules/reminder.js");
 const reddit = require("./mymodules/reddit.js");
 const mine = require("./mymodules/misc.js");
@@ -28,7 +27,10 @@ var lastList = "mymovies";
 var cahGames = [***REMOVED***
 var guilds; 
 
-const client = new discord.Client({ ws: { intents: new discord.Intents(discord.Intents.ALL) ***REMOVED*** ***REMOVED***);
+// const allIntents = new discord.Intents(32767);
+// const client = new discord.Client({ allIntents ***REMOVED***);
+
+const client = new discord.Client({ intents: [discord.Intents.FLAGS.GUILDS, discord.Intents.FLAGS.GUILD_MESSAGES] ***REMOVED***);
 
 // Init
 client.on("ready", async () => {
