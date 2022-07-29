@@ -1,4 +1,5 @@
 const discord = require("discord.js");
+
 const reminder = require("./mymodules/reminder.js");
 const reddit = require("./mymodules/reddit.js");
 const mine = require("./mymodules/misc.js");
@@ -27,10 +28,10 @@ var lastList = "mymovies";
 var cahGames = [***REMOVED***
 var guilds; 
 
-// const allIntents = new discord.Intents(32767);
-// const client = new discord.Client({ allIntents ***REMOVED***);
+const allIntents = new discord.Intents(32767);
+const client = new discord.Client({ intents: allIntents, partials: ["CHANNEL"] ***REMOVED***);
 
-const client = new discord.Client({ intents: [discord.Intents.FLAGS.GUILDS, discord.Intents.FLAGS.GUILD_MESSAGES] ***REMOVED***);
+// const client = new discord.Client({ intents: [discord.Intents.FLAGS.GUILDS, discord.Intents.FLAGS.GUILD_MESSAGES] ***REMOVED***);
 
 // Init
 client.on("ready", async () => {
@@ -55,8 +56,10 @@ client.on("ready", async () => {
             ***REMOVED*** catch(err){console.log(err)***REMOVED***
         ***REMOVED***
     ***REMOVED***
-    
-    quotes.simpsons(channels[settings.defaultGuild].generalroom);
+
+    if(channels[settings.defaultGuild]){
+        quotes.simpsons(channels[settings.defaultGuild].generalroom);
+    ***REMOVED***
 
     setIntervalsAll(guilds);
 ***REMOVED***);
@@ -65,6 +68,7 @@ client.login(keys.token);
 
 client.on("message", async message => {
     let guildId;
+
     if(message.guild){
         guildId = message.guild.id;
     ***REMOVED*** else {
@@ -695,7 +699,10 @@ function setIntervalsAll(guilds){
     // Every 20 - 28 hours send quote to main channel
     (function autoSend(){
         setTimeout(function(){
-            quotes.simpsons(channels[settings.defaultGuild].generalroom);
+            if(channels[settings.defaultGuild]){
+                quotes.simpsons(channels[settings.defaultGuild].generalroom);
+            ***REMOVED***
+
             autoSend();
         ***REMOVED***, (Math.floor(Math.random() * 9) + 20) * 3600000);       
     ***REMOVED***());
