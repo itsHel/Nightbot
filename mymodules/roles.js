@@ -64,7 +64,7 @@ async function newRole(user, roleChannel){
                                 if(role.footer != ".")
                                     embed.setFooter(role.footer);                   
 
-                                roleChannel.send(embed).then(async (mess) => {
+                                roleChannel.send({embeds: [embed]***REMOVED***).then(async (mess) => {
                                     for(let i = 0; i < emotes.length; i++)
                                     {
                                         let id = emotes[i].match(/:.*:(\d+)>/);

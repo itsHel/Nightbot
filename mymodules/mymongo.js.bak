@@ -1,9 +1,9 @@
 const mongoose= require("mongoose");
 
 function mongoDb(){
-    var dbUrl = "mongodb://127.0.0.1:27017/Nightbot";
+    var dbUrl = "mongodb://localhost:27017/Nightbot";
 
-    mongoose.connect(dbUrl)
+    mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true***REMOVED***)
         .then(result => console.log("DBloaded"))
         .catch(err => console.log(err))
 ***REMOVED***
@@ -229,9 +229,6 @@ const roomSchema = new mongoose.Schema({
         unique : true
     ***REMOVED***,
     pinroom: {
-        type: String
-    ***REMOVED***,
-    generalroom: {
         type: String
     ***REMOVED***,
     pollroom: {

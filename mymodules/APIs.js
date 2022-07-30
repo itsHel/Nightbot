@@ -149,7 +149,7 @@ function imdb(cmd, args, channel){
             if(img != "N/A")
                 embed.setImage(img);
         ***REMOVED***
-        channel.send(embed);
+        channel.send({embeds: [embed]***REMOVED***);
 ***REMOVED***
 ***REMOVED***
 function imdbSearch(args, channel){
@@ -180,7 +180,7 @@ function imdbSearch(args, channel){
         let embed = new discord.MessageEmbed({fields: [titles, years]***REMOVED***)
             .setTitle(title)
             .setFooter("\u2800".repeat(30))
-        channel.send(embed);
+        channel.send({embeds: [embed]***REMOVED***);
 ***REMOVED***
 ***REMOVED***
 //https://www.datamuse.com/api/

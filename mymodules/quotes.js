@@ -31,8 +31,10 @@ function simpsons(channel){
             return console.error(err);
 
         let quote = data[Math.floor(Math.random()*data.length)].quote;
-		if(channel)
+
+		if(channel){
 			channel.send('```' + quote + '```');
+        ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 

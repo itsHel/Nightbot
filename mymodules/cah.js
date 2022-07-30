@@ -15,12 +15,12 @@ const unofficialPack = JSON.parse(fs.readFileSync("data/cah/unofficial.json", "u
 
 function help(channel){
     embed = new discord.MessageEmbed().setDescription(guide).setTitle("Guide");
-    channel.send(embed);
+    channel.send({embeds: [embed]***REMOVED***);
 ***REMOVED***
 
 function settingsHelp(channel){
     embed = new discord.MessageEmbed().setDescription(settingsInfo).setTitle("Settings");
-    channel.send(embed);
+    channel.send({embeds: [embed]***REMOVED***);
 ***REMOVED***
 
 function cardsAgainstHumanity(channel, modroles){
@@ -95,7 +95,7 @@ function cardsAgainstHumanity(channel, modroles){
                 break;
             case "players": case "score":
                 embed = new discord.MessageEmbed().setTitle("Scoreboard:").setDescription("\n\n" + this.generateTable());
-				channel.send(embed);
+				channel.send({embeds: [embed]***REMOVED***);
                 break;
             case "packs":
                 let offcialOn = (this.settings.packs[0] == officialPack) ? "On" : "";
@@ -104,7 +104,7 @@ function cardsAgainstHumanity(channel, modroles){
                 let packsInfo = ` **Packs avaible:**\n\n official ${offcialOn***REMOVED***\n unofficial ${unofficialOn***REMOVED***\n both ${bothOn***REMOVED***\n `;
 
                 embed = new discord.MessageEmbed().setDescription(packsInfo).setTitle("Use cah set packs 'option'");
-                channel.send(embed);
+                channel.send({embeds: [embed]***REMOVED***);
                 break;
             case "set":
                 if(player.id != this.settings.adminId && !mine.isAdmin(message, modroles))
@@ -283,7 +283,7 @@ function cardsAgainstHumanity(channel, modroles){
         this.players.push(newPlayer);
 
         let embed = new discord.MessageEmbed().setDescription(newPlayer.nick + " joined game (" + (this.players.length) + "/" + this.settings.maxPlayers + ")")
-        channel.send(embed);
+        channel.send({embeds: [embed]***REMOVED***);
 
         if(this.players.length == 1)
             this.settings.adminId = discordPlayer.id;
@@ -311,12 +311,12 @@ function cardsAgainstHumanity(channel, modroles){
 
             if(!kicked){
                 let embed = new discord.MessageEmbed().setDescription(kickedTag + " not found");
-                channel.send(embed);
+                channel.send({embeds: [embed]***REMOVED***);
                 return;
             ***REMOVED***
 
             let embed = new discord.MessageEmbed().setDescription(kickedTag + " was kicked!");
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
         ***REMOVED*** else {
             // Leave
             leavePlayerId = member.id;
@@ -326,7 +326,7 @@ function cardsAgainstHumanity(channel, modroles){
         ***REMOVED***
 
             let embed = new discord.MessageEmbed().setDescription(member.toString() + " left the game!");
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
         ***REMOVED***
 
         if(this.players.length < 2){
@@ -347,7 +347,7 @@ function cardsAgainstHumanity(channel, modroles){
             this.settings.adminId = this.players[random].id;
 
             let embed = new discord.MessageEmbed().setDescription(this.players[random].discordPlayer.user.toString() + " is the new game master!");
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
         ***REMOVED***
 
         this.checkIfPlayersReady();
@@ -364,7 +364,7 @@ function cardsAgainstHumanity(channel, modroles){
         clearTimeout(nextRoundTimeout);
 
         let embed = new discord.MessageEmbed().setTitle("Game Ended").setDescription("\n\n" + this.generateTable());
-        channel.send(embed);
+        channel.send({embeds: [embed]***REMOVED***);
 
         return;
     ***REMOVED***
@@ -427,7 +427,7 @@ function cardsAgainstHumanity(channel, modroles){
             .setTitle("New Round")
             .setDescription(this.generateTitleText(this.activeBlackcard) + picks);
 
-        channel.send(embed);
+        channel.send({embeds: [embed]***REMOVED***);
         // Send to players
         thisRound = this.settings.round;
 
@@ -558,7 +558,7 @@ function cardsAgainstHumanity(channel, modroles){
 
         let embed = new discord.MessageEmbed().setDescription(czar + " is picking\n\n" + text);
         // Sending Czar question to main channel
-        channel.send(embed)
+        channel.send({embeds: [embed]***REMOVED***)
             .then(m => {
             // Czar picking message
                 for(let o = 0; o < this.settings.activePlayers; o++)
@@ -583,12 +583,12 @@ function cardsAgainstHumanity(channel, modroles){
                             let text = this.players[o].discordPlayer.user.toString() + " (picked by " + czar + ")\n\n" + this.players[o].tempAnswer + "\n\n**Scoreboard:**\n" + this.generateTable() + ((this.players[o].points == this.settings.winPoints) ? "" : "\n\nNext round in " + this.settings.roundDelay/1000 + " seconds.");
                             
                             let embed = new discord.MessageEmbed().setTitle(title).setDescription(text);
-                            channel.send(embed);
+                            channel.send({embeds: [embed]***REMOVED***);
 
                             // m.reactions.removeAll();
                             if(this.players[o].points == this.settings.winPoints){                  // Player won
                                 let embed = new discord.MessageEmbed().setTitle("Game Ended").setDescription(this.players[o].discordPlayer.user.toString() + " is Winner!." + "\n\n" + this.generateTable());
-                                channel.send(embed);
+                                channel.send({embeds: [embed]***REMOVED***);
                                 this.settings.end = true;
                             ***REMOVED***
 
@@ -611,7 +611,7 @@ function cardsAgainstHumanity(channel, modroles){
                         ***REMOVED***
 
                         let embed = new discord.MessageEmbed().setDescription("Czar **" + czar + "** is AFK, round skipped");
-                        channel.send(embed);
+                        channel.send({embeds: [embed]***REMOVED***);
                         this.settings.czar++;
 
                         if(this.settings.czar == this.players.length){
@@ -650,7 +650,7 @@ function cardsAgainstHumanity(channel, modroles){
 
             if(this.isInGame(player.discordPlayer)){
                 let embed = new discord.MessageEmbed().setDescription("You have only " + (20) + " seconds to answer.");
-                player.discordPlayer.send(embed);
+                player.discordPlayer.send({embeds: [embed]***REMOVED***);
             ***REMOVED***
         ***REMOVED***, this.settings.answerDelay - 20000);
 
@@ -734,7 +734,7 @@ function cardsAgainstHumanity(channel, modroles){
                                 let embed = new discord.MessageEmbed()
                                     .setDescription("You picked: **" + (player.activeCards.join(", ") + "**\nBack to the channel " + channel.toString()));
 
-                                player.discordPlayer.send(embed).then(mess => {
+                                player.discordPlayer.send({embeds: [embed]***REMOVED***).then(mess => {
                                     afterpickMessageId = mess.id;
                             ***REMOVED***
 
@@ -822,7 +822,7 @@ function cardsAgainstHumanity(channel, modroles){
                 console.log(err);
             ***REMOVED***
 
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             this.leave({***REMOVED***, player.discordPlayer.toString());
     ***REMOVED***     
     // Question to player End

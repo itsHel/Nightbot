@@ -33,7 +33,7 @@ function help(channel){
         .addField("\nRooms to setup:", "generalRoom, pinRoom, pollRoom, confessRoom, delRoom, welcomeRoom, announceRoom\n\nSetup: " + settings.prefix + "addroom/editroom pinRoom #gallery")
         .setColor("#d652a6")
         .setTitle("Help")
-    channel.send(embed);
+    channel.send({embeds: [embed]***REMOVED***);
 ***REMOVED***
 
 function commandHelp(cmd, channel){
@@ -48,7 +48,7 @@ function commandHelp(cmd, channel){
                 .addField(settings.prefix + "reddits", "Shows list of observed subreddits")
                 .addField(settings.prefix + "rdr", "Refresh")
                 .setColor("#d652a6")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "room":
             embed = new discord.MessageEmbed()
@@ -69,7 +69,7 @@ function commandHelp(cmd, channel){
                 *redditText* - Text subreddits will be sent here\n
                 *redditNsfw* - Nsfw subreddits will be sent here\n`)
                 .setColor("#d652a6")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "pins":
             embed = new discord.MessageEmbed()
@@ -80,35 +80,35 @@ function commandHelp(cmd, channel){
                 .addField(settings.prefix + "nopinslist", "Lists all no-pins rooms")
                 .addField(settings.prefix + "pinstoggle", "Deactivates/activates pins")
                 .setColor("#d652a6")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "remind":
             embed = new discord.MessageEmbed()
                 .setTitle("Reminder")
                 .setColor("#d652a6")
                 .setDescription("Sends you message after timeout\n\nExample:\n**" + settings.prefix + "remind drink water ;1h 10m**\n\nm - mins, h - hours, d - days\nhours are default unit")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
 		case "kickrole":
             embed = new discord.MessageEmbed()
                 .setTitle("Kickrole")
                 .setColor("#d652a6")
                 .setDescription("Kicks users who are having **only** this role, if its 'everyone' it kicks users without role\n\nExample:\n**" + settings.prefix + "kickrole peasant**")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "translate":
             embed = new discord.MessageEmbed()
                 .setTitle("Translator")
                 .setColor("#d652a6")
                 .setDescription("Example:\n**" + settings.prefix + "tr hello ;english spanish**\n\nuse **" + settings.prefix + "trlist** to get all supported languages\nuse can you *en* as shortcut for english")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "movie":
             embed = new discord.MessageEmbed()
                 .setTitle("Movies API")
                 .setColor("#d652a6")
                 .setDescription("Search info about movies\n\u2800\nExample:\n**" + settings.prefix + "movie freaks ;2018**\n\nyou can specify year after ';' (optional)\nyou can use  **" + settings.prefix + "movief** instead for full info\n\n**_search**\ngives list of movies matching term\nExample: **" + settings.prefix + "search *freaks***")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "words":
             embed = new discord.MessageEmbed()
@@ -118,14 +118,14 @@ function commandHelp(cmd, channel){
                 .addField(settings.prefix + "rhyme *word*", "Shows rhyme of word")
                 .addField(settings.prefix + "sug *word*", "Shows suggestions of word (like autocorrect)")
                 .setColor("#d652a6")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "duels":
             embed = new discord.MessageEmbed()
                 .setTitle("Duels")
                 .setColor("#d652a6")
                 .setDescription("Rock-paper-scissors game\n\u2800\nExample:\n**" + settings.prefix + "duel *@player1***\n\nboth players must have public DMs on\nyou can use shortcut to pick (r/p/s)")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "emotes":
             embed = new discord.MessageEmbed()
@@ -133,7 +133,7 @@ function commandHelp(cmd, channel){
                 .setColor("#d652a6")
                 .addField(settings.prefix + "addemote", "Adds emote to server\nAccepts links and emotes, accepts multiple arguments split by space\n**Example:** " + settings.prefix + "addemote :helloworld:")
                 .addField(settings.prefix + "emotes", "Shows list of most used emotes on server\nAll emotes used are counted and saved every hour\nShows only emotes with 10+ appereances")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "roles":
             embed = new discord.MessageEmbed()
@@ -141,7 +141,7 @@ function commandHelp(cmd, channel){
                 .setColor("#d652a6")
                 .addField(settings.prefix + "defaultrole", "Default role added to new server member\nLeave argument empty to cancel\n**Example:** " + settings.prefix + "defaultrole peasant")
                 .addField(settings.prefix + "addrole", "Let's you setup self-picking roles in roles room\nBot can use only emotes from it's servers")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "dm":
             embed = new discord.MessageEmbed()
@@ -149,14 +149,14 @@ function commandHelp(cmd, channel){
                 .setColor("#d652a6")
                 .addField("**Example:**", settings.prefix + "dm", "Zeke i love you")
                 .setDescription("- can DM only users that share server with bot\n- use user's main account name but without id and hashtag OR you can use his tag\n- case sensitive\n- if user has spaces in name you must put his name into double quotes, like \"Zeke unchained\"")
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
         case "russianroulette":
             embed = new discord.MessageEmbed()
                 .setTitle("Russian Roulette")
                 .setColor("#d652a6")
                 .setDescription("Challenges player(s) to Russian Roulette\n\nExample: **" + settings.prefix + "rr *@player* 1 kick**\nFormat: **" + settings.prefix + "rr *@players* *bullets* kick/ban force**\n\n**bullets** - number of bullets added each new round (default 0)\n**force** - skips confirm dialog, author won't be in game, admin command");
-            channel.send(embed);
+            channel.send({embeds: [embed]***REMOVED***);
             break;
     ***REMOVED***
 ***REMOVED***

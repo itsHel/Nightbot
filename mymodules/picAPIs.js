@@ -32,7 +32,7 @@ function gifs(cmd, args, channel){
         let embed = new discord.MessageEmbed ()
             .setImage(imageUrl);
             //.setFooter("Score: " + resp.score);
-        channel.send(embed);
+        channel.send({embeds: [embed]***REMOVED***);
 ***REMOVED***
 ***REMOVED***
 
@@ -74,7 +74,7 @@ function danbooru(cmd, args, channel){
                 break;
             ***REMOVED***
         ***REMOVED***
-        channel.send(embed);
+        channel.send({embeds: [embed]***REMOVED***);
 ***REMOVED***
 ***REMOVED***
 
@@ -90,7 +90,7 @@ function getBooty(url, channel){
             return console.error(err);
         let picUrl = url.replace("api", "media").replace("0/1/random", "");
         let embed = getBootyEmbed(picUrl, data[0].id);
-        channel.send(embed).then(sent => {
+        channel.send({embeds: [embed]***REMOVED***).then(sent => {
             sent.react('⬅').then(() => sent.react('➡'));
             let message = new apis.defMessage(sent.id, data[0].id);
 			let collector = sent.createReactionCollector(settings.filter, { time: 100000 ***REMOVED***);
@@ -176,7 +176,7 @@ function hentaiAkaneko(cmd, arg, channel){
         ***REMOVED***
     ***REMOVED***
     let embed = new discord.MessageEmbed().setImage(imgUrl).setTitle(arg);
-    channel.send(embed);
+    channel.send({embeds: [embed]***REMOVED***);
 ***REMOVED***
 
 function getBootyEmbed(url, id){

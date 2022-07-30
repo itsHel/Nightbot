@@ -86,7 +86,7 @@ async function autoPin(channel, pinChannel, guildId){
                     embed.setTitle(vid);
                 ***REMOVED***
 
-                pinChannel.send(embed);
+                pinChannel.send({embeds: [embed]***REMOVED***);
                 mess.unpin();
             ***REMOVED***
     ***REMOVED***
@@ -101,7 +101,7 @@ function polls(pollChannel, text, author){
     pollText = pollText.charAt(0).toUpperCase() + pollText.slice(1);
     let embed = new discord.MessageEmbed().setDescription(pollText).setFooter(footer);
 
-    pollChannel.send(embed).then(m => {
+    pollChannel.send({embeds: [embed]***REMOVED***).then(m => {
         m.react(emojisClassic.upArrowBlue);
         m.react(emojisClassic.downArrowBlue);
         m.react(emoji(emojis.faceHoof, m));
@@ -187,7 +187,7 @@ function russianRoulette(args, message, modroles = []){
             ***REMOVED*** else {
                 if(reason != "ignore"){
                     let embed = new discord.MessageEmbed().setColor("#ffca2c").setDescription("Player(s) didn't react, timeout...");
-                    message.channel.send(embed);
+                    message.channel.send({embeds: [embed]***REMOVED***);
                 ***REMOVED***
             ***REMOVED***
     ***REMOVED***
@@ -199,7 +199,7 @@ function russianRoulette(args, message, modroles = []){
             activePlayers = activePlayers.map(value => ({ value, sort: Math.random() ***REMOVED***)).sort((a, b) => a.sort - b.sort).map(({ value ***REMOVED***) => value);
 
             let embed = new discord.MessageEmbed().setColor("#31d2f2").setDescription("----- **Round 1** -----\n1 bullet\n\nPlayer order: " + activePlayers.map(member => member.user.toString() + "  ").join(""));
-            message.channel.send(embed);
+            message.channel.send({embeds: [embed]***REMOVED***);
 
             rrRoll(activePlayers[0]);
         ***REMOVED***, 2000);
@@ -232,7 +232,7 @@ function russianRoulette(args, message, modroles = []){
                 ***REMOVED***
 
                 let embed = new discord.MessageEmbed().setColor("#31d2f2").setDescription(text);
-                message.channel.send(embed);
+                message.channel.send({embeds: [embed]***REMOVED***);
 
                 newRound = false;
             ***REMOVED***, 1500);
@@ -253,7 +253,7 @@ function russianRoulette(args, message, modroles = []){
 
                             setTimeout(function(){
                                 let embed = new discord.MessageEmbed().setColor("#cc0000").setDescription(player.user.toString() + " falls down dead...");
-                                message.channel.send(embed);
+                                message.channel.send({embeds: [embed]***REMOVED***);
 
                                 switch(type){
                                     case "kick":
@@ -272,7 +272,7 @@ function russianRoulette(args, message, modroles = []){
                                 // End
                                 setTimeout(function(){
                                     let embed = new discord.MessageEmbed().setColor("#31d2f2").setDescription(activePlayers[0].user.toString() + " lives to see another day");
-                                    message.channel.send(embed);
+                                    message.channel.send({embeds: [embed]***REMOVED***);
                                 ***REMOVED***, 1250);
                                 return;
                             ***REMOVED***
@@ -299,13 +299,19 @@ function russianRoulette(args, message, modroles = []){
 ***REMOVED***
 
 function sendToChannel(text, targetChannel, channel){
+    if(!targetChannel){
+        channel.send("```Room does not exist on server```");
+        return;
+    ***REMOVED***
+
     let embed = new discord.MessageEmbed ()
         .setColor("#3BE8C6")
         .setDescription(text);
 
-    targetChannel.send(embed).catch(err => {
+    targetChannel.send({embeds: [embed]***REMOVED***).catch(err => {
+        console.log(111);
         console.log(err);
-        channel.send("we're sorry but something went wrong, try again");
+        channel.send("```I just don't know what went wrong```");
 ***REMOVED***
 
     channel.send("sent").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));

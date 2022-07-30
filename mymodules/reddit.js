@@ -95,7 +95,7 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                         // console.log("OLD_HISTORY");
                         // console.log(history);
                         
-                    channel.send(embed);
+                    channel.send({embeds: [embed]***REMOVED***);
                 ***REMOVED*** catch(e){
                     console.log("Reddit error:");
                     console.log(e);
@@ -157,7 +157,7 @@ async function textDL(name, channel, minUps = 250, guideid){
                     .setTitle(title.substring(0, 200) + " (" + desc + ")")
                     .setFooter(time.toISOString().replace(/[A-Z]/, " ").slice(0, -8) + "   " + ups + " upvotes");
 
-                channel.send(embed);
+                channel.send({embeds: [embed]***REMOVED***);
                 newHistory.push(data.children[i].data.url.substring(8));
             ***REMOVED***
 

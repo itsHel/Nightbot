@@ -58,7 +58,7 @@ client.on("ready", async () => {
     ***REMOVED***
 
     if(channels[settings.defaultGuild]){
-        quotes.simpsons(channels[settings.defaultGuild].generalroom);
+        quotes.simpsons(client.channels.cache.get(channels[settings.defaultGuild].generalroom));
     ***REMOVED***
 
     setIntervalsAll(guilds);
@@ -427,7 +427,7 @@ client.on("message", async message => {
                 ***REMOVED***
                 break;
             case "addroom": case "editroom": case "setroom": case "changeroom": case "room": case "setup":
-                // Format: _addroom decadence #the-dungeon
+                // Format: _addroom general #the-dungeon
                 if(mine.isAdmin(message, guildSettings[guildId].modroles)){
                     args = args.toLowerCase().split(" ");
 					
@@ -451,7 +451,7 @@ client.on("message", async message => {
                         mongo.updateSchema(values, "room", guildId);
 
                         let embed = new discord.MessageEmbed().setDescription(args[0] + " set to " + newChannel.toString());
-                        message.channel.send(embed);
+                        message.channel.send({embeds: [embed]***REMOVED***);
                     ***REMOVED*** else {
                         message.channel.send("```Room " + args[1] + " not found```");
                     ***REMOVED***
@@ -477,7 +477,7 @@ client.on("message", async message => {
                     ***REMOVED***
 
                     let embed = new discord.MessageEmbed({fields: [name, channelObj]***REMOVED***).setFooter("\u2800".repeat(50));          // Embed sizing     \u2800 = empty space
-                    message.channel.send(embed);
+                    message.channel.send({embeds: [embed]***REMOVED***);
                 ***REMOVED***
                 break;
             case "addmod": case "addmods": case "addmodrole":
@@ -496,7 +496,7 @@ client.on("message", async message => {
 					***REMOVED***
 					
 					let embed = new discord.MessageEmbed().setDescription("**Mod roles:** " +  guildSettings[guildId].modroles.join(", "));
-                    message.channel.send(embed);
+                    message.channel.send({embeds: [embed]***REMOVED***);
                 ***REMOVED***
                 break;
             case "removemod": case "removemods": case "removemodrole":
@@ -514,7 +514,7 @@ client.on("message", async message => {
 					***REMOVED***
 
 					let embed = new discord.MessageEmbed().setDescription("**Mod roles:** " +  guildSettings[guildId].modroles.join(", "));
-					message.channel.send(embed);
+					message.channel.send({embeds: [embed]***REMOVED***);
                 ***REMOVED***
                 break;
             case "dm": case "senddm":
@@ -607,7 +607,7 @@ client.on("messageDelete", async message => {
             embed.setImage(img);
         ***REMOVED***
 
-        client.channels.cache.get(channels[message.guild.id].delroom).send(embed);
+        client.channels.cache.get(channels[message.guild.id].delroom).send({embeds: [embed]***REMOVED***);
 
     ***REMOVED*** catch(err){listenerError(err)***REMOVED***
 ***REMOVED***);
@@ -700,7 +700,7 @@ function setIntervalsAll(guilds){
     (function autoSend(){
         setTimeout(function(){
             if(channels[settings.defaultGuild]){
-                quotes.simpsons(channels[settings.defaultGuild].generalroom);
+                quotes.simpsons(client.channels.cache.get(channels[settings.defaultGuild].generalroom));
             ***REMOVED***
 
             autoSend();
