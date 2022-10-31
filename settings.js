@@ -20,7 +20,7 @@ function getLeaveQuote(index){
 ***REMOVED***
 ***REMOVED***
 
-const goodbyes = ["Goodbye", "Farewell", "So long"***REMOVED***
+const goodbyes = ["Goodbye", "Farewell", "So long"***REMOVED***            // Replaces "*Goodbye*" in string
 ***REMOVED***
                     ***REMOVED*** 
                     ***REMOVED***
@@ -38,7 +38,8 @@ const goodbyes = ["Goodbye", "Farewell", "So long"***REMOVED***
                     ***REMOVED***"*Goodbye* ", ", maybe this was how things had to be"],
                     ***REMOVED***"The song has ended for ", " but the melody lingers on"],
                     ***REMOVED***"*Goodbye* ", ", we'll miss you a lot, then a little, then not too much"],
-                    ***REMOVED***"", " went out to pick up a pack of cigarettes, he will be back anytime soon..."]
+                    ***REMOVED***"", " went out to pick up a pack of cigarettes, he will be back anytime soon..."],
+                    ***REMOVED***"*Goodbye* ", ", we have a sad feeling for a moment, then it passes"]
                     ***REMOVED***
 
 ***REMOVED***
