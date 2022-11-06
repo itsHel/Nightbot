@@ -77,7 +77,7 @@ client.on("message", async message => {
     ***REMOVED***
 
     mine.reactions(message);
-    mine.emotesCount(message.content, message.author, guildSettings[guildId].emoteshistory);                // Modifies guildSettings[guildId].emoteshistory array
+    mine.emotesCount(message, guildSettings[guildId].emoteshistory);                // Modifies guildSettings[guildId].emoteshistory array
 
     try{
         if(message.type == "PINS_ADD" && guildSettings[guildId].pinning && channels[guildId].pinroom){
@@ -167,7 +167,8 @@ client.on("message", async message => {
                 help.commandHelp("emotes", message.channel);
                 break;
             case "emotes": case "emotelist": case "emotestats":
-                mine.emotesShow(guildSettings[guildId].emoteshistory, message, client);
+                if(message.channel.type != "DM")
+                    mine.emotesShow(guildSettings[guildId].emoteshistory, message, client);
                 break;
             case "glados":
                 message.channel.send("```" + settings.gladosCheers[(Math.floor(Math.random() * settings.gladosCheers.length))] + "```");
@@ -198,7 +199,9 @@ client.on("message", async message => {
                 break;
             case "countdown": case "cd":
                 mine.countDown(3, 1000, message.channel);
-                message.delete({timeout: settings.autoDelDelay * 10***REMOVED***);
+                if(message.channel.type != "DM"){
+                    setTimeout(() => message.delete().catch(()=>{***REMOVED***), settings.autoDelDelay * 10);
+                ***REMOVED***
                 break;
             case "quote": case "q":
                 quotes.quote(message.channel);
@@ -283,7 +286,9 @@ client.on("message", async message => {
                 break;
             case "rdr":             // Refreshes reddit
                 reddit.redditAll(client.channels.cache.get(channels[guildId].reddittheatre), client.channels.cache.get(channels[guildId].reddittext), client.channels.cache.get(channels[guildId].redditnsfw), reddits[guildId], guildId);
-                message.delete({timeout: 1000***REMOVED***);
+                if(message.channel.type != "DM"){
+                    message.delete().catch(()=>{***REMOVED***);
+                ***REMOVED***
                 break;
             case "random":
                 let multiply = (args) ? args : 2;
@@ -343,14 +348,14 @@ client.on("message", async message => {
 					
                     let channel = message.guild.channels.cache.find(channel => channel.id == args.match(/\d+/));
                     if(channel == undefined){
-                        message.channel.send("```Room not found```").then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
+                        message.channel.send("```Room not found```").then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
                         return;
                     ***REMOVED***
                     
                     guildSettings[guildId].nopinsrooms.push(channel.id);
                     mongo.updateSchema({nopinsrooms: guildSettings[guildId].nopinsrooms***REMOVED***, "settings", guildId);
 
-                    message.channel.send("```Added```").then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
+                    message.channel.send("```Added```").then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
                 ***REMOVED***
                 break;
             case "nopinslist": case "nopinsrooms":
@@ -476,7 +481,7 @@ client.on("message", async message => {
                         break;
                     ***REMOVED***
 
-                    let embed = new discord.MessageEmbed({fields: [name, channelObj]***REMOVED***).setFooter("\u2800".repeat(50));          // Embed sizing     \u2800 = empty space
+                    let embed = new discord.MessageEmbed({fields: [name, channelObj]***REMOVED***).setFooter({text: "\u2800".repeat(50)***REMOVED***);          // Embed sizing     \u2800 = empty space
                     message.channel.send({embeds: [embed]***REMOVED***);
                 ***REMOVED***
                 break;
@@ -487,7 +492,7 @@ client.on("message", async message => {
 						let newRole = args;
 						let modRole = message.guild.roles.cache.find(role => role.name.toLowerCase() === newRole.toLowerCase());
 						if(!modRole){
-							message.channel.send("```Role '" + newRole + "' not found```").then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
+							message.channel.send("```Role '" + newRole + "' not found```").then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
 							break;
 						***REMOVED***
 
@@ -505,7 +510,7 @@ client.on("message", async message => {
 						let newRole = args;
 						let modRole = message.guild.roles.cache.find(role => role.name.toLowerCase() === newRole.toLowerCase());
 						if(!modRole){
-							message.channel.send("```Role '" + newRole + "' not found```").then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
+							message.channel.send("```Role '" + newRole + "' not found```").then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
 							break;
 						***REMOVED***
 
@@ -551,23 +556,24 @@ client.on("message", async message => {
                 break;
             case "test":
                 // Only for testing
+				console.log(guildSettings);
                 console.log("---------author---------");
                 console.log(message.author);
                 console.log("---------member---------");
                 console.log(message.member);
                 break;
             default:
-                message.channel.send(wrongCommandMessage).then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
+                message.channel.send(wrongCommandMessage).then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
                 break;
         ***REMOVED***
     ***REMOVED*** catch(err){commandError(message, err)***REMOVED***
 ***REMOVED***);
 
-
 client.on("messageDelete", async message => {
     // Deleted messages saving
     try{
-        if(message.author == client.user || message.author.bot || !channels[message.guild.id].delroom || message.content.match(/^n$|^\.|^_/i))
+        console.log(message.channel.type);
+        if(message.channel.type == "DM" || message.author == client.user || message.author.bot || !channels[message.guild.id].delroom || message.content.match(/^n$|^\.|^_/i))
             return;
 
         const fetchedLog = await message.guild.fetchAuditLogs({
@@ -601,7 +607,7 @@ client.on("messageDelete", async message => {
             .setColor(color)
             .setTitle(message.channel.name)
             .setAuthor(nick, pfp)
-            .setFooter(footer)
+            .setFooter({text: footer***REMOVED***)
             .setDescription(message.content + hasImg);
         if(img){
             embed.setImage(img);
@@ -748,7 +754,7 @@ function listenerError(err){
 ***REMOVED***
 
 function commandError(message, err){
-    message.channel.send(wrongCommandMessage).then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
+    message.channel.send(wrongCommandMessage).then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
 	
     console.log("****************** On message error ******************");
     console.log(err);
