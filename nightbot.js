@@ -80,8 +80,8 @@ client.on("message", async message => {
     mine.emotesCount(message, guildSettings[guildId].emoteshistory);                // Modifies guildSettings[guildId].emoteshistory array
 
     try{
-        if(message.type == "PINS_ADD" && guildSettings[guildId].pinning && channels[guildId].pinroom){
-            mine.autoPin(message.channel, client.channels.cache.get(channels[guildId].pinroom), guildId);
+        if(message.type == "PINS_ADD" && guildSettings[guildId].pinning && channels[guildId]?.pinroom){
+            mine.autoPin(message.channel, client.channels.cache.get(channels[guildId]?.pinroom), guildId);
         ***REMOVED***
         if(message.content.slice(0, settings.prefix.length) == settings.prefix && message.content.slice(0, 3) != "_ _"){
             console.log(message.content);
@@ -109,8 +109,8 @@ client.on("message", async message => {
                 ***REMOVED***
                 break;
             case "poll":
-                if(channels[guildId].pollroom){
-                    mine.polls(client.channels.cache.get(channels[guildId].pollroom), args, message.author);
+                if(channels[guildId]?.pollroom){
+                    mine.polls(client.channels.cache.get(channels[guildId]?.pollroom), args, message.author);
                 ***REMOVED*** else {
                     message.channel.send("```Poll room not set```");
                 ***REMOVED***
@@ -189,13 +189,13 @@ client.on("message", async message => {
             case "confess": case "c":
                 if(!args)
                     break;
-                mine.sendToChannel(args, client.channels.cache.get(channels[guildId].confessroom), message.channel);
+                mine.sendToChannel(args, client.channels.cache.get(channels[guildId]?.confessroom), message.channel);
                 break;
             case "announce":
-                mine.sendToChannel(args, client.channels.cache.get(channels[guildId].announceroom), message.channel);
+                mine.sendToChannel(args, client.channels.cache.get(channels[guildId]?.announceroom), message.channel);
                 break;
             case "say":
-                mine.sendToChannel(args, client.channels.cache.get(channels[guildId].generalroom), message.channel);
+                mine.sendToChannel(args, client.channels.cache.get(channels[guildId]?.generalroom), message.channel);
                 break;
             case "countdown": case "cd":
                 mine.countDown(3, 1000, message.channel);
@@ -282,10 +282,10 @@ client.on("message", async message => {
                 duel.duel(args, message.guild, message.author, message.channel, client);
                 break;
             case "rate":
-                mine.rate(args, client.channels.cache.get(channels[guildId].rateroom), message.author.toString(), message.channel, guildSettings[guildId].ratepeoplecount);
+                mine.rate(args, client.channels.cache.get(channels[guildId]?.rateroom), message.author.toString(), message.channel, guildSettings[guildId].ratepeoplecount);
                 break;
-            case "rdr":             // Refreshes reddit
-                reddit.redditAll(client.channels.cache.get(channels[guildId].reddittheatre), client.channels.cache.get(channels[guildId].reddittext), client.channels.cache.get(channels[guildId].redditnsfw), reddits[guildId], guildId);
+            case "rdr":                     // Refreshes reddits
+                reddit.redditAll(client.channels.cache.get(channels[guildId]?.reddittheatre), client.channels.cache.get(channels[guildId]?.reddittext), client.channels.cache.get(channels[guildId]?.redditnsfw), reddits[guildId], guildId);
                 if(message.channel.type != "DM"){
                     message.delete().catch(()=>{***REMOVED***);
                 ***REMOVED***
@@ -376,7 +376,7 @@ client.on("message", async message => {
                 break;
             case "newrole": case "addrole":
                 if(mine.isAdmin(message, guildSettings[guildId].modroles)){
-                    rolesModule.newRole(message.member, client.channels.cache.get(channels[guildId].rolesroom));
+                    rolesModule.newRole(message.member, client.channels.cache.get(channels[guildId]?.rolesroom));
                 ***REMOVED***
                 break;
             case "kickrole":
@@ -386,7 +386,7 @@ client.on("message", async message => {
                 ***REMOVED***
 				
                 if(mine.isAdmin(message, guildSettings[guildId].modroles)){
-                    mine.kickOnlyRole(message); //client.channels.cache.get(channels[guildId].rolesroom));
+                    mine.kickOnlyRole(message); //client.channels.cache.get(channels[guildId]?.rolesroom));
                 ***REMOVED***
                 break;
             case "reddit": case "editreddit": case "addreddit": case "setreddit":

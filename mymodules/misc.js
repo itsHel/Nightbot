@@ -99,7 +99,7 @@ function polls(pollChannel, text, author){
     let footer = (text.match(";")) ? "Suggested by: " + author.displayName : "";
     let pollText = text.replace(";", "") + "\n";
     pollText = pollText.charAt(0).toUpperCase() + pollText.slice(1);
-    let embed = new discord.MessageEmbed().setDescription(pollText).setFooter(footer);
+    let embed = new discord.MessageEmbed().setDescription(pollText).setFooter({text: footer***REMOVED***);
 
     pollChannel.send({embeds: [embed]***REMOVED***).then(m => {
         m.react(emojisClassic.upArrowBlue);
@@ -323,7 +323,6 @@ function rate(args, rateChannel, user, channel, peopleCount){
 
     if(args){
         // Save rating
-
         if(!args.match(/\d+/)){
             channel.send("```Wrong format\n" + help + "```");
             return;
@@ -348,7 +347,12 @@ function rate(args, rateChannel, user, channel, peopleCount){
             ***REMOVED***, 3_600_000);          // 60 mins
 
             ratings.push(rate);
-            channel.send("Thank you for watching <a:milkBow:822160031905611796>");
+            
+            if(Math.floor(Math.random() * 10) == 0){
+                channel.send("Yeah, well, that's just like your opinion, man");
+            ***REMOVED*** else {
+                channel.send("Thank you for watching <a:milkBow:" + emojis.milkBow + ">");
+            ***REMOVED***
 
             // (:
             setTimeout(function(){
@@ -356,10 +360,7 @@ function rate(args, rateChannel, user, channel, peopleCount){
                     channel.send("YOU'LL PAY FOR YOUR CRIMES AGAINST HUMANITY!!!").then(sent => sent.delete({timeout: 2000***REMOVED***));
                     return;
                 ***REMOVED***  
-                if(Math.floor(Math.random() * 10) == 0){
-                    channel.send("You little brat");
-                ***REMOVED***
-            ***REMOVED***, 1000);
+            ***REMOVED***, 1500);
          
             // If all users rated and channel is set, show ratings
             if(rateChannel && ratings.length == peopleCount){
@@ -372,17 +373,17 @@ function rate(args, rateChannel, user, channel, peopleCount){
         ***REMOVED***
     ***REMOVED*** else {
         // No args = show ratings and then clear
-        
         if(ratings.length == 0){
             channel.send("```No user has rated yet!\n" + help + "```")
             return;
         ***REMOVED***
+
         if(ratings.length == 1){
             channel.send("```Only one user rated yet!```")
             return;
         ***REMOVED***
         
-        if(channel.type.toLowerCase() == "dm"){
+        if(channel.type == "DM"){
             channel.send("```Cannot show ratings in DM!```");
             return;
         ***REMOVED***
@@ -410,29 +411,38 @@ function countDown(i, delay, channel){
             channel.send("Now").then(sent => sent.delete({timeout: settings.autoDelDelay * 10***REMOVED***));
             return;
         ***REMOVED***
+
         channel.send(i--).then(sent => sent.delete({timeout: settings.autoDelDelay * 10***REMOVED***));
         countDown(i, delay, channel);
     ***REMOVED***, delay);
 ***REMOVED***
 
-function emotesCount(text, author, stats){
-    if(author.bot || text == "")
+function emotesCount(message, stats){
+    if(message.author.bot || message.content == "" || message.guild == null)
         return;
-    let matches = text.match(/<a*:[^\s]+?:/gi);
-    if(matches != null)
+	
+    let matches = message.content.match(/<a*:[^\s]+?:/gi);
+	
+    if(matches != null){
         for(let i = 0; i < matches.length; i++){
             matches[i] = matches[i].replace(/<a*:|:/g, "");
-            if(stats[matches[i]] == undefined)
+			
+            if(stats[matches[i]] == undefined){
                 stats[matches[i]] = 1;
-            else
+            ***REMOVED*** else {
                 stats[matches[i]]++;
+			***REMOVED***
+		***REMOVED***
     ***REMOVED***
 ***REMOVED***
 
 function emotesShow(stats, message, client){
     let emotesArr = [***REMOVED***
-    for(let emote in stats)
+
+    for(let emote in stats){
         emotesArr.push([emote, stats[emote]]);
+    ***REMOVED***
+
     emotesArr.sort(function(a, b){return b[1] - a[1]***REMOVED***);
 
     let text = emotesArr.map(emote => {
@@ -443,13 +453,14 @@ function emotesShow(stats, message, client){
         if(emoteID != undefined){
             let animated = (emoteID.animated == false) ? "" : "a";
             return "<" + animated + ":" + emote[0] + ":" + emoteID + "> - " + emote[1***REMOVED***
-        ***REMOVED***
-        else{
+        ***REMOVED*** else {
             return emote[0] + " - " + emote[1***REMOVED***
         ***REMOVED***
     ***REMOVED***).join("\n");
 
-    message.channel.send(text);
+    if(text){
+        message.channel.send(text);
+    ***REMOVED***
 ***REMOVED***
 
 // Reactions
@@ -513,8 +524,9 @@ function isAdmin(message, modRoles = [], response = true){
     ***REMOVED***)){
         return true;
 	***REMOVED*** else {
-        if(response)
-            message.channel.send(noModMessage).then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
+        if(response){
+            message.channel.send(noModMessage).then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
+        ***REMOVED***
 
 		return false;
 	***REMOVED***
@@ -536,7 +548,7 @@ function addEmojis(args, channel, guild){
                     ***REMOVED***)
                     .catch((err) => {
                         console.log("Addemoji error: " + err.message);
-                        channel.send("```Couldnt add emoji(s)!```"); 
+                        channel.send("```Couldnt add emoji - " + err.message + " ```"); 
                         log("Addemoji error:\n" + err.message);
                 ***REMOVED***
             ***REMOVED***
@@ -630,6 +642,7 @@ function sendDm(args, message, client){                 // Mess?
         message.channel.send("```Message empty```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
         return;
     ***REMOVED***
+
     let nick;
     let text = args;
 
@@ -640,6 +653,7 @@ function sendDm(args, message, client){                 // Mess?
         ***REMOVED*** else {
             args = args.substr(1);
         ***REMOVED***
+
         nick = args.slice(0, args.indexOf("\""));
         text = args.substr(args.indexOf("\"") + 2);
     ***REMOVED*** else {
@@ -652,8 +666,9 @@ function sendDm(args, message, client){                 // Mess?
             console.log(err);
             message.channel.send("```Cannot send message to this user```");
         ***REMOVED***).then(sent => {
-            if(message.channel.type != "dm")
-                message.delete({timeout: 1000***REMOVED***);    
+            if(message.channel.type != "DM"){
+                setTimeout(() => message.delete().catch(()=>{***REMOVED***), 1000);
+            ***REMOVED***
     ***REMOVED***
 
         message.channel.send("```Sent```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
@@ -662,7 +677,6 @@ function sendDm(args, message, client){                 // Mess?
 
         if(client.users.cache.find(user => user.username == nick) == null){
             help.commandHelp("dm", message.channel);
-            // message.channel.send("```User not found (case sensitive, use original nick without numbers, put it in \"\" for nicknames with spaces)```");
             console.log(err);
             return;
         ***REMOVED***
@@ -671,8 +685,9 @@ function sendDm(args, message, client){                 // Mess?
                 console.log(err);
                 message.channel.send("```Cannot send message to this user```");
             ***REMOVED***).then(sent => {
-                if(message.channel.type != "dm")
-                    message.delete({timeout: 1000***REMOVED***);    
+                if(message.channel.type != "DM"){
+                    setTimeout(() => message.delete().catch(()=>{***REMOVED***), 1000);
+                ***REMOVED***
         ***REMOVED***
 
             message.channel.send("```Sent```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
@@ -691,7 +706,7 @@ function kickOnlyRole(message){
 	role = role.replace(/^@/, "").toLowerCase();
 
     if(role != "everyone" && (!role.length || message.guild.roles.cache.find(guildRole => guildRole.name.toLowerCase() === role) == undefined)){
-        message.channel.send("```Role not found```"); //.then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
+        message.channel.send("```Role not found```");
         return;
     ***REMOVED***
 

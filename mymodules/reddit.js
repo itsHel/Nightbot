@@ -3,6 +3,8 @@ const discord = require("discord.js");
 const mongo = require("./mymongo.js");
 const help = require("./help.js");
 
+const ignorePinned = true;
+
 // Url examples
 // https://www.reddit.com/r/socialanxiety/top.json?t=week&limit=100
 // https://www.reddit.com/r/socialanxiety/top.json?t=week&limit=33&after=t3_kkn7gi
@@ -21,12 +23,18 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
             if (err)
                 return console.error(err);
             data = data.data;
+
             if(!data)
                 return;
+
             let same = false;
             let newHistory = [***REMOVED***
 
             for(let i = 0; i < data.children.length; i++){
+                if(ignorePinned && data.children[i].data.pinned){
+                    continue;
+                ***REMOVED***
+
                 for(let o = 0; o < history.length; o++){                        
                     if(data.children[i].data.url.substring(8) == history[o]){
                         newHistory.push(history[o]);
@@ -34,12 +42,14 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                         break;
                     ***REMOVED***
                 ***REMOVED***
+
                 try{
                     let title = data.children[i].data.title;
                     if(same || data.children[i].data.ups < minUps || data.children[i].data.thumbnail == "self"){    //self = nopic
                         same = false;
                         continue;
                     ***REMOVED***
+
                     let url = "https://www.reddit.com" + data.children[i].data.permalink;
                     let img;
                     let fileType = "img";
@@ -48,6 +58,7 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                         // Video
                         if(ignoreVidsandGifs)
                             continue;
+
                         img = data.children[i].data.thumbnail;
                         fileType = "video";
                         console.log("video");
@@ -59,8 +70,6 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                     ***REMOVED*** else {
                         // Img/Gif
                         img = data.children[i].data.url.replace(/amp;/g, "");
-                        // console.log("img, url:");
-                        // console.log(data.children[i].data.url);
 
                         if(img.substring(img.lastIndexOf("/")).match(".") == null)
                             img += ".jpg";
@@ -74,13 +83,14 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                         ***REMOVED***
                     ***REMOVED***
 
+                    if(img == "nsfw"){
+                        continue;
+                    ***REMOVED***
                    
                     let desc = data.children[i].data.subreddit_name_prefixed;   //data.children[i].data.selftext;
                     let ups = data.children[i].data.ups;
                     let time = new Date(data.children[i].data.created * 1000);
-                    // console.log(url);
-                    // console.log("BEFORE EMBED");
-                    
+
                     let embed = new discord.MessageEmbed()
                         .setColor("#ff6600")
                         .setURL(url)
@@ -123,10 +133,15 @@ async function textDL(name, channel, minUps = 250, guideid){
         ***REMOVED***, (err, resp, data) => {
             if (err)
                 return console.error(err);
+                
             data = data.data;
             let same = false;
             let newHistory = [***REMOVED***
             for(let i = 0; i < data.children.length; i++){
+                if(ignorePinned && data.children[i].data.pinned){
+                    continue;
+                ***REMOVED***
+
                 for(let o = 0; o < history.length; o++){                        
                     if(data.children[i].data.url.substring(8) == history[o]){
                         newHistory.push(history[o]);
@@ -134,21 +149,23 @@ async function textDL(name, channel, minUps = 250, guideid){
                         break;
                     ***REMOVED***
                 ***REMOVED***
+
                 let title = data.children[i].data.title;
                 if(same || data.children[i].data.ups < minUps || data.children[i].data.thumbnail == "self"){    //self = nopic
                     same = false;
                     continue;
                 ***REMOVED***
+
                 let url = "https://www.reddit.com" + data.children[i].data.permalink;
                 let desc = data.children[i].data.subreddit_name_prefixed;
                 let ups = data.children[i].data.ups;
                 let text = data.children[i].data.selftext;
+
                 if(text.length > 1500){
                     text = "**Text was cut for being too long, click on link to continue**\n\n" + text.substring(0, 500) + "...";
                 ***REMOVED***
+
                 let time = new Date(data.children[i].data.created * 1000);
-                // console.log(url);
-                // console.log("BEFORE EMBED");
 
                 let embed = new discord.MessageEmbed()
                     .setColor("#ff6600")
@@ -173,6 +190,7 @@ async function redditAll(redditTheatreChannel, redditTextChannel, redditNsfwChan
     // Reddits format - reddit: reddit, minUpvotes: minUpvotes, type: text/img
     if(!reddits)
         return;
+
     for(let i = 0; i < reddits.length; i++){
         if(reddits[i].type == "img"){
             if(redditTheatreChannel)
@@ -188,7 +206,7 @@ async function redditAll(redditTheatreChannel, redditTextChannel, redditNsfwChan
 ***REMOVED***
 
 function getRooms(channels, reddits, channel, client){
-    if((!channels.reddittheatre && !channels.reddittext && !channels.redditnsfw) || !reddits){
+    if((!channels?.reddittheatre && !channels?.reddittext && !channels?.redditnsfw) || !reddits){
         channel.send("```No reddits set```");
         return;
     ***REMOVED***
@@ -212,7 +230,7 @@ function getRooms(channels, reddits, channel, client){
             ***REMOVED***
 
             let imgEmbed = new discord.MessageEmbed({title:"Image Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter("\u2800".repeat(50));
-            channel.send(imgEmbed);
+            channel.send({embeds: [imgEmbed]***REMOVED***);
         ***REMOVED*** else {
             channel.send("```Theatre room does not exist```");
         ***REMOVED***
@@ -237,7 +255,7 @@ function getRooms(channels, reddits, channel, client){
             ***REMOVED***
 
             let textEmbed = new discord.MessageEmbed({title:"Text Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter("\u2800".repeat(50));
-            channel.send(textEmbed);
+            channel.send({embeds: [textEmbed]***REMOVED***);
         ***REMOVED*** else {
             channel.send("```Text room does not exist```");
         ***REMOVED***
@@ -261,8 +279,8 @@ function getRooms(channels, reddits, channel, client){
                 upvotes.value += redditNsfw[i].minupvotes + "\n";
             ***REMOVED***
 
-            let textEmbed = new discord.MessageEmbed({title:"Nsfw Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter("\u2800".repeat(50));
-            channel.send(textEmbed);
+            let nsfwEmbed = new discord.MessageEmbed({title:"Nsfw Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter("\u2800".repeat(50));
+            channel.send({embeds: [nsfwEmbed]***REMOVED***);
         ***REMOVED*** else {
             channel.send("```Nsfw room does not exist```");
         ***REMOVED***
@@ -275,6 +293,7 @@ function addRedditToGuild(reddits, args, message){
         help.commandHelp("reddit", message.channel);
         return;
     ***REMOVED***
+
     let addNew = true;
     let redditObj = {
         reddit: args[0],
@@ -302,6 +321,7 @@ function addRedditToGuild(reddits, args, message){
 
 function removeRedditFromGuild(reddits, args, message){
     args = args.toLowerCase().split(" ");
+
     if(args.length != 1){
         help.commandHelp("reddit", message.channel);
         return;
@@ -311,6 +331,7 @@ function removeRedditFromGuild(reddits, args, message){
         if(reddits[i].reddit == args[0]){
             reddits.splice(i, 1);
             let values = {reddit: args[0], guildid: message.guild.id***REMOVED***
+            
             mongo.deleteReddit(values);
             message.channel.send("```Reddit " + args[0] + " removed```");
             return;
