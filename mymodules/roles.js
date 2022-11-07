@@ -17,6 +17,7 @@ async function newRole(user, roleChannel){
                 chan.send("```Roleroom does not exist```");
                 throw "no channel";
             ***REMOVED***
+
             chan.awaitMessages(function(){return true;***REMOVED***, {max: 1, time: 60000***REMOVED***).then(async(collected) => {
                 if(!collected.first())
                     throw "timeout";
@@ -159,14 +160,17 @@ function createRoleCollector(collector, emotes, roles, unique){
     collector.on("collect", (collected, user) => {
         for(let i = 0; i < emotes.length; i++){
             let thisId = emotes[i].match(/:.*:(\d+)>/);
-            if(thisId)
+            if(thisId){
                 thisId = thisId[1***REMOVED***
-            else
+            ***REMOVED*** else {
                 thisId = -1;
+            ***REMOVED***
+
             if(emotes[i] == collected.emoji.name || thisId == collected.emoji.id){
                 try{
                     let role = collected.message.guild.roles.cache.find(role => role.name.toLowerCase() === roles[i].toLowerCase());
                     let member = collected.message.guild.member(user);
+
                     if(unique){
                         roles.forEach(removeRole => {
                             if(member.roles.cache.some(memberRole => memberRole.name == removeRole))
@@ -186,10 +190,12 @@ function createRoleCollector(collector, emotes, roles, unique){
     collector.on("remove", (collected, user) => {
         for(let i = 0; i < emotes.length; i++){
             let thisId = emotes[i].match(/:.*:(\d+)>/);
-            if(thisId)
+            if(thisId){
                 thisId = thisId[1***REMOVED***
-            else
+            ***REMOVED*** else {
                 thisId = -1;
+            ***REMOVED***
+
             if(emotes[i] == collected.emoji.name || thisId == collected.emoji.id){
                 try{
                     let role = collected.message.guild.roles.cache.find(role => role.name.toLowerCase() === roles[i].toLowerCase());
@@ -203,8 +209,10 @@ function createRoleCollector(collector, emotes, roles, unique){
     collector.on("dispose", (collected, user) => {
         for(let i = 0; i < emotes.length; i++){
             let thisId = emotes[i].match(/:.*:(\d+)>/);
+            
             if(thisId)
                 thisId = thisId[1***REMOVED***
+
             if(emotes[i] == collected.emoji.name || thisId == collected.emoji.id){
                 try{
                     let role = collected.message.guild.roles.cache.find(role => role.name.toLowerCase() === roles[i].toLowerCase());
