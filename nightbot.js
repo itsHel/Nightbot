@@ -1,5 +1,4 @@
 const discord = require("discord.js");
-
 const reminder = require("./mymodules/reminder.js");
 const reddit = require("./mymodules/reddit.js");
 const mine = require("./mymodules/misc.js");
@@ -31,7 +30,11 @@ var guilds;
 const allIntents = new discord.Intents(32767);
 const client = new discord.Client({ intents: allIntents, partials: ["CHANNEL"] ***REMOVED***);
 
-// const client = new discord.Client({ intents: [discord.Intents.FLAGS.GUILDS, discord.Intents.FLAGS.GUILD_MESSAGES] ***REMOVED***);
+// v14
+// const client = new discord.Client({
+//     intents: [3276799],
+//     partials: [discord.Partials.Message, discord.Partials.Channel, discord.Partials.Reaction]
+// ***REMOVED***);
 
 // Init
 client.on("ready", async () => {
@@ -52,7 +55,7 @@ client.on("ready", async () => {
     for(let i = 0; i < guilds.length; i++){
         if(reddits[guilds[i]]){
             try{
-                reddit.redditAll(client.channels.cache.get(channels[guilds[i]].reddittheatre), client.channels.cache.get(channels[guilds[i]].reddittext), client.channels.cache.get(channels[guilds[i]].redditnsfw), reddits[guilds[i]], guilds[i]);
+                reddit.redditAll(client.channels.cache.get(channels[guilds[i]]?.reddittheatre), client.channels.cache.get(channels[guilds[i]]?.reddittext), client.channels.cache.get(channels[guilds[i]]?.redditnsfw), reddits[guilds[i]], guilds[i]);
             ***REMOVED*** catch(err){console.log(err)***REMOVED***
         ***REMOVED***
     ***REMOVED***
@@ -66,7 +69,7 @@ client.on("ready", async () => {
 
 client.login(keys.token);
 
-client.on("message", async message => {
+client.on("messageCreate", async message => {
     let guildId;
 
     if(message.guild){
