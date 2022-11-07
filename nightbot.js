@@ -1,4 +1,4 @@
-const discord = require("discord.js");
+const discord = require("discord.js");  // 13.12.0
 const reminder = require("./mymodules/reminder.js");
 const reddit = require("./mymodules/reddit.js");
 const mine = require("./mymodules/misc.js");
@@ -31,10 +31,7 @@ const allIntents = new discord.Intents(32767);
 const client = new discord.Client({ intents: allIntents, partials: ["CHANNEL"] ***REMOVED***);
 
 // v14
-// const client = new discord.Client({
-//     intents: [3276799],
-//     partials: [discord.Partials.Message, discord.Partials.Channel, discord.Partials.Reaction]
-// ***REMOVED***);
+// const client = new discord.Client({intents: [3276799], partials: [discord.Partials.Message, discord.Partials.Channel, discord.Partials.Reaction]***REMOVED***);
 
 // Init
 client.on("ready", async () => {
@@ -98,9 +95,11 @@ client.on("messageCreate", async message => {
         // Cah ending
         if(message.author == client.user && message.embeds.length && message.embeds[0].title == "Game ended"){
             console.log("Cah ended, games left:");
+
             cahGames = cahGames.filter(game => {
                 return game.channel != message.channel
         ***REMOVED***
+
             for(let i = 0; i < cahGames.length; i++)
                 console.log(cahGames[i].channel);
         ***REMOVED***
@@ -220,6 +219,7 @@ client.on("messageCreate", async message => {
                     help.commandHelp("translate", message.channel);
                     return;
                 ***REMOVED***
+
                 apis.googleTranslate(message, args);       
                 break;
             case "ytr":             // Old translate - Yandex
@@ -333,6 +333,7 @@ client.on("messageCreate", async message => {
                     mongo.updateSchema({ratepeoplecount: args***REMOVED***, "settings", guildId);
                     message.channel.send("```Rate people count set to " + args + " humans```");
                 ***REMOVED***
+
                 console.log(guildSettings[guildId].ratepeoplecount);
                 break;
             case "pinstoggle":   
@@ -443,6 +444,7 @@ client.on("messageCreate", async message => {
                         help.commandHelp("room", message.channel);
                         break;
                     ***REMOVED***
+
                     if(!roomList.filter(room => room == args[0]).length){
                         message.channel.send("```Room " + args[0] + " not found```");
                         break;
@@ -648,6 +650,7 @@ client.on("guildMemberRemove", (member) => {
 
             let date = new Date();
             date.setDate(date.getDate() + parseFloat(guildSettings[member.guild.id].leavebandays));
+            
             let banData = member.id + ";;" + date;
             mongo.updateSchema({bans: banData***REMOVED*** , "settings", member.guild.id);
 
