@@ -119,7 +119,7 @@ Default prefix: `_`
 ### hentai _tag_ 
 > Sends hentai picture, only limited tags   
   > Example: `_hentai ass`  
-  > **Avaible tags:** ass, bdsm, cum, femdom, doujin, maid, orgy, panties, wallpaper, girl
+  > **Avaible tags:** ass, bdsm, femdom, doujin, maid, orgy, panties, wallpaper, pussy, succubus
 ### hentai tags 
 > Shows avaible tags
 
