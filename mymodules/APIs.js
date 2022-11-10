@@ -169,7 +169,7 @@ function imdb(cmd, args, channel){
                 .setURL("https://www.imdb.com/title/" + id)
                 .setTitle(title)
                 .setDescription(rating + "\n\n" + data.Runtime + " - " + data.Genre + "\n" + data.Actors + "\n\n" + data.Plot)
-                .setFooter("boxOffice: " + data.BoxOffice);
+                .setFooter({text: "boxOffice: " + data.BoxOffice***REMOVED***);
 
             if(img != "N/A")
                 embed.setImage(img);
@@ -209,7 +209,7 @@ function imdbSearch(args, channel){
 
         let embed = new discord.MessageEmbed({fields: [titles, years]***REMOVED***)
             .setTitle(title)
-            .setFooter("\u2800".repeat(30));
+            .setFooter({text: "\u2800".repeat(30)***REMOVED***);
 
         channel.send({embeds: [embed]***REMOVED***);
 ***REMOVED***
@@ -248,7 +248,7 @@ function vocabulary(args, channel, author){
             sent.react('➡');
             
             let message = new defMessage(sent.id, 0, result.definitions);
-			let collector = sent.createReactionCollector(settings.filter, { time: 100000 ***REMOVED***);
+			let collector = sent.createReactionCollector({filter: settings.filter, time: 100000 ***REMOVED***);
 
             collector.on('collect', r => {
                 if(r.emoji.name == '⬅'){

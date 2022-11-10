@@ -113,7 +113,7 @@ function getBooty(url, channel){
             sent.react('⬅').then(() => sent.react('➡'));
 
             let message = new apis.defMessage(sent.id, data[0].id);
-			let collector = sent.createReactionCollector(settings.filter, { time: 100000 ***REMOVED***);
+			let collector = sent.createReactionCollector({filter: settings.filter, time: 100000***REMOVED***);
 
             collector.on('collect', r => {
                 if(r.emoji.name == '⬅'){
@@ -125,7 +125,7 @@ function getBooty(url, channel){
                 embed = getBootyEmbed(picUrl, message.pos);
 
                 channel.messages.fetch(message.id).then(mess => {
-                    mess.edit(embed);
+                    mess.edit({embeds: [embed]***REMOVED***);
             ***REMOVED***
 
                 sent.reactions.removeAll().then(() => {

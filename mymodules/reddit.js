@@ -6,8 +6,8 @@ const help = require("./help.js");
 const ignorePinned = true;
 
 // Url examples
-// https://www.reddit.com/r/socialanxiety/top.json?t=week&limit=100
-// https://www.reddit.com/r/socialanxiety/top.json?t=week&limit=33&after=t3_kkn7gi
+// https://www.reddit.com/r/memes/top.json?t=week&limit=100
+// https://www.reddit.com/r/memes/top.json?t=week&limit=33&after=t3_kkn7gi
 
 // after = next page - generated in response(response.data.after)
 // /top = all time
@@ -70,7 +70,9 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                     ***REMOVED*** else {
                         // Img/Gif
                         img = data.children[i].data.url.replace(/amp;/g, "");
-
+                        if(!img)
+                            continue;
+                        
                         if(img.substring(img.lastIndexOf("/")).match(".") == null)
                             img += ".jpg";
 
@@ -78,14 +80,15 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                         if(img.match(/\.gifv/)){
                             if(ignoreVidsandGifs)
                                 continue;
+
                             img = data.children[i].data.thumbnail;
                             fileType = "gif";
                         ***REMOVED***
                     ***REMOVED***
 
-                    if(img == "nsfw"){
+                    if(img == "nsfw")
                         continue;
-                    ***REMOVED***
+                    
                    
                     let desc = data.children[i].data.subreddit_name_prefixed;   //data.children[i].data.selftext;
                     let ups = data.children[i].data.ups;
@@ -96,7 +99,7 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                         .setURL(url)
                         .setImage(img)
                         .setTitle(title.substring(0, 200) + " (" + desc + ")" + ((fileType != "img") ? " (" + fileType + ")" : ""))
-                        .setFooter(time.toISOString().replace(/[A-Z]/, " ").slice(0, -8) + "   " + ups + " upvotes");
+                        .setFooter({text: time.toISOString().replace(/[A-Z]/, " ").slice(0, -8) + "   " + ups + " upvotes"***REMOVED***);
                         // console.log((title.substring(0, 200) + " (" + desc + ")"));
                         // console.log("SEND, URL:");
                         // console.log(data.children[i].data.url.substring(8));
@@ -172,7 +175,7 @@ async function textDL(name, channel, minUps = 250, guideid){
                     .setURL(url)
                     .setDescription(text)
                     .setTitle(title.substring(0, 200) + " (" + desc + ")")
-                    .setFooter(time.toISOString().replace(/[A-Z]/, " ").slice(0, -8) + "   " + ups + " upvotes");
+                    .setFooter({text: time.toISOString().replace(/[A-Z]/, " ").slice(0, -8) + "   " + ups + " upvotes"***REMOVED***);
 
                 channel.send({embeds: [embed]***REMOVED***);
                 newHistory.push(data.children[i].data.url.substring(8));
@@ -229,7 +232,7 @@ function getRooms(channels, reddits, channel, client){
                 upvotes.value += redditImg[i].minupvotes + "\n";
             ***REMOVED***
 
-            let imgEmbed = new discord.MessageEmbed({title:"Image Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter("\u2800".repeat(50));
+            let imgEmbed = new discord.MessageEmbed({title:"Image Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter({text: "\u2800".repeat(50)***REMOVED***);
             channel.send({embeds: [imgEmbed]***REMOVED***);
         ***REMOVED*** else {
             channel.send("```Theatre room does not exist```");
@@ -254,7 +257,7 @@ function getRooms(channels, reddits, channel, client){
                 upvotes.value += reddittext[i].minupvotes + "\n";
             ***REMOVED***
 
-            let textEmbed = new discord.MessageEmbed({title:"Text Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter("\u2800".repeat(50));
+            let textEmbed = new discord.MessageEmbed({title:"Text Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter({text: "\u2800".repeat(50)***REMOVED***);
             channel.send({embeds: [textEmbed]***REMOVED***);
         ***REMOVED*** else {
             channel.send("```Text room does not exist```");
@@ -279,7 +282,7 @@ function getRooms(channels, reddits, channel, client){
                 upvotes.value += redditNsfw[i].minupvotes + "\n";
             ***REMOVED***
 
-            let nsfwEmbed = new discord.MessageEmbed({title:"Nsfw Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter("\u2800".repeat(50));
+            let nsfwEmbed = new discord.MessageEmbed({title:"Nsfw Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter({text: "\u2800".repeat(50)***REMOVED***);
             channel.send({embeds: [nsfwEmbed]***REMOVED***);
         ***REMOVED*** else {
             channel.send("```Nsfw room does not exist```");

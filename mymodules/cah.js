@@ -564,7 +564,7 @@ function cardsAgainstHumanity(channel, modroles){
                 for(let o = 0; o < this.settings.activePlayers; o++)
                     m.react(emojis[o]);
                 // waiting for czar pick
-                let collector = m.createReactionCollector(czarFilter, { time: this.settings.answerDelay + 20000, max: 1***REMOVED***);
+                let collector = m.createReactionCollector({filter: czarFilter, time: this.settings.answerDelay + 20000, max: 1***REMOVED***);
 
                 collector.on("collect", r => { 
                     if(this.settings.end)
@@ -665,7 +665,7 @@ function cardsAgainstHumanity(channel, modroles){
 
                 let answers = 0;
                 let blank = "";
-                player.collector = m.createReactionCollector(filter, { time: this.settings.answerDelay, dispose: true ***REMOVED***);
+                player.collector = m.createReactionCollector({filter: filter, time: this.settings.answerDelay, dispose: true***REMOVED***);
 
                 player.collector.on('collect', async(r) => {                                     // Waiting for players picks
                     if(this.settings.end)
@@ -784,7 +784,7 @@ function cardsAgainstHumanity(channel, modroles){
                     m.channel.messages.fetch(afterpickMessageId).then(mess => {
                         let embed = new discord.MessageEmbed().setDescription("Answer changed!");
 
-                        mess.edit(embed);
+                        mess.edit({embeds: [embed]***REMOVED***);
                 ***REMOVED***
                 ***REMOVED***
 

@@ -149,26 +149,30 @@ function russianRoulette(args, message, modroles = []){
     ***REMOVED***
 
     let welcomeEmbed = new discord.MessageEmbed().setColor("#000").setDescription(welcomeText);
-    message.channel.send(welcomeEmbed);
-
+    message.channel.send({embeds: [welcomeEmbed]***REMOVED***);
+    
     if(type){
         let alertText = "Loser(s) will be dishonorably **" + ((type == "kick") ? "kicked" : "banned") + "** from server!";
         let alertEmbed = new discord.MessageEmbed().setColor("#cc0000").setDescription(alertText);
-        message.channel.send(alertEmbed);
+        message.channel.send({embeds: [alertEmbed]***REMOVED***);
     ***REMOVED***
 
     if(force){
         activePlayers = allMentionedPlayers;
+        if(activePlayers.length == 1){
+            activePlayers.push(message.member);
+        ***REMOVED***
+
         start();
     ***REMOVED*** else {
         ***REMOVED***
-            return allMentionedPlayers.filter(player => player.user == user).length && user != message.member.user;
+            return allMentionedPlayers.filter(player => player.user == user).length && user != message.member.user && !user.bot;
         ***REMOVED***
 
         activePlayers.push(message.member);
         message.react(emojisClassic.check);
 
-        let collector = message.createReactionCollector(filter, { time: 30000 ***REMOVED***);
+        let collector = message.createReactionCollector({filter: filter, time: 40000***REMOVED***);
 
         collector.on("collect", (reaction, user) => {
             if(reaction.emoji.name == emojisClassic.check){
@@ -241,12 +245,12 @@ function russianRoulette(args, message, modroles = []){
         setTimeout(function(){
             let rollEmbed = new discord.MessageEmbed().setColor("#000").setDescription(player.user.toString() + " rolls...");
 
-            message.channel.send(rollEmbed).then(mess => {
+            message.channel.send({embeds: [rollEmbed]***REMOVED***).then(mess => {
                 setTimeout(function(){
                     let roll = Math.floor(Math.random() * drumSize) + 1;
                     let nextRollDelay = 0;
 
-                    mess.edit(rollEmbed.setDescription(player.user.toString() + " rolls... " + roll + "/" + drumSize)); 
+                    mess.edit({embeds: [rollEmbed.setDescription(player.user.toString() + " rolls... " + roll + "/" + drumSize)]***REMOVED***); 
                         if(bullets.filter(bullet => bullet == roll).length){
                             // Bullet hit player
                             nextRollDelay = 500;
@@ -309,7 +313,6 @@ function sendToChannel(text, targetChannel, channel){
         .setDescription(text);
 
     targetChannel.send({embeds: [embed]***REMOVED***).catch(err => {
-        console.log(111);
         console.log(err);
         channel.send("```I just don't know what went wrong```");
 ***REMOVED***
