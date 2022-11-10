@@ -57,9 +57,9 @@ client.on("ready", async () => {
         ***REMOVED***
     ***REMOVED***
 
-    if(channels[settings.defaultGuild]){
-        quotes.simpsons(client.channels.cache.get(channels[settings.defaultGuild].generalroom));
-    ***REMOVED***
+    // if(channels[settings.defaultGuild]){
+    //     quotes.simpsons(client.channels.cache.get(channels[settings.defaultGuild].generalroom));
+    // ***REMOVED***
 
     setIntervalsAll(guilds);
 ***REMOVED***);
