@@ -29,7 +29,7 @@ function remind(message){
         console.log(text);
     ***REMOVED***, delay * 1000);
 
-    message.reply("I will remind you in" + secondsToTime(delay)).then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
+    message.reply("I will remind you in" + secondsToTime(delay)).then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
 ***REMOVED***
 
 async function loadReminders(client){

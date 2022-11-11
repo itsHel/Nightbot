@@ -317,7 +317,7 @@ function sendToChannel(text, targetChannel, channel){
         channel.send("```I just don't know what went wrong```");
 ***REMOVED***
 
-    channel.send("sent").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
+    channel.send("```Sent```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
 ***REMOVED***
 
 function rate(args, rateChannel, user, channel, peopleCount){
@@ -356,11 +356,11 @@ function rate(args, rateChannel, user, channel, peopleCount){
             ***REMOVED*** else {
                 channel.send("Thank you for watching <a:milkBow:" + emojis.milkBow + ">");
             ***REMOVED***
-
+            
             // (:
             setTimeout(function(){
                 if(Math.floor(Math.random() * 50) == 0){
-                    channel.send("YOU'LL PAY FOR YOUR CRIMES AGAINST HUMANITY!!!").then(sent => sent.delete({timeout: 2000***REMOVED***));
+                    channel.send("YOU'LL PAY FOR YOUR CRIMES AGAINST HUMANITY!!!").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), 2000));
                     return;
                 ***REMOVED***  
             ***REMOVED***, 1500);
@@ -411,11 +411,11 @@ function getRatingMessage(ratingsAll){              // Private
 function countDown(i, delay, channel){
     setTimeout(function(){
         if(!i){
-            channel.send("Now").then(sent => sent.delete({timeout: settings.autoDelDelay * 10***REMOVED***));
+            channel.send("Now").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay * 10));
             return;
         ***REMOVED***
 
-        channel.send(i--).then(sent => sent.delete({timeout: settings.autoDelDelay * 10***REMOVED***));
+        channel.send(i--).then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay * 10));
         countDown(i, delay, channel);
     ***REMOVED***, delay);
 ***REMOVED***
@@ -622,6 +622,11 @@ function getFunc(){
 ***REMOVED***
 
 function delMessages(args, channel){
+    if(channel.type == "DM"){
+        channel.send("```Cannot delete messages in DM```");
+        return;
+    ***REMOVED***
+
     let count = ((args) ? parseInt(args) : 1) + 1;
 
     if(isNaN(count)){
@@ -642,7 +647,7 @@ function delMessages(args, channel){
 
 function sendDm(args, message, client){                 // Mess?
     if(!args){
-        message.channel.send("```Message empty```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
+        message.channel.send("```Message empty```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
         return;
     ***REMOVED***
 
@@ -668,13 +673,13 @@ function sendDm(args, message, client){                 // Mess?
         user.send(text).catch(err => {
             console.log(err);
             message.channel.send("```Cannot send message to this user```");
-        ***REMOVED***).then(sent => {
+        ***REMOVED***).then(mess => {
             if(message.channel.type != "DM"){
                 setTimeout(() => message.delete().catch(()=>{***REMOVED***), 1000);
             ***REMOVED***
     ***REMOVED***
 
-        message.channel.send("```Sent```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
+        message.channel.send("```Sent```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
     ***REMOVED***).catch((err) => {
         nick = nick.replace(/^@/, "");
 
@@ -687,13 +692,13 @@ function sendDm(args, message, client){                 // Mess?
             user.send(text).catch((err) => {
                 console.log(err);
                 message.channel.send("```Cannot send message to this user```");
-            ***REMOVED***).then(sent => {
+            ***REMOVED***).then(mess => {
                 if(message.channel.type != "DM"){
                     setTimeout(() => message.delete().catch(()=>{***REMOVED***), 1000);
                 ***REMOVED***
         ***REMOVED***
 
-            message.channel.send("```Sent```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
+            message.channel.send("```Sent```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
         ***REMOVED***).catch((err) => {
             help.commandHelp("dm", message.channel);
             console.log(err);

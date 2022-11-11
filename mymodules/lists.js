@@ -28,12 +28,12 @@ function listFunctions(cmd, args, message, guildSettings){
     if(temp[0] == "create" || temp[0] == "c"){
         //CREATE
         fs.writeFile("data/lists/" + list + ".txt", "", function(){***REMOVED***);
-        channel.send("```list " + list + " created```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
+        channel.send("```list " + list + " created```").then(sent => setTimeout(() => sent.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
         lists.push(list);
     ***REMOVED*** else if(temp[0] == "add"){
         //ADDING
         fs.appendFileSync("data/lists/" + list + ".txt", args.substring(5 + temp[1]  .length) + "\n", function(){***REMOVED***);
-        channel.send("```" + args.substring(5 + temp[1].length) + " added to the " + list + " list```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
+        channel.send("```" + args.substring(5 + temp[1].length) + " added to the " + list + " list```").then(sent => setTimeout(() => sent.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
     ***REMOVED*** else if(temp[0] == "del"){
         //DELETING items
         let mylist = fs.readFileSync("data/lists/" + list + ".txt", 'utf8', function(err){
@@ -59,7 +59,7 @@ function listFunctions(cmd, args, message, guildSettings){
                 ***REMOVED***
             ***REMOVED***
         ***REMOVED***
-        channel.send("```number " + temp[2] + " removed from " + list + "```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
+        channel.send("```number " + temp[2] + " removed from " + list + "```").then(sent => setTimeout(() => sent.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
         fs.writeFile("data/lists/" + list + ".txt", mylist, function(){***REMOVED***);
     ***REMOVED*** else if(temp[0] == "remove"){
         //REMOVE LIST
@@ -69,11 +69,11 @@ function listFunctions(cmd, args, message, guildSettings){
         fs.unlink("data/lists/" + list + ".txt", err => {
             if(err){
                 console.log(err);
-                channel.send("```not a list```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
+                channel.send("```not a list```").then(sent => setTimeout(() => sent.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
                 return;
             ***REMOVED***
     ***REMOVED***
-        channel.send("```deleted```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));
+        channel.send("```deleted```").then(sent => setTimeout(() => sent.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
     ***REMOVED*** else {
         showList(list, channel);
     ***REMOVED***

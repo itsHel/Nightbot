@@ -5,7 +5,6 @@ const keys = require("../keys.js");
 const apis = require("./APIs.js");
 const akaneko = require('akaneko');
 
-
 const tenorUrlBase = "https://api.tenor.com/v1/random?q=";
 const booruUrlBase = "https://danbooru.donmai.us/posts.json?";
 //https://danbooru.donmai.us/posts.json?limit=1&tags=sex&random=true
@@ -24,12 +23,13 @@ function gifs(cmd, args, channel){
     ***REMOVED***).join("+");
 
     let url = tenorUrlBase + words + "&key=" + keys.tenorKey + limit;
+    console.log(url);
     request.get(url, {json:true***REMOVED***, (err, res, resp) => {
         if (err)
             return console.error(err);
 
-        if(!resp.results.length){
-            channel.send("```not found```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));        
+        if(!resp.results?.length){
+            channel.send("```not found```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));        
             return;
         ***REMOVED***
 
@@ -75,9 +75,10 @@ function danbooru(cmd, args, channel){
             return console.error(err);
 
         if(!resp.length){
-            channel.send("```not found```").then(sent => sent.delete({timeout: settings.autoDelDelay***REMOVED***));        
+            channel.send("```not found```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));        
             return;
         ***REMOVED***
+
         let imageUrl, embed;
         for(let i = 0; i < resp.length; i++){
             if(resp[i].score > minScore && resp[i].file_url != undefined){
@@ -109,11 +110,11 @@ function getBooty(url, channel){
         let picUrl = url.replace("api", "media").replace("0/1/random", "");
         let embed = getBootyEmbed(picUrl, data[0].id);
 
-        channel.send({embeds: [embed]***REMOVED***).then(sent => {
-            sent.react('⬅').then(() => sent.react('➡'));
+        channel.send({embeds: [embed]***REMOVED***).then(mess => {
+            mess.react('⬅').then(() => mess.react('➡'));
 
-            let message = new apis.defMessage(sent.id, data[0].id);
-			let collector = sent.createReactionCollector({filter: settings.filter, time: 100000***REMOVED***);
+            let message = new apis.defMessage(mess.id, data[0].id);
+			let collector = mess.createReactionCollector({filter: settings.filter, time: 100000***REMOVED***);
 
             collector.on('collect', r => {
                 if(r.emoji.name == '⬅'){
@@ -128,8 +129,8 @@ function getBooty(url, channel){
                     mess.edit({embeds: [embed]***REMOVED***);
             ***REMOVED***
 
-                sent.reactions.removeAll().then(() => {
-                    sent.react('⬅').then(() => sent.react('➡'));
+                mess.reactions.removeAll().then(() => {
+                    mess.react('⬅').then(() => mess.react('➡'));
             ***REMOVED***
         ***REMOVED***
 

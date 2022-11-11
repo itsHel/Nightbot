@@ -63,7 +63,7 @@ async function newRole(user, roleChannel){
                                 if(role.header != ".")
                                     embed.setAuthor(role.header); 
                                 if(role.footer != ".")
-                                    embed.setFooter(role.footer);                   
+                                    embed.setFooter({text: role.footer***REMOVED***);                   
 
                                 roleChannel.send({embeds: [embed]***REMOVED***).then(async (mess) => {
                                     for(let i = 0; i < emotes.length; i++)
@@ -87,13 +87,13 @@ async function newRole(user, roleChannel){
                                     if(error)
                                         return mess;
 
-                                    let collector = mess.createReactionCollector(filter, { time: 0, dispose: true ***REMOVED***);
+                                    let collector = mess.createReactionCollector({filter: filter, time: 0, dispose: true***REMOVED***);
                                     createRoleCollector(collector, emotes, roles, role.unique);
 
                                     return mess;
                                 ***REMOVED***).then(embedMessage => {
                                     if(error){
-                                        embedMessage.delete();
+                                        embedMessage.delete().catch(()=>{***REMOVED***);
                                         return;
                                     ***REMOVED***
 
@@ -135,7 +135,7 @@ async function setupRoleMessages(client){
             if(client.channels.cache.get(roles[guild][i].channelid)){
                 client.channels.cache.get(roles[guild][i].channelid).messages.fetch(roles[guild][i].messageid)
                     .then(msg => {
-                        let collector = msg.createReactionCollector(filter, { time: 0, dispose: true ***REMOVED***);
+                        let collector = msg.createReactionCollector({filter: filter, time: 0, dispose: true***REMOVED***);
                         createRoleCollector(collector, roles[guild][i].emotes, roles[guild][i].roles, roles[guild][i].unique);
 
                         collector.on("collect", collected => {
@@ -160,6 +160,7 @@ function createRoleCollector(collector, emotes, roles, unique){
     collector.on("collect", (collected, user) => {
         for(let i = 0; i < emotes.length; i++){
             let thisId = emotes[i].match(/:.*:(\d+)>/);
+
             if(thisId){
                 thisId = thisId[1***REMOVED***
             ***REMOVED*** else {
@@ -190,6 +191,7 @@ function createRoleCollector(collector, emotes, roles, unique){
     collector.on("remove", (collected, user) => {
         for(let i = 0; i < emotes.length; i++){
             let thisId = emotes[i].match(/:.*:(\d+)>/);
+
             if(thisId){
                 thisId = thisId[1***REMOVED***
             ***REMOVED*** else {
@@ -227,12 +229,13 @@ function createRoleCollector(collector, emotes, roles, unique){
 
 function setDefaultRole(guildSetting, role, message){
     if(role.length && message.guild.roles.cache.find(guildRole => guildRole.name.toLowerCase() === role.toLowerCase()) == undefined){
-        message.channel.send("```Role not found```"); //.then(mess => mess.delete({timeout: settings.autoDelDelay***REMOVED***));
+        message.channel.send("```Role not found```");
         return;
     ***REMOVED***
     
     guildSetting.defaultrole = role;
     mongo.updateSchema({defaultrole: role***REMOVED***, "settings", message.guild.id);
+
     if(role.length == 0){
         message.channel.send("```Default role cancelled```");
     ***REMOVED*** else {
