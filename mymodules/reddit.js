@@ -3,6 +3,7 @@ const discord = require("discord.js");
 const mongo = require("./mymongo.js");
 const help = require("./help.js");
 
+const ignoredTitleKeyswords = /MEMES MEME QUIZ/;
 const ignorePinned = true;
 
 // Url examples
@@ -44,11 +45,14 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                 ***REMOVED***
 
                 try{
-                    let title = data.children[i].data.title;
-                    if(same || data.children[i].data.ups < minUps || data.children[i].data.thumbnail == "self"){    //self = nopic
+                    if(same || data.children[i].data.ups < minUps || data.children[i].data.thumbnail == "self"){    // self = nopic
                         same = false;
                         continue;
                     ***REMOVED***
+                    
+                    let title = data.children[i].data.title;
+                    if(title.match(ignoredTitleKeyswords))
+                        continue;
 
                     let url = "https://www.reddit.com" + data.children[i].data.permalink;
                     let img;
@@ -88,8 +92,7 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
 
                     if(img == "nsfw")
                         continue;
-                    
-                   
+
                     let desc = data.children[i].data.subreddit_name_prefixed;   //data.children[i].data.selftext;
                     let ups = data.children[i].data.ups;
                     let time = new Date(data.children[i].data.created * 1000);

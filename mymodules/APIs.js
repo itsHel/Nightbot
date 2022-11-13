@@ -55,10 +55,10 @@ function yandexTranslate(message, args){
         ***REMOVED***
 
         message.channel.send("```" + translated + "```").then(mess => {
-            if(mess.channel.type != "dm")
-                mess.delete({timeout: autoDelDelay***REMOVED***)
-    ***REMOVED***
-        message.delete({timeout: autoDelDelay***REMOVED***).catch(err => {***REMOVED***);
+            if(mess.channel.type != "DM")
+                setTimeout(() => mess.delete().catch(()=>{***REMOVED***), autoDelDelay);
+        ***REMOVED***
+        setTimeout(() => message.delete().catch(()=>{***REMOVED***), autoDelDelay);
 ***REMOVED***
 ***REMOVED***
 
@@ -96,18 +96,20 @@ function googleTranslate(message, args){
         ***REMOVED***
 
         message.channel.send("```" + translated + "```").then(mess => {
-            if(mess.channel.type != "dm")
-                mess.delete({timeout: autoDelDelay***REMOVED***)
+            if(mess.channel.type != "DM")
+                setTimeout(() => mess.delete().catch(()=>{***REMOVED***), autoDelDelay);
     ***REMOVED***
-        message.delete({timeout: autoDelDelay***REMOVED***).catch(err => {console.log(err)***REMOVED***);
+        setTimeout(() => message.delete().catch(()=>{***REMOVED***), autoDelDelay);
 ***REMOVED***
 ***REMOVED***
 
 function sendLangs(message){
         let langsS = JSON.stringify(langs);
         langsS = langsS.replace(/,/g, ",\n").replace(/:/g, ": ").replace("{", "").replace("***REMOVED***", "");
+
         message.author.send(langsS);
-        message.delete({timeout: settings.autoDelDelay***REMOVED***).catch(err => {console.log(err)***REMOVED***);
+        setTimeout(() => message.delete().catch(()=>{***REMOVED***), settings.autoDelDelay);
+
         return;
 ***REMOVED***
 
@@ -134,7 +136,7 @@ function imdb(cmd, args, channel){
             return console.error(err);
 
         if(data.Response == "False"){
-            channel.send("```" + data.Error + "```").then(sent => sent.delete({timeout: autoDelDelay***REMOVED***));
+            channel.send("```" + data.Error + "```").then(mess => mess.delete({timeout: autoDelDelay***REMOVED***));
             return
         ***REMOVED***
 
@@ -191,7 +193,7 @@ function imdbSearch(args, channel){
             return console.error(err);
 
         if(data.Response == "False"){
-            channel.send("```" + data.Error + "```").then(sent => sent.delete({timeout: autoDelDelay***REMOVED***));
+            channel.send("```" + data.Error + "```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), autoDelDelay));
             return
         ***REMOVED***
 
@@ -223,7 +225,7 @@ function words(type, count, args, channel){
             return console.error(err);
 
         if(data.length == 0){
-            channel.send("```not found```").then(sent => sent.delete({timeout: autoDelDelay***REMOVED***));
+            channel.send("```not found```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), autoDelDelay));
             return
         ***REMOVED***
 
@@ -241,14 +243,14 @@ const owlClient = owlbot(keys.owlKey);
 function vocabulary(args, channel, author){
     owlClient.define(args).then(function(result){
         let definition = result.definitions[0].definition;
-        channel.send("```" + definition + "```").then(sent => {
+        channel.send("```" + definition + "```").then(mess => {
             if(result.definitions.length == 1)
                 return;
 
-            sent.react('➡');
+            mess.react('➡');
             
-            let message = new defMessage(sent.id, 0, result.definitions);
-			let collector = sent.createReactionCollector({filter: settings.filter, time: 100000 ***REMOVED***);
+            let message = new defMessage(mess.id, 0, result.definitions);
+			let collector = mess.createReactionCollector({filter: settings.filter, time: 100000 ***REMOVED***);
 
             collector.on('collect', r => {
                 if(r.emoji.name == '⬅'){
@@ -261,13 +263,13 @@ function vocabulary(args, channel, author){
                     mess.edit("```" + message.defs[message.pos].definition + "```");
             ***REMOVED***
                 
-                sent.reactions.removeAll().then(() => {
+                mess.reactions.removeAll().then(() => {
                     if(message.pos > 0){
-                        sent.react('⬅').then(() => {
+                        mess.react('⬅').then(() => {
                             if(message.pos < result.definitions.length - 1)
-                                sent.react('➡')***REMOVED***)
+                                mess.react('➡')***REMOVED***)
                     ***REMOVED*** else {
-                        sent.react('➡');
+                        mess.react('➡');
                     ***REMOVED***
             ***REMOVED***
         ***REMOVED***
@@ -277,7 +279,7 @@ function vocabulary(args, channel, author){
     ***REMOVED***
     ***REMOVED***).catch(err => {
         console.log(err);
-        channel.send("```not found```").then(sent => sent.delete({timeout: autoDelDelay***REMOVED***));
+        channel.send("```not found```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), autoDelDelay));
 ***REMOVED***
 ***REMOVED***
 
