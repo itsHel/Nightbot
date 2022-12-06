@@ -76,8 +76,10 @@ client.on("messageCreate", async message => {
         // guildId = 0;
     ***REMOVED***
 
-    mine.reactions(message);
-    mine.emotesCount(message, guildSettings[guildId].emoteshistory);                // Modifies guildSettings[guildId].emoteshistory array
+	if(message.channel.type != "DM"){
+		mine.reactions(message);
+		mine.emotesCount(message, guildSettings[guildId].emoteshistory);                // Modifies guildSettings[guildId].emoteshistory array
+	***REMOVED***
 
     try{
         if(message.type == "PINS_ADD" && guildSettings[guildId].pinning && channels[guildId]?.pinroom){
@@ -290,7 +292,7 @@ client.on("messageCreate", async message => {
             case "rdr":                     // Refreshes reddits
                 reddit.redditAll(client.channels.cache.get(channels[guildId]?.reddittheatre), client.channels.cache.get(channels[guildId]?.reddittext), client.channels.cache.get(channels[guildId]?.redditnsfw), reddits[guildId], guildId);
                 if(message.channel.type != "DM"){
-                    message.delete().catch(()=>{***REMOVED***);
+					setTimeout(() => message.delete().catch(()=>{***REMOVED***), 500);
                 ***REMOVED***
                 break;
             case "random":
@@ -352,14 +354,14 @@ client.on("messageCreate", async message => {
 					
                     let channel = message.guild.channels.cache.find(channel => channel.id == args.match(/\d+/));
                     if(channel == undefined){
-                        message.channel.send("```Room not found```").then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
+                        message.channel.send("```Room not found```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
                         return;
                     ***REMOVED***
                     
                     guildSettings[guildId].nopinsrooms.push(channel.id);
                     mongo.updateSchema({nopinsrooms: guildSettings[guildId].nopinsrooms***REMOVED***, "settings", guildId);
 
-                    message.channel.send("```Added```").then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
+                    message.channel.send("```Added```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
                 ***REMOVED***
                 break;
             case "nopinslist": case "nopinsrooms":
@@ -497,7 +499,7 @@ client.on("messageCreate", async message => {
 						let newRole = args;
 						let modRole = message.guild.roles.cache.find(role => role.name.toLowerCase() === newRole.toLowerCase());
 						if(!modRole){
-							message.channel.send("```Role '" + newRole + "' not found```").then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
+							message.channel.send("```Role '" + newRole + "' not found```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
 							break;
 						***REMOVED***
 
@@ -515,7 +517,7 @@ client.on("messageCreate", async message => {
 						let newRole = args;
 						let modRole = message.guild.roles.cache.find(role => role.name.toLowerCase() === newRole.toLowerCase());
 						if(!modRole){
-							message.channel.send("```Role '" + newRole + "' not found```").then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
+							message.channel.send("```Role '" + newRole + "' not found```").then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
 							break;
 						***REMOVED***
 
@@ -568,7 +570,7 @@ client.on("messageCreate", async message => {
                 console.log(message.member);
                 break;
             default:
-                message.channel.send(wrongCommandMessage).then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
+                message.channel.send(wrongCommandMessage).then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
                 break;
         ***REMOVED***
     ***REMOVED*** catch(err){commandError(message, err)***REMOVED***
@@ -760,7 +762,7 @@ function listenerError(err){
 ***REMOVED***
 
 function commandError(message, err){
-    message.channel.send(wrongCommandMessage).then(mess => setTimeout(() => mess.delete(), settings.autoDelDelay));
+    message.channel.send(wrongCommandMessage).then(mess => setTimeout(() => mess.delete().catch(()=>{***REMOVED***), settings.autoDelDelay));
 	
     console.log("****************** On message error ******************");
     console.log(err);
