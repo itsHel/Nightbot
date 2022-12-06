@@ -1,6 +1,6 @@
 const discord = require("discord.js");
-const settings = require("../settings.js");
 const fs = require("fs");
+const settings = require("../settings.js");
 const mongo = require("./mymongo.js");
 const help = require("./help.js");
 
@@ -466,7 +466,6 @@ function emotesShow(stats, message, client){
     ***REMOVED***
 ***REMOVED***
 
-// Reactions
 function reactions(message){
     let text = message.content.toLowerCase();
     if(message.author.bot || text == "" || text[0].match(/>|!|_|-/))
@@ -504,7 +503,7 @@ function reactions(message){
 ***REMOVED***
 
 function emoji(id, message){
-    return message.guild.emojis.resolveID(id);
+    return message.guild.emojis.resolveId(id);
 ***REMOVED***
 
 function isAdmin(message, modRoles = [], response = true){
