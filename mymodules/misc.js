@@ -99,12 +99,13 @@ function polls(pollChannel, text, author){
     let footer = (text.match(";")) ? "Suggested by: " + author.displayName : "";
     let pollText = text.replace(";", "") + "\n";
     pollText = pollText.charAt(0).toUpperCase() + pollText.slice(1);
+	
     let embed = new discord.MessageEmbed().setDescription(pollText).setFooter({text: footer***REMOVED***);
 
-    pollChannel.send({embeds: [embed]***REMOVED***).then(m => {
-        m.react(emojisClassic.upArrowBlue);
-        m.react(emojisClassic.downArrowBlue);
-        m.react(emoji(emojis.faceHoof, m));
+    pollChannel.send({embeds: [embed]***REMOVED***).then(message => {
+        message.react(emojisClassic.upArrowBlue);
+        message.react(emojisClassic.downArrowBlue);
+        message.react(emoji(emojis.faceHoof, message));
 ***REMOVED***
 ***REMOVED***
 
