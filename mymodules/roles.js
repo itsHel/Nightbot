@@ -228,18 +228,23 @@ function createRoleCollector(collector, emotes, roles, unique){
 ***REMOVED***
 
 function setDefaultRole(guildSetting, role, message){
-    if(role.length && message.guild.roles.cache.find(guildRole => guildRole.name.toLowerCase() === role.toLowerCase()) == undefined){
+    let roleName = role;
+    if(message.mentions.roles.first()){
+        roleName = message.mentions.roles.first().name;
+    ***REMOVED***
+
+    if(role.length && message.guild.roles.cache.find(guildRole => guildRole.name.toLowerCase() === roleName.toLowerCase()) == undefined){
         message.channel.send("```Role not found```");
         return;
     ***REMOVED***
     
-    guildSetting.defaultrole = role;
-    mongo.updateSchema({defaultrole: role***REMOVED***, "settings", message.guild.id);
+    guildSetting.defaultrole = roleName;
+    mongo.updateSchema({defaultrole: roleName***REMOVED***, "settings", message.guild.id);
 
-    if(role.length == 0){
+    if(roleName.length == 0){
         message.channel.send("```Default role cancelled```");
     ***REMOVED*** else {
-        message.channel.send("```Default role set to " + role + "```");
+        message.channel.send("```Default role set to " + roleName + "```");
     ***REMOVED***
 ***REMOVED***
 
