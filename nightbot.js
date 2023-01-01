@@ -668,7 +668,10 @@ client.on("guildMemberRemove", (member) => {
 client.on("guildMemberAdd", (member) => {
     try{
         let role = member.guild.roles.cache.find(role => role.name.toLowerCase() === guildSettings[member.guild.id].defaultrole.toLowerCase());
-        member.roles.add(role);
+        
+        if(role){
+            member.roles.add(role);
+        ***REMOVED***
     ***REMOVED*** catch(err){ console.log(err); mine.log("Add role error:\n" + err.message); ***REMOVED***
 ***REMOVED***);
 
