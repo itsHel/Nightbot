@@ -78,7 +78,7 @@ client.on("messageCreate", async message => {
 
 	if(message.channel.type != "DM"){
 		mine.reactions(message);
-		mine.emotesCount(message, guildSettings[guildId].emoteshistory);                // Modifies guildSettings[guildId].emoteshistory array
+		mine.emotesCount(message, guildSettings[guildId]?.emoteshistory);                // Modifies guildSettings[guildId].emoteshistory array
 	***REMOVED***
 
     try{
@@ -580,7 +580,7 @@ client.on("messageDelete", async message => {
     // Deleted messages saving
     try{
         console.log(message.channel.type);
-        if(message.channel.type == "DM" || message.author == client.user || message.author.bot || !channels[message.guild.id].delroom || message.content.match(/^n$|^\.|^_/i))
+        if(message.channel.type == "DM" || message.author == client.user || message.author.bot || !channels[message.guild.id]?.delroom || message.content.match(/^n$|^\.|^_/i))
             return;
 
         const fetchedLog = await message.guild.fetchAuditLogs({
