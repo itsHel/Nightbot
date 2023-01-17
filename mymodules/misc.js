@@ -260,13 +260,17 @@ function russianRoulette(args, message, modroles = []){
                                 let embed = new discord.MessageEmbed().setColor("#cc0000").setDescription(player.user.toString() + " falls down dead...");
                                 message.channel.send({embeds: [embed]***REMOVED***);
 
-                                switch(type){
-                                    case "kick":
-                                        player.kick("Better luck next life");
-                                        break; 
-                                    case "ban":
-                                        player.ban("Better luck next life");
-                                        break; 
+                                try{
+                                    switch(type){
+                                        case "kick":
+                                            player.kick({reason: "Better luck next life"***REMOVED***);
+                                            break; 
+                                        case "ban":
+                                            player.ban({reason: "Better luck next life"***REMOVED***);
+                                            break; 
+                                    ***REMOVED***
+                                ***REMOVED*** catch(err){
+                                    console.log(err);
                                 ***REMOVED***
                             ***REMOVED***, nextRollDelay); 
 
