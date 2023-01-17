@@ -602,7 +602,7 @@ client.on("messageDelete", async message => {
         let pfp = message.author.avatarURL();
         let nick = message.author.username;
         let color = message.author.displayHexColor;
-        let files = message.attachments.array();
+        let files = [...message.attachments.values()***REMOVED***
         let img = files.length ? files[0].url : "";
         let hasImg = "";
 	    
