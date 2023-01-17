@@ -27,6 +27,7 @@ function help(channel){
         .addField(settings.prefix + "gif(a) tags", "Gif, a means anime, example: '*" + settings.prefix + "gifa kiss winter*'")
         .addField(settings.prefix + "poll text", "Creates poll in one of rooms, annonymous by default (can be used in dm), add ';' sign to show your nickname with poll")
         .addField(settings.prefix + "cah", "Shows guide to Cards Against Humanity\n" + settings.prefix + "cah set/settings shows avaible settings")
+        .addField(settings.prefix + "rr", "Play Russian Roulette with other user(s), " + settings.prefix + "rr shows more\n\nexample: '*" + settings.prefix + "rr @user*'")
         .addField(settings.prefix + "butt, " + settings.prefix + "boobs", ":flushed: pic")
         .addField(settings.prefix + "p(f) tags", "Nsfw pic, f means gif, example: '*" + settings.prefix + "pf double_penetration*'")
         .addField(settings.prefix + "hentai *tag*", "Hentai pic, '" + settings.prefix + "hentai tags' shows avaible tags, example: '*" + settings.prefix + "hentai ass*'\n**Avaible tags:** ass, bdsm, cum, femdom, doujin, maid, orgy, panties, wallpaper, pussy, succubus")

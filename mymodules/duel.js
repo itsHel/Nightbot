@@ -20,7 +20,7 @@ async function duel(args, guild, author, channel, client){
     //second user
     await client.users.fetch(opponent.replace("<@","").replace(">","").replace("!", "")).then(async (user) => {
         opponentName = user.username;
-        await user.send("**" + author.username + "**" + " has started rock-papers-scissors duel with you, you have 60 seconds to answer, play with:\r\nrock (r)\r\npaper (p)\r\nscissors (s), write your answer and press enter").then(() => {
+        await user.send("**" + author.username + "**" + " has started rock-papers-scissors duel with you, you have 60 seconds to answer, play with:\r\nrock (r)\r\npaper (p)\r\nscissors (s)\r\n\r\nwrite your answer and press enter").then(() => {
             user.createDM().then(chan => {
                 chan
                 .awaitMessages({filter: filter, max: 1, time: 60000***REMOVED***)
@@ -64,7 +64,7 @@ async function duel(args, guild, author, channel, client){
         return;
         
     //author
-    author.send("you started rock-papers-scissors duel with **" + opponentName + "**, you have 60 seconds to answer, play with:\r\nrock (r)\r\npaper (p)\r\nscissors (s), write your answer and press enter").then(() => {
+    author.send("you started rock-papers-scissors duel with **" + opponentName + "**, you have 60 seconds to answer, play with:\r\nrock (r)\r\npaper (p)\r\nscissors (s)\r\n\r\nwrite your answer and press enter").then(() => {
         author.createDM().then(chan => {
             chan
             .awaitMessages({filter: filter, max: 1, time: 60000***REMOVED***)
