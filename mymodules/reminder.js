@@ -67,26 +67,26 @@ function remind(message){
 ***REMOVED***
 
 async function loadReminders(client){
-    let rows = await mongo.getReminders();
+    let rows = await mongo.getReminders();console.log(rows);
     rows.forEach(row => {
-        for(let i = 0; i < rows.length -1; i++){
-            let text = row.message;
-            let member = row.userid;
-            let dateNow = new Date();
-            let remindDate = new Date(row.time);
-            let timer = remindDate - dateNow;
+        let text = row.message;
+        let member = row.userid;
+        let dateNow = new Date();
+        let remindDate = new Date(row.time);
+        let timer = remindDate - dateNow;
 
-            if(timer < 0)
-                continue;
-
-            setTimeout(function(){
-                client.users.fetch(member).then((user) => {
-                    user.send(text);
-                ***REMOVED***).catch((err) => console.log(err))
-            ***REMOVED***, timer);
-
-            console.log("Reminder in " + Math.floor(timer/1000) + " s");
+        if(timer < 0){
+            user.send(text);
+            return;
         ***REMOVED***
+
+        setTimeout(function(){
+            client.users.fetch(member).then((user) => {
+                user.send(text);
+            ***REMOVED***).catch((err) => console.log(err))
+        ***REMOVED***, timer);
+
+        console.log("Reminder in " + Math.floor(timer/1000) + " s");
 ***REMOVED***
 ***REMOVED***
 
