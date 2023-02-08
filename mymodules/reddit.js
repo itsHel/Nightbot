@@ -5,6 +5,13 @@ const help = require("./help.js");
 
 const ignoredTitleKeyswords = /MEMES MEME QUIZ/;
 const ignorePinned = true;
+const baseUrl = "https://www.reddit.com/r/";
+
+const roomTypes = [
+    {name: "reddittheatre", type: "img"***REMOVED***,
+    {name: "reddittext", type: "text"***REMOVED***,
+    {name: "redditnsfw", type: "nsfw"***REMOVED***
+***REMOVED***
 
 // Url examples
 // https://www.reddit.com/r/memes/top.json?t=week&limit=100
@@ -15,16 +22,16 @@ const ignorePinned = true;
 
 async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignoreVidsandGifs = true){
     try{
-        let url = "https://www.reddit.com/r/" + name + "/hot.json";
+        let url = baseUrl + name + "/hot.json";
         let history = await mongo.getRedditHistory(guideid, name, type) || [***REMOVED***
 
         request({
             method: "GET", json: true, url: url
         ***REMOVED***, (err, resp, data) => {
-            if (err)
+            if(err)
                 return console.error(err);
-            data = data.data;
 
+            data = data.data;
             if(!data)
                 return;
 
@@ -65,12 +72,11 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
 
                         img = data.children[i].data.thumbnail;
                         fileType = "video";
-                        console.log("video");
+                        // console.log("video");
                     ***REMOVED*** else if(data.children[i].data.gallery_data){
                         // Gallery
                         img = data.children[i].data.thumbnail;
                         fileType = "gallery";
-                        console.log("gallery");
                     ***REMOVED*** else {
                         // Img/Gif
                         img = data.children[i].data.url.replace(/amp;/g, "");
@@ -130,19 +136,23 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
 
 async function textDL(name, channel, minUps = 250, guideid){       
     try{
-        let url = "https://www.reddit.com/r/" + name + "/hot.json";
+        let url = baseUrl + name + "/hot.json";
         let history = await mongo.getRedditHistory(guideid, name, "text") || [***REMOVED***
-        console.log(history);
+        // console.log(history);
 
         request({
             method: "GET", json: true, url: url
         ***REMOVED***, (err, resp, data) => {
-            if (err)
+            if(err)
                 return console.error(err);
                 
             data = data.data;
+            if(!data)
+                return;
+
             let same = false;
             let newHistory = [***REMOVED***
+
             for(let i = 0; i < data.children.length; i++){
                 if(ignorePinned && data.children[i].data.pinned){
                     continue;
@@ -212,83 +222,51 @@ async function redditAll(redditTheatreChannel, redditTextChannel, redditNsfwChan
 ***REMOVED***
 
 function getRooms(channels, reddits, channel, client){
-    if((!channels?.reddittheatre && !channels?.reddittext && !channels?.redditnsfw) || !reddits){
+    if(channel.type == "DM")
+        return;
+
+    if(!reddits?.length){
         channel.send("```No reddits set```");
         return;
     ***REMOVED***
 
-    if(channels.reddittheatre){
-        if(client.channels.cache.get(channels.reddittheatre)){
-            let imgChannel = client.channels.cache.get(channels.reddittheatre).toString();
-
-            let redditImg = reddits.filter(reddit => reddit.type == "img");
-            if(!redditImg.length)
-                return;
-
-            let reddit = { name: "Reddit", value: "", inline: true ***REMOVED***
-            let room = { name: "Room", value: "", inline: true ***REMOVED***
-            let upvotes = { name: "Min upvotes", value: "", inline: true ***REMOVED***
-
-            for(let i = 0; i < redditImg.length; i++){
-                reddit.value += redditImg[i].reddit + "\n";
-                room.value += imgChannel + "\n";
-                upvotes.value += redditImg[i].minupvotes + "\n";
-            ***REMOVED***
-
-            let imgEmbed = new discord.MessageEmbed({title:"Image Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter({text: "\u2800".repeat(50)***REMOVED***);
-            channel.send({embeds: [imgEmbed]***REMOVED***);
-        ***REMOVED*** else {
-            channel.send("```Theatre room does not exist```");
-        ***REMOVED***
-    ***REMOVED***
+    for(let i = 0; i < roomTypes.length; i++){
+        if(channels[roomTypes[i].name]){
+            if(client.channels.cache.get(channels[roomTypes[i].name])){
+                let channelName = client.channels.cache.get(channels[roomTypes[i].name]).toString();
     
-    if(channels.reddittext){
-        if(client.channels.cache.get(channels.reddittext)){
-            let textChannel = client.channels.cache.get(channels.reddittext).toString();
-
-            let reddittext = reddits.filter(reddit => reddit.type == "text");
-            if(!reddittext.length)
-                return;
-
-            let reddit = { name: "Reddit", value: "", inline: true ***REMOVED***
-            let room = { name: "Room", value: "", inline: true ***REMOVED***
-            let upvotes = { name: "Min upvotes", value: "", inline: true ***REMOVED***
-
-            for(let i = 0; i < reddittext.length; i++){
-                reddit.value += reddittext[i].reddit + "\n";
-                room.value += textChannel + "\n";
-                upvotes.value += reddittext[i].minupvotes + "\n";
+                let currentReddits = reddits.filter(reddit => reddit.type == roomTypes[i].type);
+                if(!currentReddits.length)
+                    return;
+    
+                let reddit = { name: "Reddit", value: "", inline: true ***REMOVED***
+                let room = { name: "Room", value: "", inline: true ***REMOVED***
+                let upvotes = { name: "Min upvotes", value: "", inline: true ***REMOVED***
+    
+                for(let i = 0; i < currentReddits.length; i++){
+                    reddit.value += currentReddits[i].reddit + "\n";
+                    room.value += channelName + "\n";
+                    upvotes.value += currentReddits[i].minupvotes + "\n";
+                ***REMOVED***
+    
+                let embed = new discord.MessageEmbed({title: capitalize(roomTypes[i].type) + " Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter({text: "\u2800".repeat(50)***REMOVED***);
+                channel.send({embeds: [embed]***REMOVED***);
+            ***REMOVED*** else {
+                channel.send("```" + capitalize(roomTypes[i].type) + " room does not exist```");
             ***REMOVED***
-
-            let textEmbed = new discord.MessageEmbed({title:"Text Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter({text: "\u2800".repeat(50)***REMOVED***);
-            channel.send({embeds: [textEmbed]***REMOVED***);
-        ***REMOVED*** else {
-            channel.send("```Text room does not exist```");
         ***REMOVED***
     ***REMOVED***
 
-    if(channels.redditnsfw){
-        if(client.channels.cache.get(channels.redditnsfw)){
-            let nsfwChannel = client.channels.cache.get(channels.redditnsfw).toString();
+    // Check if if each reddit has channel
+    for(let i = 0; i < reddits.length; i++){
+        for(let j = 0; j < roomTypes.length; j++){
+            if(roomTypes[j].type == reddits[i].type){
+                if(!channels[roomTypes[j].name]){
+                    channel.send("```Reddit '" + reddits[i].reddit + "' cannot work without '" + roomTypes[j].name + "' room being set```");
+                ***REMOVED***
 
-            let redditNsfw = reddits.filter(reddit => reddit.type == "nsfw");
-            if(!redditNsfw.length)
-                return;
-
-            let reddit = { name: "Reddit", value: "", inline: true ***REMOVED***
-            let room = { name: "Room", value: "", inline: true ***REMOVED***
-            let upvotes = { name: "Min upvotes", value: "", inline: true ***REMOVED***
-
-            for(let i = 0; i < redditNsfw.length; i++){
-                reddit.value += redditNsfw[i].reddit + "\n";
-                room.value += nsfwChannel + "\n";
-                upvotes.value += redditNsfw[i].minupvotes + "\n";
+                break;
             ***REMOVED***
-
-            let nsfwEmbed = new discord.MessageEmbed({title:"Nsfw Reddits", fields: [reddit, room, upvotes]***REMOVED***).setFooter({text: "\u2800".repeat(50)***REMOVED***);
-            channel.send({embeds: [nsfwEmbed]***REMOVED***);
-        ***REMOVED*** else {
-            channel.send("```Nsfw room does not exist```");
         ***REMOVED***
     ***REMOVED***
 ***REMOVED***
@@ -345,6 +323,10 @@ function removeRedditFromGuild(reddits, args, message){
     ***REMOVED***
 
     message.channel.send("```Reddit " + args[0] + " not found```");
+***REMOVED***
+
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 ***REMOVED***
 
 ***REMOVED***

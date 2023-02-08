@@ -8,7 +8,7 @@ function help(channel){
         .addField(settings.prefix + "cn", "Chuck Norris joke")
         .addField(settings.prefix + "s", "Simpsons quote")
         .addField(settings.prefix + "glados", "GLaDOS congratulations")
-        .addField(settings.prefix + "remind *message* ;time", "Bot will DM you your message after time passes, m - mins, h - hours, d - days, example: '*" + settings.prefix + "remind regret life choices ;1h 10m*'")
+        .addField(settings.prefix + "remind *message* ;time", "Bot will DM you your message after time passes, m - mins, h - hours, d - days OR 16:16 format\n\nexample: '*" + settings.prefix + "remind regret life choices ;1h 10m*'")
         .addField(settings.prefix + "duel user", "Will start rock-paper-scissors with chosen user")
         .addField(settings.prefix + "random *X*", "Picks random *X*, default is 2")
         .addField(settings.prefix + "toss", "Head or Tails")
@@ -76,7 +76,7 @@ function commandHelp(cmd, channel){
             embed = new discord.MessageEmbed()
                 .setTitle("Pins")
                 .addField("\u2800", "Automatically redirects pins to designated room")
-                .addField("You must setup room first\n\u2800\n", "Example:\n**" + settings.prefix + "addroom pinRoom *#mypins***\n")
+                .addField("You must setup room first\n\u2800\n", "Example: **" + settings.prefix + "addroom pinRoom *#mypins***\n\n")
                 .addField(settings.prefix + "nopins", "Adds room to no pins list\nExample: **" + settings.prefix + "nopins *#mainroom***")
                 .addField(settings.prefix + "nopinslist", "Lists all no-pins rooms")
                 .addField(settings.prefix + "pinstoggle", "Deactivates/activates pins")
@@ -87,7 +87,7 @@ function commandHelp(cmd, channel){
             embed = new discord.MessageEmbed()
                 .setTitle("Reminder")
                 .setColor("#d652a6")
-                .setDescription("Sends you message after timeout\n\nExample:\n**" + settings.prefix + "remind drink water ;1h 10m**\n\nm - mins, h - hours, d - days\nhours are default unit")
+                .setDescription("Sends you message after timeout\n\nExample: **" + settings.prefix + "remind drink water ;1h 10m**\nExample: **" + settings.prefix + "remind drink water ;16:16**\n\nm - mins, h - hours, d - days\nhours are default unit")
             channel.send({embeds: [embed]***REMOVED***);
             break;
 		case "kickrole":

@@ -412,7 +412,6 @@ client.on("messageCreate", async message => {
                 break;
             case "reddits": case "redditlist": case "redditslist":
                 if(mine.isAdmin(message, guildSettings[guildId].modroles)){
-                    console.log(reddits);
                     reddit.getRooms(channels[guildId], reddits[guildId], message.channel, client);
                 ***REMOVED***
                 break;
@@ -660,7 +659,7 @@ client.on("guildMemberRemove", (member) => {
                 member.guild.unban(member.id)
                     .then(user => console.log(`Unbanned "${user.username***REMOVED***" from ${guild***REMOVED***`))
                     .catch(err => { console.log(err); mine.log("Ban error:\n" + err.message); ***REMOVED***);
-            ***REMOVED***, guildSettings[member.guild.id].leavebandays * 86400 * 1000);
+            ***REMOVED***, guildSettings[member.guild.id].leavebandays * 86400_000);
         ***REMOVED***
     ***REMOVED*** catch(err){listenerError(err)***REMOVED***
 ***REMOVED***);
@@ -701,7 +700,7 @@ function setIntervalsAll(guilds){
         for(let i = 0; i < guilds.length; i++){
             mongo.updateSchema({emoteshistory: JSON.stringify(guildSettings[guilds[i]].emoteshistory)***REMOVED***, "settings", guilds[i]);
         ***REMOVED***
-    ***REMOVED***, 3600 *1000); // 1 hour  
+    ***REMOVED***, 3600_000); // 1 hour  
 
     // Refresh reddits every 6 hours
     setInterval(function(){
@@ -711,7 +710,7 @@ function setIntervalsAll(guilds){
                     reddit.redditAll(client.channels.cache.get(channels[guilds[i]].reddittheatre), client.channels.cache.get(channels[guilds[i]].reddittext), client.channels.cache.get(channels[guilds[i]].redditnsfw), reddits[guilds[i]], guilds[i]);
                 ***REMOVED*** catch(err){console.log(err)***REMOVED***
             ***REMOVED***
-    ***REMOVED***, 6 * 3600 *1000); // 6 hours
+    ***REMOVED***, 6 * 3600_000); // 6 hours
 
     // Every 20 - 28 hours send quote to main channel
     (function autoSend(){
@@ -721,7 +720,7 @@ function setIntervalsAll(guilds){
             ***REMOVED***
 
             autoSend();
-        ***REMOVED***, (Math.floor(Math.random() * 9) + 20) * 3600000);       
+        ***REMOVED***, (Math.floor(Math.random() * 9) + 20) * 3600_000);       
     ***REMOVED***());
 ***REMOVED***
 
@@ -749,10 +748,10 @@ async function loadBans(){
                     .catch(err => { console.log(err); mine.log("Ban error:\n" + err.message); ***REMOVED***);
             ***REMOVED***, timer);
 		
-            console.log("unban in " + timer/1000 + " s");
+            console.log("Unban in " + timer/1000 + " s");
         ***REMOVED***
 	    
-        mongo.updateSchema({bans: newBans***REMOVED***,"settings", prop, true);
+        mongo.updateSchema({bans: newBans***REMOVED***, "settings", prop, true);
     ***REMOVED***
 ***REMOVED***
 

@@ -70,6 +70,7 @@ async function getRooms(){
                     ***REMOVED***
                 ***REMOVED***
         ***REMOVED***
+
             return rooms;
     ***REMOVED***
 ***REMOVED***
@@ -83,6 +84,7 @@ async function getReddits(){
             res.forEach(row => {
                 if(!reddits[row.guildid])
                     reddits[row.guildid] = [***REMOVED***
+
                 let newReddit = {***REMOVED***
                 newReddit["reddit"] = row.reddit;
                 newReddit["minupvotes"] = row.minupvotes;
@@ -124,9 +126,9 @@ async function getSettings(guilds){
     return await newSchema.find({guildid: {$in: guilds***REMOVED******REMOVED***)
         .then((res) => {
             let settings = {***REMOVED***
-            let i = 0;
             res = res.sort((a, b) => a.guildid - b.guildid);
-            guilds.sort((a, b) => a - b).forEach(row => {
+
+            guilds.sort((a, b) => a - b).forEach((row, i) => {
                 if(!res[i] || res[i].guildid != row){
                     settings[row] = {
                         leavebandays: 0,
@@ -148,9 +150,11 @@ async function getSettings(guilds){
                         leaveQuoteLastIndex: res[i].leaveQuoteLastIndex || 0
                     ***REMOVED***
                 ***REMOVED***
+
                 settings[row].emoteshistory = JSON.parse(settings[row].emoteshistory);
                 settings[row].pinning = true;
         ***REMOVED***
+
             return settings;
     ***REMOVED***
 ***REMOVED***
@@ -173,6 +177,7 @@ async function getRoleMessages(){
                 ***REMOVED***
                 roles[row.guildid].push(newMessage);
         ***REMOVED***
+
             return roles;
     ***REMOVED***
 ***REMOVED***
@@ -187,6 +192,7 @@ async function saveRoleMessage(description, messageid, channelid, guildid, uniqu
         emotes: [],
         unique: unique
     ***REMOVED***
+
     let rows = description.split("\n");
     rows.forEach(row => {
         let temp = row.split("-");
@@ -218,6 +224,7 @@ async function getBans(){
             res.forEach(row => {
                     bans[row.guildid] = row.bans;
         ***REMOVED***
+
             return bans;
     ***REMOVED***
 ***REMOVED***
@@ -386,14 +393,14 @@ const reminderSchema = new mongoose.Schema({
 
     // const Blog = mongoose.model("Blog", blogSchema);
 
-    // Blog.findOneAndUpdate({title:"MYTITTLE-----------"***REMOVED***, {title22: "UPDATEEEEEEEED"***REMOVED***, {upsert: true***REMOVED***)
+    // Blog.findOneAndUpdate({title:"-----title-----"***REMOVED***, {title22: "UPDATEEEEED"***REMOVED***, {upsert: true***REMOVED***)
     //     .then(result => console.log(result))
     //     .catch(err => console.log(err));
 
 
-    // Blog.update({title:"MYTITTLE-----------"***REMOVED***, {title22: "U"***REMOVED***)
+    // Blog.update({title:"-----title-----"***REMOVED***, {title22: "U"***REMOVED***)
     //     .then(result => console.log(result))
     //     .catch(err => console.log(err));
 
-    // const blog = new Blog({title:"MYTITTLE-----------",title22:"newroom"***REMOVED***);
+    // const blog = new Blog({title:"-----title-----",title22:"newroom"***REMOVED***);
     // blog.save();
