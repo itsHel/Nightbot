@@ -31,9 +31,10 @@ Default prefix: `_`
 ### glados 
 > Sends GLaDOS congratulations (possible to tag someone)
 ### remind _message_ ;time
-> Bot will DM you your message after time passes, m - mins, h - hours, d - days  
+> Bot will DM you your message after time passes, m - mins, h - hours, d - days OR 16:16 format  
   > Hours are default unit  
-  > Example: `_remind buy beer ;2h 10m`
+  > Example: `_remind buy beer ;2h 10m`  
+  > Example: `_remind buy beer ;16:16`  
 ### duel @user
 > Will start rock-paper-scissors with chosen user
   > Both players must have public DMs on
