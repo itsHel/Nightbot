@@ -576,9 +576,8 @@ client.on("messageCreate", async message => {
 ***REMOVED***);
 
 client.on("messageDelete", async message => {
-    // Deleted messages saving
+    // Deleted messages log
     try{
-        console.log(message.channel.type);
         if(message.channel.type == "DM" || message.author == client.user || message.author.bot || !channels[message.guild.id]?.delroom || message.content.match(/^n$|^\.|^_/i))
             return;
 
@@ -590,9 +589,10 @@ client.on("messageDelete", async message => {
         let deleteLog = fetchedLog.entries.first();
         let footer = "";
 
+		// If deleteLog doesnt exist assume it was deleted by message author
         if(deleteLog){
             if(deleteLog.createdTimestamp > Date.now() - 500){
-                footer = "delete by " + deleteLog.executor.username;
+                footer = "deleted by " + deleteLog.executor.username;
             ***REMOVED*** else {
                 footer = "deleted by " + message.author.username;
             ***REMOVED***
