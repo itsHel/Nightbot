@@ -28,6 +28,7 @@ const goodbyes = ["Goodbye", "Farewell", "So long"***REMOVED***            // Re
                     ***REMOVED***
                     ***REMOVED*** 
                     ***REMOVED*** 
+                    ***REMOVED***"", " has to go now, his home planet needs him"],      // ; _Note: X died on the way back to his home Planet_
                     ***REMOVED***"*Goodbye* ", ", on the dark lonely road you travel, I'm afraid we cannot follow"],
                     ***REMOVED***"*Goodbye* ", ", some cause happiness wherever they go; others whenever they go"],
                     ***REMOVED***"*Goodbye* ", ", who cares if one more light goes out, in the sky of a million stars"], 
@@ -37,7 +38,7 @@ const goodbyes = ["Goodbye", "Farewell", "So long"***REMOVED***            // Re
                     ***REMOVED***"The show is over for ", ""],
                     ***REMOVED***"*Goodbye* ", ", maybe this was how things had to be"],
                     ***REMOVED***"The song has ended for ", " but the melody lingers on"],
-                    ***REMOVED***"*Goodbye* ", ", we'll miss you a lot, then a little, then not too much"],
+                    ***REMOVED***"*Goodbye* ", ", we'll miss you a lot, then a little, then not really"],
                     ***REMOVED***"", " went out to pick up a pack of cigarettes, he will be back anytime soon..."],
                     ***REMOVED***"*Goodbye* ", ", we have a sad feeling for a moment, then it passes"]
                     ***REMOVED***
