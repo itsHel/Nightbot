@@ -712,7 +712,7 @@ function setIntervalsAll(guilds){
             ***REMOVED***
     ***REMOVED***, 6 * 3600_000); // 6 hours
 
-    // Every 20 - 28 hours send quote to main channel
+    // Every 68 - 76 hours send quote to main channel
     (function autoSend(){
         setTimeout(function(){
             if(channels[settings.defaultGuild]){
@@ -720,7 +720,7 @@ function setIntervalsAll(guilds){
             ***REMOVED***
 
             autoSend();
-        ***REMOVED***, (Math.floor(Math.random() * 9) + 20) * 3600_000);       
+        ***REMOVED***, (Math.floor(Math.random() * 9) + 68) * 3600_000);       
     ***REMOVED***());
 ***REMOVED***
 
