@@ -150,65 +150,72 @@ async function hentaiAkaneko(cmd, arg, channel){
 
     let imgUrl;
 
-    if(cmd == "hentai"){
-        //nsfw
-        switch(arg.toLowerCase()){
-            case "tags": case "info": case "help":
-                channel.send("```Avaible tags:\nass, bdsm, femdom, doujin, maid, orgy, panties, wallpaper, pussy, succubus```");
-                break;
-            case "ass":
-                imgUrl = await akaneko.nsfw.ass();
-                break;
-            case "bdsm":
-                imgUrl = await akaneko.nsfw.bdsm();
-                break;
-            case "cum":
-                imgUrl = await akaneko.nsfw.cum();
-                break;
-            case "femdom":
-                imgUrl = await akaneko.nsfw.femdom();
-                break;
-            case "doujin":
-                imgUrl = await akaneko.nsfw.doujin();
-                break;
-            case "maid":
-                imgUrl = await akaneko.nsfw.maid();
-                break;
-            case "orgy":
-                imgUrl = await akaneko.nsfw.orgy();
-                break;
-            case "panties":
-                imgUrl = await akaneko.nsfw.panties();
-                break;
-            case "wallpaper":
-                imgUrl = await akaneko.nsfw.wallpapers();
-                break;
-            case "pussy":
-                imgUrl = await akaneko.nsfw.pussy();
-                break;
-            case "succubus":
-                imgUrl = await akaneko.nsfw.succubus();
-                break;
-            default:
-                imgUrl = await akaneko.nsfw.hentai();
-                break;
+    try{
+        if(cmd == "hentai"){
+            //nsfw
+            switch(arg.toLowerCase()){
+                case "tags": case "info": case "help":
+                    channel.send("```Avaible tags:\nass, bdsm, cum, femdom, doujin, maid, orgy, panties, wallpaper, pussy, succubus```");
+                    break;
+                case "ass":
+                    imgUrl = await akaneko.nsfw.ass();
+                    break;
+                case "bdsm":
+                    imgUrl = await akaneko.nsfw.bdsm();
+                    break;
+                case "cum":
+                    imgUrl = await akaneko.nsfw.cum();
+                    break;
+                case "femdom":
+                    imgUrl = await akaneko.nsfw.femdom();
+                    break;
+                case "doujin":
+                    imgUrl = await akaneko.nsfw.doujin();
+                    break;
+                case "maid":
+                    imgUrl = await akaneko.nsfw.maid();
+                    break;
+                case "orgy":
+                    imgUrl = await akaneko.nsfw.orgy();
+                    break;
+                case "panties":
+                    imgUrl = await akaneko.nsfw.panties();
+                    break;
+                case "wallpaper":
+                    imgUrl = await akaneko.nsfw.wallpapers();
+                    break;
+                case "pussy":
+                    imgUrl = await akaneko.nsfw.pussy();
+                    break;
+                case "succubus":
+                    imgUrl = await akaneko.nsfw.succubus();
+                    break;
+                default:
+                    imgUrl = await akaneko.nsfw.hentai();
+                    break;
+            ***REMOVED***
+        ***REMOVED*** else if(cmd == "anime"){
+            //sfw
+            switch(arg.toLowerCase()){
+                case "tags": case "info": case "help":
+                    channel.send("```Avaible tags:\nwallpaper, girl, foxgirl```");
+                    break;
+                case "wallpaper": default:
+                    imgUrl = await akaneko.wallpapers();
+                    break;
+                case "girl":
+                    imgUrl = await akaneko.neko();
+                    break;
+                case "foxgirl":
+                    imgUrl = await akaneko.foxgirl();
+                    break;
+            ***REMOVED***
         ***REMOVED***
-    ***REMOVED*** else if(cmd == "anime"){
-        //sfw
-        switch(arg.toLowerCase()){
-            case "tags": case "info": case "help":
-                channel.send("```Avaible tags:\nwallpaper, girl, foxgirl```");
-                break;
-            case "wallpaper": default:
-                imgUrl = await akaneko.wallpapers();
-                break;
-            case "girl":
-                imgUrl = await akaneko.neko();
-                break;
-            case "foxgirl":
-                imgUrl = await akaneko.foxgirl();
-                break;
-        ***REMOVED***
+    ***REMOVED*** catch(err){
+        console.log(err);
+        channel.send("```Error has occured, try again later```");
+
+        return;
     ***REMOVED***
 
     let embed = new discord.MessageEmbed().setImage(imgUrl).setTitle(arg);

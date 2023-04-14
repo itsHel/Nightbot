@@ -67,7 +67,8 @@ function remind(message){
 ***REMOVED***
 
 async function loadReminders(client){
-    let rows = await mongo.getReminders();console.log(rows);
+    let rows = await mongo.getReminders();
+    
     rows.forEach(row => {
         let text = row.message;
         let member = row.userid;
