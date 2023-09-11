@@ -10,14 +10,14 @@ async function duel(args, guild, author, channel, client) {
         fail = false;
     const filter = (m) => {
         return client.user.id != m.author.id;
-    ***REMOVED***
+    };
 
     let opponent = args;
     let opponentName;
 
     channel.send("It begins...").then((mess) => {
         beginingId = mess.id;
-***REMOVED***
+    });
 
     //second user
     await client.users
@@ -38,7 +38,7 @@ async function duel(args, guild, author, channel, client) {
                                 filter: filter,
                                 max: 1,
                                 time: 60000,
-                            ***REMOVED***)
+                            })
                                 .then((collected) => {
                                     user.send(
                                         guild.channels.cache
@@ -60,8 +60,8 @@ async function duel(args, guild, author, channel, client) {
                                                 " doesnt know how to play, duel over :dizzy_face:",
                                         );
                                         clearInterval(waitingForPlayers);
-                                    ***REMOVED***
-                                ***REMOVED***)
+                                    }
+                                })
                                 .catch((err) => {
                                     console.log(err);
                                     fail = true;
@@ -70,32 +70,32 @@ async function duel(args, guild, author, channel, client) {
                                             " didnt react in time, duel over :dizzy_face:",
                                     );
                                     clearInterval(waitingForPlayers);
-                            ***REMOVED***
-                        ***REMOVED***)
+                                });
+                        })
                         .catch((err) => {
                             fail = true;
                             console.log(err);
-                    ***REMOVED***
-                ***REMOVED***)
+                        });
+                })
                 .catch((err) => {
                     channel.messages.fetch(beginingId).then((mess) => {
                         mess.edit("It begins... nevermind");
-                ***REMOVED***
+                    });
 
                     fail = true;
                     channel.send(
                         "```" + mine.privateDmMessage(opponentName) + "```",
                     );
                     clearInterval(waitingForPlayers);
-            ***REMOVED***
-        ***REMOVED***)
+                });
+        })
         .catch((err) => {
             if (!fail) {
                 console.log(err);
                 channel.send("```Cannot find this user```");
                 fail = true;
-            ***REMOVED***
-    ***REMOVED***
+            }
+        });
 
     if (fail) return;
 
@@ -110,7 +110,7 @@ async function duel(args, guild, author, channel, client) {
             author
                 .createDM()
                 .then((chan) => {
-                    chan.awaitMessages({ filter: filter, max: 1, time: 60000 ***REMOVED***)
+                    chan.awaitMessages({ filter: filter, max: 1, time: 60000 })
                         .then((collected) => {
                             author.send(
                                 guild.channels.cache.get(channel.id).toString(),
@@ -132,8 +132,8 @@ async function duel(args, guild, author, channel, client) {
                                         " doesnt know how to play, duel over :dizzy_face:",
                                 );
                                 clearInterval(waitingForPlayers);
-                            ***REMOVED***
-                        ***REMOVED***)
+                            }
+                        })
                         .catch((err) => {
                             console.log(err);
                             channel.send(
@@ -143,10 +143,10 @@ async function duel(args, guild, author, channel, client) {
                                     " didnt react in time, duel over :dizzy_face:",
                             );
                             clearInterval(waitingForPlayers);
-                    ***REMOVED***
-                ***REMOVED***)
+                        });
+                })
                 .catch((err) => console.log(err));
-        ***REMOVED***)
+        })
         .catch((err) => console.log(err));
     //waiting interval
     let waitingForPlayers = setInterval(function () {
@@ -155,7 +155,7 @@ async function duel(args, guild, author, channel, client) {
         let result = "";
         if (p1Answer == p2Answer) {
             result = "draw";
-        ***REMOVED*** else {
+        } else {
             if (
                 (p1Answer == "r" || p2Answer == "r") &&
                 (p1Answer == "s" || p2Answer == "s")
@@ -171,7 +171,7 @@ async function duel(args, guild, author, channel, client) {
                 (p1Answer == "p" || p2Answer == "p")
             )
                 result = "s";
-        ***REMOVED***
+        }
 
         let resultString =
             (p1Answer == result
@@ -180,13 +180,13 @@ async function duel(args, guild, author, channel, client) {
 
         if (result == "draw") {
             resultString = "its a draw";
-        ***REMOVED***
+        }
 
         let weapons = {
             r: "rock",
             s: "scissors",
             p: "paper",
-        ***REMOVED***
+        };
 
         channel.send(
             "<@!" +
@@ -202,9 +202,9 @@ async function duel(args, guild, author, channel, client) {
                 resultString,
         );
         clearInterval(waitingForPlayers);
-    ***REMOVED***, 1000);
-***REMOVED***
+    }, 1000);
+}
 
-***REMOVED***
+module.exports = {
     duel,
-***REMOVED***
+};

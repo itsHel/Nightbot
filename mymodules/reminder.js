@@ -6,12 +6,12 @@ function timeToSeconds(timeString) {
     let seconds = timeArray[0] * 3600 + timeArray[1] * 60;
 
     return seconds;
-***REMOVED***
+}
 
 function remind(message) {
     let temp = message.content.substr(8).split(";");
-    let text = temp[0***REMOVED***
-    let time = temp[1***REMOVED***
+    let text = temp[0];
+    let time = temp[1];
     let delay = 0;
 
     if (time.match(":")) {
@@ -21,17 +21,17 @@ function remind(message) {
         if (time.length != 5) {
             message.channel.send("```Wrong time format```");
             return;
-        ***REMOVED***
+        }
 
         let now = new Date().toLocaleTimeString("sv").slice(0, 5);
 
         let secondsDifference = timeToSeconds(time) - timeToSeconds(now);
         if (secondsDifference <= 0) {
             secondsDifference += 86_400;
-        ***REMOVED***
+        }
 
         delay = secondsDifference;
-    ***REMOVED*** else {
+    } else {
         // 12d 12h 12m format
         let days = time.match(/([0-9]*)d/i);
         days = days ? days[1] : 0;
@@ -44,8 +44,8 @@ function remind(message) {
         if (delay == 0) {
             // Hours are default
             delay = time * 3600;
-        ***REMOVED***
-    ***REMOVED***
+        }
+    }
 
     let date = new Date();
     let newDate = new Date(date.getTime() + delay * 1000).getTime();
@@ -54,7 +54,7 @@ function remind(message) {
         // 24 days in seconds
         message.channel.send("```24 days is maximum```");
         return;
-    ***REMOVED***
+    }
 
     console.log(delay + " s");
     mongo.addReminder(message.author.id, text, newDate);
@@ -62,17 +62,17 @@ function remind(message) {
     setTimeout(function () {
         message.author.send(text);
         console.log(text);
-    ***REMOVED***, delay * 1000);
+    }, delay * 1000);
 
     message
         .reply("I will remind you in" + secondsToTime(delay))
         .then((mess) =>
             setTimeout(
-                () => mess.delete().catch(() => {***REMOVED***),
+                () => mess.delete().catch(() => {}),
                 settings.autoDelDelay,
             ),
         );
-***REMOVED***
+}
 
 async function loadReminders(client) {
     let rows = await mongo.getReminders();
@@ -87,20 +87,20 @@ async function loadReminders(client) {
         if (timer < 0) {
             user.send(text);
             return;
-        ***REMOVED***
+        }
 
         setTimeout(function () {
             client.users
                 .fetch(member)
                 .then((user) => {
                     user.send(text);
-                ***REMOVED***)
+                })
                 .catch((err) => console.log(err));
-        ***REMOVED***, timer);
+        }, timer);
 
         console.log("Reminder in " + Math.floor(timer / 1000) + " s");
-***REMOVED***
-***REMOVED***
+    });
+}
 
 function secondsToTime(seconds) {
     if (seconds == 0) return " - right now?";
@@ -116,7 +116,7 @@ function secondsToTime(seconds) {
     output += parsePlural(minutes, " minute");
 
     return output;
-***REMOVED***
+}
 
 // Adds "s" to multi (days...)
 function parsePlural(count, str) {
@@ -125,9 +125,9 @@ function parsePlural(count, str) {
     if (count == 1) return " " + count.toString() + str;
 
     return " " + count.toString() + str + "s";
-***REMOVED***
+}
 
-***REMOVED***
+module.exports = {
     remind,
     loadReminders,
-***REMOVED***
+};

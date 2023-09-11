@@ -102,14 +102,14 @@ const langs = {
     xh: "Xhosa",
     yi: "Yiddish",
     zh: "Chinese",
-***REMOVED***
+};
 let autoDelDelay = 60000;
 
 function defMessage(id, pos, definitions = []) {
     this.id = id;
     this.pos = pos;
     this.defs = definitions;
-***REMOVED***
+}
 
 // Old translator
 function yandexTranslate(message, args) {
@@ -124,7 +124,7 @@ function yandexTranslate(message, args) {
         secondLang = text[1].substring(index + 1);
         if (firstLang != "en") firstLang = Object.keys(langs).find((key) => langs[key].toLowerCase() == firstLang);
         if (secondLang != "en") secondLang = Object.keys(langs).find((key) => langs[key].toLowerCase() == secondLang);
-    ***REMOVED***
+    }
 
     text[0] = specChars(text[0]);
     let url =
@@ -142,30 +142,30 @@ function yandexTranslate(message, args) {
             method: "GET",
             json: true,
             url: url,
-        ***REMOVED***,
+        },
         (err, resp, data) => {
             if (err) return console.error(err);
 
             if (data.code != 200) {
                 message.channel.send("```language not supported, use 'trlist' to get language list ```");
                 return;
-            ***REMOVED***
+            }
 
-            let translated = data.text[0***REMOVED***
+            let translated = data.text[0];
 
             if ((firstLang == "cs" || secondLang == "cs") && message.author.id == settings.Hel) {
                 autoDelDelay = 4000;
-            ***REMOVED*** else {
+            } else {
                 autoDelDelay = 60000;
-            ***REMOVED***
+            }
 
             message.channel.send("```" + translated + "```").then((mess) => {
-                if (mess.channel.type != "DM") setTimeout(() => mess.delete().catch(() => {***REMOVED***), autoDelDelay);
-        ***REMOVED***
-            setTimeout(() => message.delete().catch(() => {***REMOVED***), autoDelDelay);
-        ***REMOVED***
+                if (mess.channel.type != "DM") setTimeout(() => mess.delete().catch(() => {}), autoDelDelay);
+            });
+            setTimeout(() => message.delete().catch(() => {}), autoDelDelay);
+        }
     );
-***REMOVED***
+}
 
 function googleTranslate(message, args) {
     let text = args.toLowerCase().split(";");
@@ -181,40 +181,40 @@ function googleTranslate(message, args) {
         if (firstLang != "en") firstLang = Object.keys(langs).find((key) => langs[key].toLowerCase() == firstLang);
 
         if (secondLang != "en") secondLang = Object.keys(langs).find((key) => langs[key].toLowerCase() == secondLang);
-    ***REMOVED***
+    }
 
     if ((firstLang = undefined || secondLang == undefined)) {
         console.log(args);
         message.channel.send("```language not supported, use 'trlist' to get language list ```");
         return;
-    ***REMOVED***
+    }
 
-    translate(text[0], { from: firstLang, to: secondLang ***REMOVED***).then((res) => {
+    translate(text[0], { from: firstLang, to: secondLang }).then((res) => {
         console.log(res);
 
         let translated = res.text;
         if ((firstLang == "cs" || secondLang == "cs") && message.author.id == settings.Hel) {
             autoDelDelay = 4000;
-        ***REMOVED*** else {
+        } else {
             autoDelDelay = 60000;
-        ***REMOVED***
+        }
 
         message.channel.send("```" + translated + "```").then((mess) => {
-            if (mess.channel.type != "DM") setTimeout(() => mess.delete().catch(() => {***REMOVED***), autoDelDelay);
-    ***REMOVED***
-        setTimeout(() => message.delete().catch(() => {***REMOVED***), autoDelDelay);
-***REMOVED***
-***REMOVED***
+            if (mess.channel.type != "DM") setTimeout(() => mess.delete().catch(() => {}), autoDelDelay);
+        });
+        setTimeout(() => message.delete().catch(() => {}), autoDelDelay);
+    });
+}
 
 function sendLangs(message) {
     let langsS = JSON.stringify(langs);
-    langsS = langsS.replace(/,/g, ",\n").replace(/:/g, ": ").replace("{", "").replace("***REMOVED***", "");
+    langsS = langsS.replace(/,/g, ",\n").replace(/:/g, ": ").replace("{", "").replace("}", "");
 
     message.author.send(langsS);
-    setTimeout(() => message.delete().catch(() => {***REMOVED***), settings.autoDelDelay);
+    setTimeout(() => message.delete().catch(() => {}), settings.autoDelDelay);
 
     return;
-***REMOVED***
+}
 
 function specChars(text) {
     text = text
@@ -225,12 +225,12 @@ function specChars(text) {
         .replace("ý", "%C3%AD")
         .replace("ž", "%C5%BE");
     return text;
-***REMOVED***
+}
 
 function imdb(cmd, args, channel) {
     let temp = args.toLowerCase().split(";");
-    let title = temp[0***REMOVED***
-    let year = temp[1***REMOVED***
+    let title = temp[0];
+    let year = temp[1];
     let params = "t=" + title + "&y=" + year;
 
     request(
@@ -238,14 +238,14 @@ function imdb(cmd, args, channel) {
             method: "GET",
             json: true,
             url: "http://www.omdbapi.com/?" + params + "&apikey=" + process.env.IMDB_KEY,
-        ***REMOVED***,
+        },
         (err, resp, data) => {
             if (err) return console.error(err);
 
             if (data.Response == "False") {
-                channel.send("```" + data.Error + "```").then((mess) => mess.delete({ timeout: autoDelDelay ***REMOVED***));
+                channel.send("```" + data.Error + "```").then((mess) => mess.delete({ timeout: autoDelDelay }));
                 return;
-            ***REMOVED***
+            }
 
             let title = data.Title + " (" + data.Year + ")";
             let rating, embed;
@@ -259,12 +259,12 @@ function imdb(cmd, args, channel) {
                         " - tomatoes\n" +
                         data.Ratings[2].Value +
                         " - metacritic";
-                ***REMOVED*** else {
+                } else {
                     rating = data.Ratings[0].Value + " imdb";
-                ***REMOVED***
-            ***REMOVED*** else {
+                }
+            } else {
                 rating = "N/A";
-            ***REMOVED***
+            }
 
             let img = data.Poster;
             let id = data.imdbID;
@@ -277,7 +277,7 @@ function imdb(cmd, args, channel) {
                     .setDescription(rating + "\n\n" + data.Runtime + " - " + data.Genre + "\n\n" + data.Plot);
 
                 if (img != "N/A") embed.setThumbnail(img);
-            ***REMOVED*** else {
+            } else {
                 // Advanced version
                 embed = new discord.MessageEmbed()
                     .setURL("https://www.imdb.com/title/" + id)
@@ -285,19 +285,19 @@ function imdb(cmd, args, channel) {
                     .setDescription(
                         rating + "\n\n" + data.Runtime + " - " + data.Genre + "\n" + data.Actors + "\n\n" + data.Plot
                     )
-                    .setFooter({ text: "boxOffice: " + data.BoxOffice ***REMOVED***);
+                    .setFooter({ text: "boxOffice: " + data.BoxOffice });
 
                 if (img != "N/A") embed.setImage(img);
-            ***REMOVED***
-            channel.send({ embeds: [embed] ***REMOVED***);
-        ***REMOVED***
+            }
+            channel.send({ embeds: [embed] });
+        }
     );
-***REMOVED***
+}
 
 function imdbSearch(args, channel) {
     let temp = args.toLowerCase().split(";");
-    let title = temp[0***REMOVED***
-    let year = temp[1***REMOVED***
+    let title = temp[0];
+    let year = temp[1];
     let params = "s=" + title + "&y=" + year;
 
     request(
@@ -305,19 +305,19 @@ function imdbSearch(args, channel) {
             method: "GET",
             json: true,
             url: "http://www.omdbapi.com/?" + params + "&apikey=" + process.env.IMDB_KEY,
-        ***REMOVED***,
+        },
         (err, resp, data) => {
             if (err) return console.error(err);
 
             if (data.Response == "False") {
                 channel
                     .send("```" + data.Error + "```")
-                    .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), autoDelDelay));
+                    .then((mess) => setTimeout(() => mess.delete().catch(() => {}), autoDelDelay));
                 return;
-            ***REMOVED***
+            }
 
-            let titles = { name: "Title", value: "", inline: true ***REMOVED***
-            let years = { name: "Year", value: "", inline: true ***REMOVED***
+            let titles = { name: "Title", value: "", inline: true };
+            let years = { name: "Year", value: "", inline: true };
 
             let list = "";
             data.Search.sort((a, b) => b.Year.slice(0, 4) - a.Year.slice(0, 4));
@@ -326,16 +326,16 @@ function imdbSearch(args, channel) {
                 titles.value += data.Search[i].Title + "\n";
                 years.value += data.Search[i].Year + "\n";
                 list += data.Search[i].Title + " (" + data.Search[i].Year + ")\n";
-            ***REMOVED***
+            }
 
-            let embed = new discord.MessageEmbed({ fields: [titles, years] ***REMOVED***)
+            let embed = new discord.MessageEmbed({ fields: [titles, years] })
                 .setTitle(title)
-                .setFooter({ text: "\u2800".repeat(30) ***REMOVED***);
+                .setFooter({ text: "\u2800".repeat(30) });
 
-            channel.send({ embeds: [embed] ***REMOVED***);
-        ***REMOVED***
+            channel.send({ embeds: [embed] });
+        }
     );
-***REMOVED***
+}
 //https://www.datamuse.com/api/
 function words(type, count, args, channel) {
     request(
@@ -343,27 +343,27 @@ function words(type, count, args, channel) {
             method: "GET",
             json: true,
             url: "http://api.datamuse.com/" + type + args,
-        ***REMOVED***,
+        },
         (err, resp, data) => {
             if (err) return console.error(err);
 
             if (data.length == 0) {
                 channel
                     .send("```not found```")
-                    .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), autoDelDelay));
+                    .then((mess) => setTimeout(() => mess.delete().catch(() => {}), autoDelDelay));
                 return;
-            ***REMOVED***
+            }
 
             let list = "";
             for (let i = 0; i < count && i < data.length; i++) {
                 list += data[i].word + ", ";
-            ***REMOVED***
+            }
 
             list.slice(0, -2);
             channel.send("```" + list + "```");
-        ***REMOVED***
+        }
     );
-***REMOVED***
+}
 
 const owlClient = owlbot(process.env.OWL_KEY);
 function vocabulary(args, channel, author) {
@@ -380,43 +380,43 @@ function vocabulary(args, channel, author) {
                 let collector = mess.createReactionCollector({
                     filter: settings.filter,
                     time: 100000,
-            ***REMOVED***
+                });
 
                 collector.on("collect", (r) => {
                     if (r.emoji.name == "⬅") {
                         message.pos--;
-                    ***REMOVED*** else if (r.emoji.name == "➡") {
+                    } else if (r.emoji.name == "➡") {
                         message.pos++;
-                    ***REMOVED***
+                    }
 
                     channel.messages.fetch(message.id).then((mess) => {
                         mess.edit("```" + message.defs[message.pos].definition + "```");
-                ***REMOVED***
+                    });
 
                     mess.reactions.removeAll().then(() => {
                         if (message.pos > 0) {
                             mess.react("⬅").then(() => {
                                 if (message.pos < result.definitions.length - 1) mess.react("➡");
-                        ***REMOVED***
-                        ***REMOVED*** else {
+                            });
+                        } else {
                             mess.react("➡");
-                        ***REMOVED***
-                ***REMOVED***
-            ***REMOVED***
+                        }
+                    });
+                });
                 collector.on("end", (collected) => {
                     channel.messages.fetch(message.id).then((mess) => mess.reactions.removeAll());
-            ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***)
+                });
+            });
+        })
         .catch((err) => {
             console.log(err);
             channel
                 .send("```not found```")
-                .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), autoDelDelay));
-    ***REMOVED***
-***REMOVED***
+                .then((mess) => setTimeout(() => mess.delete().catch(() => {}), autoDelDelay));
+        });
+}
 
-***REMOVED***
+module.exports = {
     yandexTranslate,
     imdb,
     imdbSearch,
@@ -425,4 +425,4 @@ function vocabulary(args, channel, author) {
     sendLangs,
     googleTranslate,
     defMessage,
-***REMOVED***
+};

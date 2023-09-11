@@ -15,22 +15,22 @@ function picsDL(url, name, channel, minUps = 250) {
             history = JSON.parse(
                 fs.readFileSync("temp/" + name + "history.txt", "utf8"),
             );
-        ***REMOVED*** catch (err) {
-            history = [***REMOVED***
-        ***REMOVED***
+        } catch (err) {
+            history = [];
+        }
 
         request(
             {
                 method: "GET",
                 json: true,
                 url: url,
-            ***REMOVED***,
+            },
             (err, resp, data) => {
                 if (err) return console.error(err);
 
                 data = data.data;
                 let same = false;
-                let newHistory = [***REMOVED***
+                let newHistory = [];
 
                 for (let i = 0; i < data.children.length; i++) {
                     for (let o = 0; o < history.length; o++) {
@@ -40,8 +40,8 @@ function picsDL(url, name, channel, minUps = 250) {
                             newHistory.push(history[o]);
                             same = true;
                             break;
-                        ***REMOVED***
-                    ***REMOVED***
+                        }
+                    }
 
                     try {
                         let title = data.children[i].data.title;
@@ -54,7 +54,7 @@ function picsDL(url, name, channel, minUps = 250) {
                             //self = nopic
                             same = false;
                             continue;
-                        ***REMOVED***
+                        }
 
                         let url =
                             "https://www.reddit.com" +
@@ -71,12 +71,12 @@ function picsDL(url, name, channel, minUps = 250) {
                             img = data.children[i].data.thumbnail;
                             fileType = "video";
                             console.log("video");
-                        ***REMOVED*** else if (data.children[i].data.gallery_data) {
+                        } else if (data.children[i].data.gallery_data) {
                             // Gallery
                             img = data.children[i].data.thumbnail;
                             fileType = "gallery";
                             console.log("gallery");
-                        ***REMOVED*** else {
+                        } else {
                             // Img/Gif
                             img = data.children[i].data.url.replace(
                                 /amp;/g,
@@ -95,8 +95,8 @@ function picsDL(url, name, channel, minUps = 250) {
                             if (img.match(/\.gifv/)) {
                                 img = data.children[i].data.thumbnail;
                                 fileType = "gif";
-                            ***REMOVED***
-                        ***REMOVED***
+                            }
+                        }
                         let desc =
                             data.children[i].data.subreddit_name_prefixed; //data.children[i].data.selftext;
                         let ups = data.children[i].data.ups;
@@ -126,36 +126,36 @@ function picsDL(url, name, channel, minUps = 250) {
                                     "   " +
                                     ups +
                                     " upvotes",
-                        ***REMOVED***
+                            });
                         // console.log((title.substring(0, 200) + " (" + desc + ")"));
                         // console.log("SEND, URL:");
                         // console.log(data.children[i].data.url.substring(8));
                         // console.log("OLD_HISTORY");
                         // console.log(history);
 
-                        channel.send({ embeds: [embed] ***REMOVED***);
-                    ***REMOVED*** catch (e) {
+                        channel.send({ embeds: [embed] });
+                    } catch (e) {
                         console.log("Reddit error:");
                         console.log(e);
-                    ***REMOVED***
+                    }
 
                     newHistory.push(data.children[i].data.url.substring(8));
-                ***REMOVED***
+                }
 
                 fs.writeFileSync(
                     "temp/" + name + "history.txt",
                     JSON.stringify(newHistory),
                     function (e) {
                         console.log(e);
-                    ***REMOVED***,
+                    },
                 );
                 console.log(name + " reddit refreshed");
-            ***REMOVED***,
+            },
         );
-    ***REMOVED*** catch (err) {
+    } catch (err) {
         console.log(err);
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
 function textDL(url, name, channel, minUps = 250) {
     try {
@@ -164,22 +164,22 @@ function textDL(url, name, channel, minUps = 250) {
             history = JSON.parse(
                 fs.readFileSync("temp/" + name + "history.txt", "utf8"),
             );
-        ***REMOVED*** catch (err) {
-            history = [***REMOVED***
-        ***REMOVED***
+        } catch (err) {
+            history = [];
+        }
 
         request(
             {
                 method: "GET",
                 json: true,
                 url: url,
-            ***REMOVED***,
+            },
             (err, resp, data) => {
                 if (err) return console.error(err);
 
                 data = data.data;
                 let same = false;
-                let newHistory = [***REMOVED***
+                let newHistory = [];
 
                 for (let i = 0; i < data.children.length; i++) {
                     for (let o = 0; o < history.length; o++) {
@@ -189,8 +189,8 @@ function textDL(url, name, channel, minUps = 250) {
                             newHistory.push(history[o]);
                             same = true;
                             break;
-                        ***REMOVED***
-                    ***REMOVED***
+                        }
+                    }
 
                     let title = data.children[i].data.title;
                     if (
@@ -201,7 +201,7 @@ function textDL(url, name, channel, minUps = 250) {
                         //self = nopic
                         same = false;
                         continue;
-                    ***REMOVED***
+                    }
 
                     let url =
                         "https://www.reddit.com" +
@@ -224,25 +224,25 @@ function textDL(url, name, channel, minUps = 250) {
                                 "   " +
                                 ups +
                                 " upvotes",
-                    ***REMOVED***
-                    channel.send({ embeds: [embed] ***REMOVED***);
+                        });
+                    channel.send({ embeds: [embed] });
                     console.log("TITLE:");
                     newHistory.push(data.children[i].data.url.substring(8));
-                ***REMOVED***
+                }
                 fs.writeFileSync(
                     "temp/" + name + "history.txt",
                     JSON.stringify(newHistory),
                     function (e) {
                         console.log(e);
-                    ***REMOVED***,
+                    },
                 );
                 console.log(name + " reddit refreshed");
-            ***REMOVED***,
+            },
         );
-    ***REMOVED*** catch (err) {
+    } catch (err) {
         console.log(err);
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
 async function redditAll(
     redditTheatreChannel,
@@ -264,7 +264,7 @@ async function redditAll(
                     redditTheatreChannel,
                     reddits[i].minUpvotes,
                 );
-        ***REMOVED*** else if (reddits[i].type.toLowerCase() == "nsfw") {
+        } else if (reddits[i].type.toLowerCase() == "nsfw") {
             if (redditNsfwChannel)
                 picsDL(
                     "https://www.reddit.com/r/" +
@@ -274,7 +274,7 @@ async function redditAll(
                     redditNsfwChannel,
                     reddits[i].minUpvotes,
                 );
-        ***REMOVED*** else {
+        } else {
             if (redditTextChannel)
                 textDL(
                     "https://www.reddit.com/r/" +
@@ -284,9 +284,9 @@ async function redditAll(
                     redditTextChannel,
                     reddits[i].minUpvotes,
                 );
-        ***REMOVED***
-    ***REMOVED***
-***REMOVED***
+        }
+    }
+}
 
 function getRooms(channels, reddits, channel, client) {
     if (channels.reddittheatre) {
@@ -296,22 +296,22 @@ function getRooms(channels, reddits, channel, client) {
 
         let redditImg = reddits.filter((reddit) => reddit.type == "img");
 
-        let reddit = { name: "Reddit", value: "", inline: true ***REMOVED***
-        let room = { name: "Room", value: "", inline: true ***REMOVED***
-        let upvotes = { name: "Min upvotes", value: "", inline: true ***REMOVED***
+        let reddit = { name: "Reddit", value: "", inline: true };
+        let room = { name: "Room", value: "", inline: true };
+        let upvotes = { name: "Min upvotes", value: "", inline: true };
 
         for (let i = 0; i < redditImg.length; i++) {
             reddit.value += redditImg[i].reddit + "\n";
             room.value += imgChannel + "\n";
             upvotes.value += redditImg[i].minUpvotes + "\n";
-        ***REMOVED***
+        }
 
         let imgEmbed = new discord.MessageEmbed({
             title: "Image Reddits",
             fields: [reddit, room, upvotes],
-        ***REMOVED***).setFooter({ text: "\u2800".repeat(50) ***REMOVED***);
+        }).setFooter({ text: "\u2800".repeat(50) });
         channel.send(imgEmbed);
-    ***REMOVED***
+    }
 
     if (channels.reddittext) {
         let textChannel = client.channels.cache
@@ -320,22 +320,22 @@ function getRooms(channels, reddits, channel, client) {
 
         let reddittext = reddits.filter((reddit) => reddit.type == "text");
 
-        let reddit = { name: "Reddit", value: "", inline: true ***REMOVED***
-        let room = { name: "Room", value: "", inline: true ***REMOVED***
-        let upvotes = { name: "Min upvotes", value: "", inline: true ***REMOVED***
+        let reddit = { name: "Reddit", value: "", inline: true };
+        let room = { name: "Room", value: "", inline: true };
+        let upvotes = { name: "Min upvotes", value: "", inline: true };
 
         for (let i = 0; i < reddittext.length; i++) {
             reddit.value += reddittext[i].reddit + "\n";
             room.value += textChannel + "\n";
             upvotes.value += reddittext[i].minUpvotes + "\n";
-        ***REMOVED***
+        }
 
         let textEmbed = new discord.MessageEmbed({
             title: "Text Reddits",
             fields: [reddit, room, upvotes],
-        ***REMOVED***).setFooter({ text: "\u2800".repeat(50) ***REMOVED***);
+        }).setFooter({ text: "\u2800".repeat(50) });
         channel.send(textEmbed);
-    ***REMOVED***
+    }
 
     if (channels.redditnsfw) {
         let nsfwChannel = client.channels.cache
@@ -344,22 +344,22 @@ function getRooms(channels, reddits, channel, client) {
 
         let redditNsfw = reddits.filter((reddit) => reddit.type == "nsfw");
 
-        let reddit = { name: "Reddit", value: "", inline: true ***REMOVED***
-        let room = { name: "Room", value: "", inline: true ***REMOVED***
-        let upvotes = { name: "Min upvotes", value: "", inline: true ***REMOVED***
+        let reddit = { name: "Reddit", value: "", inline: true };
+        let room = { name: "Room", value: "", inline: true };
+        let upvotes = { name: "Min upvotes", value: "", inline: true };
 
         for (let i = 0; i < redditNsfw.length; i++) {
             reddit.value += redditNsfw[i].reddit + "\n";
             room.value += nsfwChannel + "\n";
             upvotes.value += redditNsfw[i].minUpvotes + "\n";
-        ***REMOVED***
+        }
 
         let textEmbed = new discord.MessageEmbed({
             title: "Nsfw Reddits",
             fields: [reddit, room, upvotes],
-        ***REMOVED***).setFooter({ text: "\u2800".repeat(50) ***REMOVED***);
+        }).setFooter({ text: "\u2800".repeat(50) });
         channel.send(textEmbed);
-    ***REMOVED***
+    }
 
     if (
         !channels.reddittheatre &&
@@ -367,10 +367,10 @@ function getRooms(channels, reddits, channel, client) {
         !channels.redditnsfw
     ) {
         channel.send("```No reddits set```");
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
-***REMOVED***
+module.exports = {
     redditAll,
     getRooms,
-***REMOVED***
+};

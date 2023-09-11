@@ -3,8 +3,8 @@ const settings = require("../settings");
 
 function remind(message) {
     let temp = message.content.substr(8).split(";");
-    let text = temp[0***REMOVED***
-    let time = temp[1***REMOVED***
+    let text = temp[0];
+    let time = temp[1];
     let delay = 0;
 
     let days = time.match(/([0-9]*)d/i);
@@ -22,16 +22,16 @@ function remind(message) {
     fs.appendFile(
         "temp/reminders.txt",
         message.author.id + ";;" + text + ";;" + newDate + "\r\n",
-        function () {***REMOVED***,
+        function () {},
     );
     setTimeout(function () {
         message.author.send(text);
         console.log(text);
-    ***REMOVED***, delay * 1000);
+    }, delay * 1000);
     message
         .reply("I will remind you in" + secondsToTime(delay))
-        .then((sent) => sent.delete({ timeout: settings.autoDelDelay ***REMOVED***));
-***REMOVED***
+        .then((sent) => sent.delete({ timeout: settings.autoDelDelay }));
+}
 
 function loadReminders(client) {
     fs.readFile("temp/reminders.txt", "utf8", function (err, data) {
@@ -39,8 +39,8 @@ function loadReminders(client) {
         let newFile = "";
         for (let i = 0; i < rows.length - 1; i++) {
             let temp = rows[i].split(";;");
-            let text = temp[1***REMOVED***
-            let member = temp[0***REMOVED***
+            let text = temp[1];
+            let member = temp[0];
             let dateNow = new Date();
             let dateUnban = new Date(temp[2]);
             let timer = dateUnban - dateNow;
@@ -51,14 +51,14 @@ function loadReminders(client) {
                     .fetch(member)
                     .then((user) => {
                         user.send(text);
-                    ***REMOVED***)
+                    })
                     .catch((err) => console.log(err));
-            ***REMOVED***, timer);
+            }, timer);
             console.log("reminder in " + Math.floor(timer / 1000) + " s");
-        ***REMOVED***
-        fs.writeFile("temp/reminders.txt", newFile, function () {***REMOVED***);
-***REMOVED***
-***REMOVED***
+        }
+        fs.writeFile("temp/reminders.txt", newFile, function () {});
+    });
+}
 
 function secondsToTime(seconds) {
     if (seconds == 0) return " - right now?";
@@ -71,18 +71,18 @@ function secondsToTime(seconds) {
     output += myparse(hours, " hour");
     output += myparse(minutes, " minute");
     return output;
-***REMOVED***
+}
 
 function myparse(i, s) {
     //adds "s" to multi (days..)
     if (i == 0) return "";
     if (i == 1) return " " + i.toString() + s;
     return " " + i.toString() + s + "s";
-***REMOVED***
+}
 
-***REMOVED***
+module.exports = {
     remind,
     loadReminders,
-***REMOVED***
+};
 
-//***REMOVED***
+//}

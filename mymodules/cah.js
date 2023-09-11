@@ -10,23 +10,23 @@ const settingsInfo = `**Avaible settings**:\n\n **blanks** - on/off *(on default
 // Only one blank can be chosen at time
 
 const officialPack = JSON.parse(
-    fs.readFileSync("data/cah/official.json", "utf8", function () {***REMOVED***),
+    fs.readFileSync("data/cah/official.json", "utf8", function () {}),
 );
 const unofficialPack = JSON.parse(
-    fs.readFileSync("data/cah/unofficial.json", "utf8", function () {***REMOVED***),
+    fs.readFileSync("data/cah/unofficial.json", "utf8", function () {}),
 );
 
 function help(channel) {
     embed = new discord.MessageEmbed().setDescription(guide).setTitle("Guide");
-    channel.send({ embeds: [embed] ***REMOVED***);
-***REMOVED***
+    channel.send({ embeds: [embed] });
+}
 
 function settingsHelp(channel) {
     embed = new discord.MessageEmbed()
         .setDescription(settingsInfo)
         .setTitle("Settings");
-    channel.send({ embeds: [embed] ***REMOVED***);
-***REMOVED***
+    channel.send({ embeds: [embed] });
+}
 
 function cardsAgainstHumanity(channel, modroles) {
     // https://crhallberg.com/cah/
@@ -47,27 +47,27 @@ function cardsAgainstHumanity(channel, modroles) {
         "🇲",
         "🇳",
         "🇴",
-    ***REMOVED***
+    ];
     const Xemoji = "❎"; // alt ❌
     const blankemoji = "🅱️";
 
-    ***REMOVED***
+    const filter = (reaction, user) => {
         return !user.bot;
-    ***REMOVED***
+    };
 
     const messFilter = (user) => {
         return !user.author.bot;
-    ***REMOVED***
+    };
 
     let devMode = true;
     let logMode = true;
 
-    let historyBlackcards = [***REMOVED***
+    let historyBlackcards = [];
     let nextRoundTimeout;
     let thisRound;
     let afkGameTimeout = setTimeout(() => this.end(), 1800 * 1000);
     let started = false;
-    this.players = [***REMOVED***
+    this.players = [];
 
     this.cahSwitch = function (args, message) {
         // mine.log("text", undefined, mine.getLine(), mine.getFunc());
@@ -86,12 +86,12 @@ function cardsAgainstHumanity(channel, modroles) {
                 if (this.players.length <= 1) {
                     channel.send("```No players!```");
                     return;
-                ***REMOVED***
+                }
 
                 if (!started) {
                     this.start();
                     started = true;
-                ***REMOVED***
+                }
                 break;
             case "leave":
                 this.leave(player);
@@ -128,7 +128,7 @@ function cardsAgainstHumanity(channel, modroles) {
                 embed = new discord.MessageEmbed()
                     .setTitle("Scoreboard:")
                     .setDescription("\n\n" + this.generateTable());
-                channel.send({ embeds: [embed] ***REMOVED***);
+                channel.send({ embeds: [embed] });
                 break;
             case "packs":
                 let offcialOn =
@@ -136,12 +136,12 @@ function cardsAgainstHumanity(channel, modroles) {
                 let unofficialOn =
                     this.settings.packs[0] == unofficialPack ? "On" : "";
                 let bothOn = this.settings.packs.length == 2 ? "On" : "";
-                let packsInfo = ` **Packs avaible:**\n\n official ${offcialOn***REMOVED***\n unofficial ${unofficialOn***REMOVED***\n both ${bothOn***REMOVED***\n `;
+                let packsInfo = ` **Packs avaible:**\n\n official ${offcialOn}\n unofficial ${unofficialOn}\n both ${bothOn}\n `;
 
                 embed = new discord.MessageEmbed()
                     .setDescription(packsInfo)
                     .setTitle("Use cah set packs 'option'");
-                channel.send({ embeds: [embed] ***REMOVED***);
+                channel.send({ embeds: [embed] });
                 break;
             case "set":
                 if (
@@ -157,54 +157,54 @@ function cardsAgainstHumanity(channel, modroles) {
                         if (args[2] == "on" || args[2] == "true") {
                             this.settings.blankOn = true;
                             channel.send("```Blank cards enabled.```");
-                        ***REMOVED*** else if (args[2] == "off" || args[2] == "false") {
+                        } else if (args[2] == "off" || args[2] == "false") {
                             this.settings.blankOn = false;
                             channel.send("```Blank cards disabled.```");
-                        ***REMOVED*** else {
+                        } else {
                             channel.send("```Wrong argument```");
-                        ***REMOVED***
+                        }
                         break;
                     case "triples":
                         if (args[2] == "on" || args[2] == "true") {
                             this.settings.triplesOn = true;
                             channel.send("```Triple picks enabled.```");
-                        ***REMOVED*** else if (args[2] == "off" || args[2] == "false") {
+                        } else if (args[2] == "off" || args[2] == "false") {
                             this.settings.triplesOn = false;
                             channel.send("```Triple picks disabled.```");
-                        ***REMOVED*** else {
+                        } else {
                             channel.send("```Wrong argument```");
-                        ***REMOVED***
+                        }
                         break;
                     case "throwhand":
                         if (args[2] == "on" || args[2] == "true") {
                             this.settings.throwHand = true;
                             channel.send("```Throwhand enabled.```");
-                        ***REMOVED*** else if (args[2] == "off" || args[2] == "false") {
+                        } else if (args[2] == "off" || args[2] == "false") {
                             this.settings.throwHand = false;
                             channel.send("```Throwhand disabled.```");
-                        ***REMOVED*** else {
+                        } else {
                             channel.send("```Wrong argument```");
-                        ***REMOVED***
+                        }
                         break;
                     case "cards":
                         if (isNaN(args[2]) || args[2] > 15) {
                             channel.send("```Wrong argument```");
-                        ***REMOVED*** else {
-                            this.settings.cardsCount = args[2***REMOVED***
+                        } else {
+                            this.settings.cardsCount = args[2];
                             channel.send(
                                 "```Cards count set to " + args[2] + ".```",
                             );
-                        ***REMOVED***
+                        }
                         break;
                     case "points":
                         if (isNaN(args[2]) || args[2] > 50) {
                             channel.send("```Wrong argument```");
-                        ***REMOVED*** else {
-                            this.settings.winPoints = args[2***REMOVED***
+                        } else {
+                            this.settings.winPoints = args[2];
                             channel.send(
                                 "```Points to win set to " + args[2] + ".```",
                             );
-                        ***REMOVED***
+                        }
                         break;
                     case "packs":
                         if (started) {
@@ -212,33 +212,33 @@ function cardsAgainstHumanity(channel, modroles) {
                                 "```Cannot change packs settings after game has started```",
                             );
                             break;
-                        ***REMOVED***
+                        }
 
                         switch (args[2]) {
                             case "official":
-                                this.settings.packs = [officialPack***REMOVED***
+                                this.settings.packs = [officialPack];
                                 break;
                             case "unofficial":
-                                this.settings.packs = [unofficialPack***REMOVED***
+                                this.settings.packs = [unofficialPack];
                                 break;
                             case "both":
                                 this.settings.packs = [
                                     officialPack,
                                     unofficialPack,
-                                ***REMOVED***
+                                ];
                                 break;
                             default:
                                 channel.send("```Wrong argument```");
-                        ***REMOVED***
+                        }
                         break;
-                ***REMOVED***
+                }
                 break;
             // Settings end
             default:
                 channel.send("```Wrong command```");
                 break;
-        ***REMOVED***
-    ***REMOVED***
+        }
+    };
 
     this.settings = {
         round: 0,
@@ -258,16 +258,16 @@ function cardsAgainstHumanity(channel, modroles) {
         blankOn: true,
         throwHand: true,
         triplesOn: true,
-    ***REMOVED***
+    };
 
     this.player = function (discordPlayer) {
         // Type member
         this.nick = discordPlayer.displayName;
         this.id = discordPlayer.id;
-        this.cards = [***REMOVED***
+        this.cards = [];
         this.points = 0;
         this.discordPlayer = discordPlayer;
-        this.activeCards = [***REMOVED***
+        this.activeCards = [];
         this.answerEmoji = "";
         this.tempAnswer = "";
         this.activeBlanks = 0;
@@ -277,21 +277,21 @@ function cardsAgainstHumanity(channel, modroles) {
         this.playerAlert = null;
         this.collector = null;
         this.blanksUsed = 0;
-    ***REMOVED***
+    };
 
     this.generateBlackcard = function () {
         let pack =
             this.settings.packs[
                 Math.trunc(Math.random() * this.settings.packs.length)
-            ***REMOVED***
+            ];
         let blackcard;
 
         do {
             blackcard =
                 pack.blackCards[
                     Math.trunc(Math.random() * pack.blackCards.length)
-                ***REMOVED***
-        ***REMOVED*** while (
+                ];
+        } while (
             historyBlackcards.filter((card) => card == blackcard).length ||
             (!this.settings.triplesOn && blackcard.pick == 3)
         );
@@ -303,37 +303,37 @@ function cardsAgainstHumanity(channel, modroles) {
         // Repairing that sometimes pick property is wrong
         if (blackcard.text.match("_") != null) {
             blackcard.pick = blackcard.text.match(/_/g).length;
-        ***REMOVED***
+        }
 
         historyBlackcards.push(blackcard);
 
         return blackcard;
-    ***REMOVED***
+    };
     this.generateWhitecard = function (player) {
         let pack =
             this.settings.packs[
                 Math.trunc(Math.random() * this.settings.packs.length)
-            ***REMOVED***
+            ];
         let whitecard;
 
         do {
             whitecard = this.replaceHTMLtags(
                 pack.whiteCards[
                     Math.trunc(Math.random() * pack.whiteCards.length)
-            ***REMOVED***
+                ],
                 false,
             ).slice(0, -1);
-        ***REMOVED*** while (player.cards.filter((card) => card == whitecard).length);
+        } while (player.cards.filter((card) => card == whitecard).length);
 
         return whitecard;
-    ***REMOVED***
+    };
 
     this.replaceHTMLtags = function (text, blackcard = true) {
         if (blackcard) {
             text = text.replace(/<br>|<br\/>/gi, "\n");
             text = text.replace(/<b>|<\/b>/gi, "**");
             text = text.replace(/<i>|<\/i>/gi, "*");
-        ***REMOVED***
+        }
 
         text = text.replace(/<.*?>/gi, "");
         text = text
@@ -345,7 +345,7 @@ function cardsAgainstHumanity(channel, modroles) {
             .replace(/&trade;/gi, "™");
 
         return text;
-    ***REMOVED***
+    };
 
     this.join = function (discordPlayer) {
         if (
@@ -367,13 +367,13 @@ function cardsAgainstHumanity(channel, modroles) {
                 this.settings.maxPlayers +
                 ")",
         );
-        channel.send({ embeds: [embed] ***REMOVED***);
+        channel.send({ embeds: [embed] });
 
         if (this.players.length == 1) this.settings.adminId = discordPlayer.id;
 
         devMode && console.log("*\nPLAYER JOINED\n*");
         return true;
-    ***REMOVED***
+    };
 
     this.leave = function (member, kickedTag = "") {
         // if kickedTag exist kick this player, otherwise member is leaving
@@ -382,55 +382,55 @@ function cardsAgainstHumanity(channel, modroles) {
 
         if (kickedTag) {
             // Kick
-            leavePlayerId = kickedTag.match(/<@!?(\d+)>/i)[1***REMOVED***
+            leavePlayerId = kickedTag.match(/<@!?(\d+)>/i)[1];
 
             this.players = this.players.filter((player) => {
                 if (player.discordPlayer.id == leavePlayerId) {
                     // <@!530704313581043713> = mention
                     kicked = true;
                     return false;
-                ***REMOVED***
+                }
                 return true;
-        ***REMOVED***
+            });
 
             if (!kicked) {
                 let embed = new discord.MessageEmbed().setDescription(
                     kickedTag + " not found",
                 );
-                channel.send({ embeds: [embed] ***REMOVED***);
+                channel.send({ embeds: [embed] });
                 return;
-            ***REMOVED***
+            }
 
             let embed = new discord.MessageEmbed().setDescription(
                 kickedTag + " was kicked!",
             );
-            channel.send({ embeds: [embed] ***REMOVED***);
-        ***REMOVED*** else {
+            channel.send({ embeds: [embed] });
+        } else {
             // Leave
             leavePlayerId = member.id;
 
             this.players = this.players.filter((gamePlayer) => {
                 return gamePlayer.discordPlayer != member;
-        ***REMOVED***
+            });
 
             let embed = new discord.MessageEmbed().setDescription(
                 member.toString() + " left the game!",
             );
-            channel.send({ embeds: [embed] ***REMOVED***);
-        ***REMOVED***
+            channel.send({ embeds: [embed] });
+        }
 
         if (this.players.length < 2) {
             this.end();
             return;
-        ***REMOVED***
+        }
 
         // Set new czar if kicked player is czar
         if (typeof this.players[this.settings.czar] == "undefined") {
             this.settings.czar++;
             if (this.settings.czar == this.players.length) {
                 this.settings.czar = 0;
-            ***REMOVED***
-        ***REMOVED***
+            }
+        }
 
         if (member.id == this.settings.adminId) {
             let random = Math.floor(Math.random() * this.players.length);
@@ -440,29 +440,29 @@ function cardsAgainstHumanity(channel, modroles) {
                 this.players[random].discordPlayer.user.toString() +
                     " is the new game master!",
             );
-            channel.send({ embeds: [embed] ***REMOVED***);
-        ***REMOVED***
+            channel.send({ embeds: [embed] });
+        }
 
         this.checkIfPlayersReady();
-    ***REMOVED***
+    };
 
     this.start = function () {
         this.nextRound();
-    ***REMOVED***
+    };
 
     this.end = function () {
         this.settings.end = true;
-        this.players = [***REMOVED***
+        this.players = [];
 
         clearTimeout(nextRoundTimeout);
 
         let embed = new discord.MessageEmbed()
             .setTitle("Game Ended")
             .setDescription("\n\n" + this.generateTable());
-        channel.send({ embeds: [embed] ***REMOVED***);
+        channel.send({ embeds: [embed] });
 
         return;
-    ***REMOVED***
+    };
 
     this.generateTable = function () {
         let table = "";
@@ -474,7 +474,7 @@ function cardsAgainstHumanity(channel, modroles) {
                 this.players[i].nick + ": **" + this.players[i].points + "**\n";
 
         return table;
-    ***REMOVED***
+    };
 
     this.cleanRound = function () {
         // Renew cards, clear player temps
@@ -486,7 +486,7 @@ function cardsAgainstHumanity(channel, modroles) {
                         if (card == this.players[i].activeCards[j])
                             return false;
                     return true;
-            ***REMOVED***
+                });
 
                 for (
                     let j = 0;
@@ -503,25 +503,25 @@ function cardsAgainstHumanity(channel, modroles) {
                         0,
                         this.generateWhitecard(this.players[i]),
                     );
-            ***REMOVED***
+            }
 
             clearTimeout(this.players[i].playerAlert);
 
-            this.players[i].activeCards = [***REMOVED***
+            this.players[i].activeCards = [];
             this.players[i].ready = false;
             this.players[i].activeBlanks = 0;
             this.players[i].collector = null;
             this.players[i].playerAlert = null;
             this.players[i].tempAnswer = "";
             this.players[i].answerEmoji = "";
-        ***REMOVED***
+        }
 
         this.settings.czar++;
 
         if (this.settings.czar == this.players.length) this.settings.czar = 0;
 
         this.settings.activePlayers = 0;
-    ***REMOVED***
+    };
 
     this.nextRound = function () {
         devMode && console.log("***** New round *****");
@@ -541,14 +541,14 @@ function cardsAgainstHumanity(channel, modroles) {
                 this.generateTitleText(this.activeBlackcard) + picks,
             );
 
-        channel.send({ embeds: [embed] ***REMOVED***);
+        channel.send({ embeds: [embed] });
         // Send to players
         thisRound = this.settings.round;
 
         for (let i = 0; i < this.players.length; i++) {
             this.sendQuestion(this.players[i]);
-        ***REMOVED***
-    ***REMOVED***
+        }
+    };
 
     this.fillHand = function (player) {
         for (
@@ -557,19 +557,19 @@ function cardsAgainstHumanity(channel, modroles) {
             i++
         ) {
             player.cards.push(this.generateWhitecard(player));
-        ***REMOVED***
+        }
 
         if (this.settings.blankOn) player.cards.push("___");
-    ***REMOVED***
+    };
 
     this.checkIfPlayersReady = function () {
         for (let i = 0; i < this.players.length; i++) {
             if (!this.players[i].ready) return false;
-        ***REMOVED***
+        }
 
         this.allPlayersPicked();
         return true;
-    ***REMOVED***
+    };
 
     this.generateTitleText = function () {
         return (
@@ -578,7 +578,7 @@ function cardsAgainstHumanity(channel, modroles) {
             this.activeBlackcard.text +
             "\n\n"
         );
-    ***REMOVED***
+    };
 
     this.isInGame = function (player) {
         if (
@@ -587,10 +587,10 @@ function cardsAgainstHumanity(channel, modroles) {
             ).length
         ) {
             return true;
-        ***REMOVED*** else {
+        } else {
             return false;
-        ***REMOVED***
-    ***REMOVED***
+        }
+    };
 
     this.waitForBlank = async function (discordPlayer) {
         let blank;
@@ -600,11 +600,11 @@ function cardsAgainstHumanity(channel, modroles) {
                 .awaitMessages(messFilter, {
                     max: 1,
                     time: this.settings.answerDelay - 20000,
-                ***REMOVED***)
+                })
                 .then((collected) => {
                     const mess = collected.first();
                     blank = mess.content;
-                ***REMOVED***)
+                })
                 .catch((err) => {
                     if (devMode || logMode) {
                         mine.log(
@@ -615,14 +615,14 @@ function cardsAgainstHumanity(channel, modroles) {
                         );
                         console.log("Player didnt answer blank:");
                         console.log(err);
-                    ***REMOVED***
+                    }
 
                     return "";
-            ***REMOVED***
-    ***REMOVED***
+                });
+        });
 
         return blank;
-    ***REMOVED***
+    };
 
     this.allPlayersPicked = function () {
         if (thisRound != this.settings.round) return;
@@ -637,7 +637,7 @@ function cardsAgainstHumanity(channel, modroles) {
                     mine.getLine(),
                     mine.getFunc(),
                 );
-        ***REMOVED***
+        }
 
         (devMode || logMode) && console.log("All players picked");
 
@@ -654,34 +654,34 @@ function cardsAgainstHumanity(channel, modroles) {
                         index < this.settings.activePlayers &&
                         reaction.emoji.name == emoji
                     );
-                ***REMOVED***).length
+                }).length
             );
-        ***REMOVED***
+        };
 
         // Create embed for picking card
         let _found =
             this.activeBlackcard.text.match("_") == null ? false : true;
         let text = this.activeBlackcard.text + "\n\n";
         let temp;
-        let history = [***REMOVED***
+        let history = [];
         let afkPlayers = 0;
 
         if (!this.activeBlackcard) {
             channel.send("```Round skipped.```");
             this.nextRound();
-        ***REMOVED***
+        }
 
         for (let i = 0; i < this.players.length; i++) {
             temp = this.activeBlackcard.text;
             // Randomize players
             do {
                 randomed = Math.floor(Math.random() * this.players.length);
-            ***REMOVED*** while (history.filter((player) => player == randomed).length);
+            } while (history.filter((player) => player == randomed).length);
 
             if (this.players[randomed].afk) {
                 afkPlayers++;
                 continue;
-            ***REMOVED***
+            }
 
             if (_found) {
                 for (
@@ -693,9 +693,9 @@ function cardsAgainstHumanity(channel, modroles) {
                         "\\_",
                         "**" + this.players[randomed].activeCards[o] + "**",
                     );
-                ***REMOVED***
+                }
                 text += emojis[i - afkPlayers] + " " + temp + "\n\n";
-            ***REMOVED*** else {
+            } else {
                 temp +=
                     " **" + this.players[randomed].activeCards.join(" ") + "**";
                 text +=
@@ -703,23 +703,23 @@ function cardsAgainstHumanity(channel, modroles) {
                     " **" +
                     this.players[randomed].activeCards.join(" ") +
                     "**\n\n";
-            ***REMOVED***
+            }
 
             this.players[randomed].tempAnswer = temp;
-            this.players[randomed].answerEmoji = emojis[i - afkPlayers***REMOVED***
+            this.players[randomed].answerEmoji = emojis[i - afkPlayers];
             history.push(randomed);
-        ***REMOVED***
+        }
 
         if (this.players.length == afkPlayers) {
             channel.send("```Round skipped.```");
             this.nextRound();
-        ***REMOVED***
+        }
 
         let embed = new discord.MessageEmbed().setDescription(
             czar + " is picking\n\n" + text,
         );
         // Sending Czar question to main channel
-        channel.send({ embeds: [embed] ***REMOVED***).then((m) => {
+        channel.send({ embeds: [embed] }).then((m) => {
             // Czar picking message
             for (let o = 0; o < this.settings.activePlayers; o++)
                 m.react(emojis[o]);
@@ -728,7 +728,7 @@ function cardsAgainstHumanity(channel, modroles) {
                 filter: czarFilter,
                 time: this.settings.answerDelay + 20000,
                 max: 1,
-        ***REMOVED***
+            });
 
             collector.on("collect", (r) => {
                 if (this.settings.end) return;
@@ -741,7 +741,7 @@ function cardsAgainstHumanity(channel, modroles) {
                         mine.getFunc(),
                     );
                     console.log("CZAR REACTED");
-                ***REMOVED***
+                }
 
                 for (let o = 0; o < this.players.length; o++)
                     // CZAR PICKED ANSWER
@@ -765,7 +765,7 @@ function cardsAgainstHumanity(channel, modroles) {
                         let embed = new discord.MessageEmbed()
                             .setTitle(title)
                             .setDescription(text);
-                        channel.send({ embeds: [embed] ***REMOVED***);
+                        channel.send({ embeds: [embed] });
 
                         // m.reactions.removeAll();
                         if (this.players[o].points == this.settings.winPoints) {
@@ -780,16 +780,16 @@ function cardsAgainstHumanity(channel, modroles) {
                                         "\n\n" +
                                         this.generateTable(),
                                 );
-                            channel.send({ embeds: [embed] ***REMOVED***);
+                            channel.send({ embeds: [embed] });
                             this.settings.end = true;
-                        ***REMOVED***
+                        }
 
                         nextRoundTimeout = setTimeout(
                             () => this.nextRound(),
                             this.settings.roundDelay,
                         );
-                    ***REMOVED***
-        ***REMOVED***
+                    }
+            });
 
             collector.on("end", (collected) => {
                 // m.reactions.removeAll();
@@ -802,30 +802,30 @@ function cardsAgainstHumanity(channel, modroles) {
 
                     // AFK CZAR
                     for (let i = 0; i < this.players.length; i++) {
-                        this.players[i].activeCards = [***REMOVED***
+                        this.players[i].activeCards = [];
                         this.players[i].ready = false;
-                    ***REMOVED***
+                    }
 
                     let embed = new discord.MessageEmbed().setDescription(
                         "Czar **" + czar + "** is AFK, round skipped",
                     );
-                    channel.send({ embeds: [embed] ***REMOVED***);
+                    channel.send({ embeds: [embed] });
                     this.settings.czar++;
 
                     if (this.settings.czar == this.players.length) {
                         this.settings.czar = 0;
-                    ***REMOVED***
+                    }
 
                     this.settings.activePlayers = 0;
                     nextRoundTimeout = setTimeout(
                         () => this.nextRound(),
                         this.settings.roundDelay,
                     );
-                ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
+                }
+            });
+        });
         // Czar picking message END
-    ***REMOVED***
+    };
 
     this.sendQuestion = function (player) {
         if (player == this.players[this.settings.czar] && !devMode) return;
@@ -847,11 +847,11 @@ function cardsAgainstHumanity(channel, modroles) {
                 " " +
                 player.cards[i] +
                 "\n";
-        ***REMOVED***
+        }
 
         if (player.canThrowHand && this.settings.throwHand) {
             cards += "\n" + Xemoji + " throw entire hand\n";
-        ***REMOVED***
+        }
 
         let playerText = this.generateTitleText() + cards + "\n\n" + picks;
         let playerEmbed = new discord.MessageEmbed().setDescription(playerText);
@@ -863,9 +863,9 @@ function cardsAgainstHumanity(channel, modroles) {
                 let embed = new discord.MessageEmbed().setDescription(
                     "You have only " + 20 + " seconds to answer.",
                 );
-                player.discordPlayer.send({ embeds: [embed] ***REMOVED***);
-            ***REMOVED***
-        ***REMOVED***, this.settings.answerDelay - 20000);
+                player.discordPlayer.send({ embeds: [embed] });
+            }
+        }, this.settings.answerDelay - 20000);
 
         player.discordPlayer
             .send(playerEmbed)
@@ -887,7 +887,7 @@ function cardsAgainstHumanity(channel, modroles) {
                     filter: filter,
                     time: this.settings.answerDelay,
                     dispose: true,
-            ***REMOVED***
+                });
 
                 player.collector.on("collect", async (r) => {
                     // Waiting for players picks
@@ -898,12 +898,12 @@ function cardsAgainstHumanity(channel, modroles) {
                         player.canThrowHand &&
                         this.settings.throwHand
                     ) {
-                        player.cards = [***REMOVED***
+                        player.cards = [];
                         this.fillHand(player);
                         player.canThrowHand = false;
                         this.sendQuestion(player);
                         return;
-                    ***REMOVED***
+                    }
 
                     if (player.ready)
                         // Player answered already
@@ -917,7 +917,7 @@ function cardsAgainstHumanity(channel, modroles) {
                             mine.getFunc(),
                         );
                         console.log("Player " + player.nick + " REACTED");
-                    ***REMOVED***
+                    }
 
                     for (let o = 0; o < player.cards.length; o++) {
                         if (
@@ -937,7 +937,7 @@ function cardsAgainstHumanity(channel, modroles) {
                                         mine.getFunc(),
                                     );
                                     console.log("BLANK PICKED");
-                                ***REMOVED***
+                                }
 
                                 player.discordPlayer.send(
                                     new discord.MessageEmbed().setDescription(
@@ -955,10 +955,10 @@ function cardsAgainstHumanity(channel, modroles) {
                                     player.ready = true;
                                     this.checkIfPlayersReady();
                                     return;
-                                ***REMOVED***
+                                }
 
                                 if (this.settings.end) return;
-                            ***REMOVED***
+                            }
 
                             answers++;
 
@@ -968,13 +968,13 @@ function cardsAgainstHumanity(channel, modroles) {
                                     "need to answer: " +
                                         this.activeBlackcard.pick,
                                 );
-                            ***REMOVED***
+                            }
 
                             if (blank) {
                                 player.activeCards.push(blank);
-                            ***REMOVED*** else {
+                            } else {
                                 player.activeCards.push(player.cards[o]); // Make sure its not repeated?   - takes answers from old messages too
-                            ***REMOVED***
+                            }
 
                             (devMode || logMode) &&
                                 console.log(
@@ -994,21 +994,21 @@ function cardsAgainstHumanity(channel, modroles) {
                                     );
 
                                 player.discordPlayer
-                                    .send({ embeds: [embed] ***REMOVED***)
+                                    .send({ embeds: [embed] })
                                     .then((mess) => {
                                         afterpickMessageId = mess.id;
-                                ***REMOVED***
+                                    });
 
                                 player.ready = true;
                                 player.afk = false;
                                 this.settings.activePlayers++;
                                 this.checkIfPlayersReady();
-                            ***REMOVED***
+                            }
 
                             return;
-                        ***REMOVED***
-                    ***REMOVED***
-            ***REMOVED***
+                        }
+                    }
+                });
 
                 player.collector.on("end", (collected) => {
                     if (this.settings.end || thisRound != this.settings.round)
@@ -1025,7 +1025,7 @@ function cardsAgainstHumanity(channel, modroles) {
                             mine.getFunc(),
                         );
                         console.log("Player " + player.nick + " IS AFK");
-                    ***REMOVED***
+                    }
 
                     player.discordPlayer.send(
                         "```You were skipped this round.```",
@@ -1034,7 +1034,7 @@ function cardsAgainstHumanity(channel, modroles) {
                     player.ready = true;
 
                     this.checkIfPlayersReady();
-            ***REMOVED***
+                });
 
                 player.collector.on("remove", (removed) => {
                     if (thisRound != this.settings.round) return;
@@ -1047,7 +1047,7 @@ function cardsAgainstHumanity(channel, modroles) {
                             mine.getFunc(),
                         );
                         console.log("reaction removed: " + removed.emoji.name);
-                    ***REMOVED***
+                    }
 
                     if (player.ready) {
                         player.ready = false;
@@ -1061,9 +1061,9 @@ function cardsAgainstHumanity(channel, modroles) {
                                         "Answer changed!",
                                     );
 
-                                mess.edit({ embeds: [embed] ***REMOVED***);
-                        ***REMOVED***
-                    ***REMOVED***
+                                mess.edit({ embeds: [embed] });
+                            });
+                    }
 
                     answers--;
 
@@ -1071,29 +1071,29 @@ function cardsAgainstHumanity(channel, modroles) {
                         player.activeCards = player.activeCards.filter(
                             (card) => {
                                 return card != blank;
-                            ***REMOVED***,
+                            },
                         );
 
                         blank = "";
                         player.blankActive--;
-                    ***REMOVED*** else {
+                    } else {
                         for (let o = 0; o < player.cards.length; o++) {
                             if (removed.emoji.name == emojis[o]) {
                                 player.activeCards = player.activeCards.filter(
                                     (card) => {
-                                        return card != player.cards[o***REMOVED***
-                                    ***REMOVED***,
+                                        return card != player.cards[o];
+                                    },
                                 );
-                            ***REMOVED***
-                        ***REMOVED***
-                    ***REMOVED***
+                            }
+                        }
+                    }
 
                     if (devMode || logMode) {
                         console.log("activecards for " + player.nick);
                         console.log(player.activeCards);
-                    ***REMOVED***
-            ***REMOVED***
-            ***REMOVED***)
+                    }
+                });
+            })
             .catch((err) => {
                 // Kick no DM player from game
                 let embed = new discord.MessageEmbed().setDescription(
@@ -1110,17 +1110,17 @@ function cardsAgainstHumanity(channel, modroles) {
                     );
                     console.log("Kicked no DM player from game");
                     console.log(err);
-                ***REMOVED***
+                }
 
-                channel.send({ embeds: [embed] ***REMOVED***);
-                this.leave({***REMOVED***, player.discordPlayer.toString());
-        ***REMOVED***
+                channel.send({ embeds: [embed] });
+                this.leave({}, player.discordPlayer.toString());
+            });
         // Question to player End
-    ***REMOVED***
-***REMOVED***
+    };
+}
 
-***REMOVED***
+module.exports = {
     cardsAgainstHumanity,
     help,
     settingsHelp,
-***REMOVED***
+};

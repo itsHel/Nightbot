@@ -1,14 +1,14 @@
 const discord = require("discord.js");
 const mongo = require("./mymongo");
 
-***REMOVED***
+const filter = (reaction, user) => {
     return !user.bot;
-***REMOVED***
+};
 
 async function newRole(user, roleChannel) {
-    let role = {***REMOVED***
-    let emotes = [***REMOVED***
-    let roles = [***REMOVED***
+    let role = {};
+    let emotes = [];
+    let roles = [];
     let error = null;
 
     user.send("Enter title (enter . to skip)")
@@ -18,13 +18,13 @@ async function newRole(user, roleChannel) {
                     if (!roleChannel) {
                         chan.send("```Roleroom does not exist```");
                         throw "no channel";
-                    ***REMOVED***
+                    }
 
                     chan.awaitMessages(
                         function () {
                             return true;
-                        ***REMOVED***,
-                        { max: 1, time: 60000 ***REMOVED***,
+                        },
+                        { max: 1, time: 60000 },
                     )
                         .then(async (collected) => {
                             if (!collected.first()) throw "timeout";
@@ -34,8 +34,8 @@ async function newRole(user, roleChannel) {
                             chan.awaitMessages(
                                 function () {
                                     return true;
-                                ***REMOVED***,
-                                { max: 1, time: 60000 ***REMOVED***,
+                                },
+                                { max: 1, time: 60000 },
                             )
                                 .then(async (collected) => {
                                     if (!collected.first()) throw "timeout";
@@ -47,8 +47,8 @@ async function newRole(user, roleChannel) {
                                     chan.awaitMessages(
                                         function () {
                                             return true;
-                                        ***REMOVED***,
-                                        { max: 1, time: 60000 ***REMOVED***,
+                                        },
+                                        { max: 1, time: 60000 },
                                     )
                                         .then(async (collected) => {
                                             if (!collected.first())
@@ -62,8 +62,8 @@ async function newRole(user, roleChannel) {
                                             chan.awaitMessages(
                                                 function () {
                                                     return true;
-                                                ***REMOVED***,
-                                                { max: 1, time: 60000 ***REMOVED***,
+                                                },
+                                                { max: 1, time: 60000 },
                                             )
                                                 .then(async (collected) => {
                                                     if (!collected.first())
@@ -77,8 +77,8 @@ async function newRole(user, roleChannel) {
                                                     chan.awaitMessages(
                                                         function () {
                                                             return true;
-                                                        ***REMOVED***,
-                                                        { max: 1, time: 60000 ***REMOVED***,
+                                                        },
+                                                        { max: 1, time: 60000 },
                                                     ).then(
                                                         async (collected) => {
                                                             if (
@@ -124,7 +124,7 @@ async function newRole(user, roleChannel) {
                                                                                 row.length,
                                                                             ),
                                                                         );
-                                                                    ***REMOVED***,
+                                                                    },
                                                                 );
 
                                                             let embed =
@@ -156,15 +156,15 @@ async function newRole(user, roleChannel) {
                                                                 embed.setFooter(
                                                                     {
                                                                         text: role.footer,
-                                                                    ***REMOVED***,
+                                                                    },
                                                                 );
 
                                                             roleChannel
                                                                 .send({
                                                                     embeds: [
                                                                         embed,
-                                                                ***REMOVED***
-                                                                ***REMOVED***)
+                                                                    ],
+                                                                })
                                                                 .then(
                                                                     async (
                                                                         mess,
@@ -193,7 +193,7 @@ async function newRole(user, roleChannel) {
                                                                                 emoji =
                                                                                     emotes[
                                                                                         i
-                                                                                    ***REMOVED***
+                                                                                    ];
                                                                             try {
                                                                                 await mess
                                                                                     .react(
@@ -220,10 +220,10 @@ async function newRole(user, roleChannel) {
                                                                                             console.log(
                                                                                                 error,
                                                                                             );
-                                                                                        ***REMOVED***,
+                                                                                        },
                                                                                     );
-                                                                            ***REMOVED*** catch (err) {***REMOVED***
-                                                                        ***REMOVED***
+                                                                            } catch (err) {}
+                                                                        }
 
                                                                         if (
                                                                             error
@@ -236,7 +236,7 @@ async function newRole(user, roleChannel) {
                                                                                     filter: filter,
                                                                                     time: 0,
                                                                                     dispose: true,
-                                                                                ***REMOVED***,
+                                                                                },
                                                                             );
                                                                         createRoleCollector(
                                                                             collector,
@@ -246,7 +246,7 @@ async function newRole(user, roleChannel) {
                                                                         );
 
                                                                         return mess;
-                                                                    ***REMOVED***,
+                                                                    },
                                                                 )
                                                                 .then(
                                                                     (
@@ -258,10 +258,10 @@ async function newRole(user, roleChannel) {
                                                                             embedMessage
                                                                                 .delete()
                                                                                 .catch(
-                                                                                    () => {***REMOVED***,
+                                                                                    () => {},
                                                                                 );
                                                                             return;
-                                                                        ***REMOVED***
+                                                                        }
 
                                                                         mongo.saveRoleMessage(
                                                                             embedMessage
@@ -276,46 +276,46 @@ async function newRole(user, roleChannel) {
                                                                                 .id,
                                                                             role.unique,
                                                                         );
-                                                                    ***REMOVED***,
+                                                                    },
                                                                 );
                                                             chan.send(
                                                                 roleChannel.toString(),
                                                             );
-                                                        ***REMOVED***,
+                                                        },
                                                     );
-                                                ***REMOVED***)
+                                                })
                                                 .catch((err) => {
                                                     chan.send(
                                                         "```Cancelled```",
                                                     );
                                                     console.log(err);
-                                            ***REMOVED***
-                                        ***REMOVED***)
+                                                });
+                                        })
                                         .catch((err) => {
                                             chan.send("```Cancelled```");
                                             console.log(err);
-                                    ***REMOVED***
-                                ***REMOVED***)
+                                        });
+                                })
                                 .catch((err) => {
                                     chan.send("```Cancelled```");
                                     console.log(err);
-                            ***REMOVED***
-                        ***REMOVED***)
+                                });
+                        })
                         .catch((err) => {
                             chan.send("```Cancelled```");
                             console.log(err);
-                    ***REMOVED***
-                ***REMOVED***)
+                        });
+                })
                 .catch((err) => {
                     //chan.send("```Cancelled```");
                     console.log(err);
-            ***REMOVED***
-        ***REMOVED***)
+                });
+        })
         .catch((err) => {
             //chan.send("```Cancelled```");
             console.log(err);
-    ***REMOVED***
-***REMOVED***
+        });
+}
 
 async function setupRoleMessages(client) {
     let roles = await mongo.getRoleMessages();
@@ -331,7 +331,7 @@ async function setupRoleMessages(client) {
                             filter: filter,
                             time: 0,
                             dispose: true,
-                    ***REMOVED***
+                        });
                         createRoleCollector(
                             collector,
                             roles[guild][i].emotes,
@@ -341,25 +341,25 @@ async function setupRoleMessages(client) {
 
                         collector.on("collect", (collected) => {
                             console.log("REACTED");
-                    ***REMOVED***
-                    ***REMOVED***)
+                        });
+                    })
                     .catch((err) => {
                         if (
                             err.message == "Unknown Message" ||
                             err.code == 10008
                         ) {
                             mongo.deleteRoleMessage(roles[guild][i].messageid);
-                        ***REMOVED*** else {
+                        } else {
                             console.log(err);
-                        ***REMOVED***
-                ***REMOVED***
-            ***REMOVED*** else {
+                        }
+                    });
+            } else {
                 // Channel doesnt exist anymore
                 mongo.deleteRoleMessage(roles[guild][i].messageid);
-            ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
-***REMOVED***
+            }
+        }
+    }
+}
 
 function createRoleCollector(collector, emotes, roles, unique) {
     collector.on("collect", (collected, user) => {
@@ -367,10 +367,10 @@ function createRoleCollector(collector, emotes, roles, unique) {
             let thisId = emotes[i].match(/:.*:(\d+)>/);
 
             if (thisId) {
-                thisId = thisId[1***REMOVED***
-            ***REMOVED*** else {
+                thisId = thisId[1];
+            } else {
                 thisId = -1;
-            ***REMOVED***
+            }
 
             if (
                 emotes[i] == collected.emoji.name ||
@@ -399,27 +399,27 @@ function createRoleCollector(collector, emotes, roles, unique) {
                                                 removeRole.toLowerCase(),
                                         );
                                     member.roles.remove(roleObject);
-                                ***REMOVED*** catch (e) {***REMOVED***
-                    ***REMOVED***
-                    ***REMOVED***
+                                } catch (e) {}
+                        });
+                    }
                     member.roles.add(role);
-                ***REMOVED*** catch (e) {
+                } catch (e) {
                     console.log(e);
-                ***REMOVED***
+                }
                 break;
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            }
+        }
+    });
 
     collector.on("remove", (collected, user) => {
         for (let i = 0; i < emotes.length; i++) {
             let thisId = emotes[i].match(/:.*:(\d+)>/);
 
             if (thisId) {
-                thisId = thisId[1***REMOVED***
-            ***REMOVED*** else {
+                thisId = thisId[1];
+            } else {
                 thisId = -1;
-            ***REMOVED***
+            }
 
             if (
                 emotes[i] == collected.emoji.name ||
@@ -432,18 +432,18 @@ function createRoleCollector(collector, emotes, roles, unique) {
                     );
                     let member = collected.message.guild.member(user);
                     member.roles.remove(role);
-                ***REMOVED*** catch (e) {
+                } catch (e) {
                     console.log(e);
-                ***REMOVED***
+                }
                 break;
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            }
+        }
+    });
     collector.on("dispose", (collected, user) => {
         for (let i = 0; i < emotes.length; i++) {
             let thisId = emotes[i].match(/:.*:(\d+)>/);
 
-            if (thisId) thisId = thisId[1***REMOVED***
+            if (thisId) thisId = thisId[1];
 
             if (
                 emotes[i] == collected.emoji.name ||
@@ -456,20 +456,20 @@ function createRoleCollector(collector, emotes, roles, unique) {
                     );
                     let member = collected.message.guild.member(user);
                     member.roles.remove(role);
-                ***REMOVED*** catch (e) {
+                } catch (e) {
                     console.log(e);
-                ***REMOVED***
+                }
                 break;
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+            }
+        }
+    });
+}
 
 function setDefaultRole(guildSetting, role, message) {
     let roleName = role;
     if (message.mentions.roles.first()) {
         roleName = message.mentions.roles.first().name;
-    ***REMOVED***
+    }
 
     if (
         role.length &&
@@ -480,20 +480,20 @@ function setDefaultRole(guildSetting, role, message) {
     ) {
         message.channel.send("```Role not found```");
         return;
-    ***REMOVED***
+    }
 
     guildSetting.defaultrole = roleName;
-    mongo.updateSchema({ defaultrole: roleName ***REMOVED***, "settings", message.guild.id);
+    mongo.updateSchema({ defaultrole: roleName }, "settings", message.guild.id);
 
     if (roleName.length == 0) {
         message.channel.send("```Default role cancelled```");
-    ***REMOVED*** else {
+    } else {
         message.channel.send("```Default role set to " + roleName + "```");
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
-***REMOVED***
+module.exports = {
     newRole,
     setDefaultRole,
     setupRoleMessages,
-***REMOVED***
+};

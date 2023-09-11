@@ -117,8 +117,8 @@ function help(channel) {
         )
         .setColor("#d652a6")
         .setTitle("Help");
-    channel.send({ embeds: [embed] ***REMOVED***);
-***REMOVED***
+    channel.send({ embeds: [embed] });
+}
 
 function commandHelp(cmd, channel) {
     let embed;
@@ -152,7 +152,7 @@ function commandHelp(cmd, channel) {
                 )
                 .addField(settings.prefix + "rdr", "Refresh")
                 .setColor("#d652a6");
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "room":
             embed = new discord.MessageEmbed()
@@ -176,7 +176,7 @@ function commandHelp(cmd, channel) {
                 .addField(
                     "Rooms to setup: ",
                     `pinRoom, pollRoom, rolesRoom, confessRoom, delRoom, welcomeRoom, announceRoom, redditTheatre, redditText\n
-                *generalRoom* - ${settings.prefix***REMOVED***say will be sent here\n
+                *generalRoom* - ${settings.prefix}say will be sent here\n
                 *pinRoom* - Pins will be automatically sent here\n
                 *pollRoom* - Polls will be sent here\n
                 *rolesRoom* - Roles will be sent here\n
@@ -189,7 +189,7 @@ function commandHelp(cmd, channel) {
                 *redditNsfw* - Nsfw subreddits will be sent here\n`,
                 )
                 .setColor("#d652a6");
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "pins":
             embed = new discord.MessageEmbed()
@@ -219,7 +219,7 @@ function commandHelp(cmd, channel) {
                     "Deactivates/activates pins",
                 )
                 .setColor("#d652a6");
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "remind":
             embed = new discord.MessageEmbed()
@@ -232,7 +232,7 @@ function commandHelp(cmd, channel) {
                         settings.prefix +
                         "remind drink water ;16:16**\n\nm - mins, h - hours, d - days\nhours are default unit",
                 );
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "kickrole":
             embed = new discord.MessageEmbed()
@@ -243,7 +243,7 @@ function commandHelp(cmd, channel) {
                         settings.prefix +
                         "kickrole peasant**",
                 );
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "translate":
             embed = new discord.MessageEmbed()
@@ -256,7 +256,7 @@ function commandHelp(cmd, channel) {
                         settings.prefix +
                         "trlist** to get all supported languages\nuse can you *en* as shortcut for english",
                 );
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "movie":
             embed = new discord.MessageEmbed()
@@ -271,7 +271,7 @@ function commandHelp(cmd, channel) {
                         settings.prefix +
                         "search *freaks***",
                 );
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "words":
             embed = new discord.MessageEmbed()
@@ -293,7 +293,7 @@ function commandHelp(cmd, channel) {
                     "Shows suggestions of word (like autocorrect)",
                 )
                 .setColor("#d652a6");
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "duels":
             embed = new discord.MessageEmbed()
@@ -304,7 +304,7 @@ function commandHelp(cmd, channel) {
                         settings.prefix +
                         "duel *@player1***\n\nboth players must have public DMs on\nyou can use shortcut to pick (r/p/s)",
                 );
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "emotes":
             embed = new discord.MessageEmbed()
@@ -320,7 +320,7 @@ function commandHelp(cmd, channel) {
                     settings.prefix + "emotes",
                     "Shows list of most used emotes on server\nAll emotes used are counted and saved every hour\nShows only emotes with 10+ appereances",
                 );
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "roles":
             embed = new discord.MessageEmbed()
@@ -336,7 +336,7 @@ function commandHelp(cmd, channel) {
                     settings.prefix + "addrole",
                     "Let's you setup self-picking roles in roles room\nBot can use only emotes from it's servers",
                 );
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "dm":
             embed = new discord.MessageEmbed()
@@ -350,7 +350,7 @@ function commandHelp(cmd, channel) {
                 .setDescription(
                     '- can DM only users that share server with bot\n- use user\'s main account name but without id and hashtag OR you can use his tag\n- case sensitive\n- if user has spaces in name you must put his name into double quotes, like "Zeke unchained"',
                 );
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
         case "russianroulette":
             embed = new discord.MessageEmbed()
@@ -363,12 +363,12 @@ function commandHelp(cmd, channel) {
                         settings.prefix +
                         "rr *@players* *bullets* kick/ban force**\n\n**bullets** - number of bullets added each new round (default 0)\n**force** - skips confirm dialog, author won't be in game, admin command",
                 );
-            channel.send({ embeds: [embed] ***REMOVED***);
+            channel.send({ embeds: [embed] });
             break;
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
-***REMOVED***
+module.exports = {
     help,
     commandHelp,
-***REMOVED***
+};

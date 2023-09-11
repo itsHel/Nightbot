@@ -16,38 +16,38 @@ function gifs(cmd, args, channel) {
     if (cmd.length == 4) {
         //gifA = anime option
         temp.push("anime");
-    ***REMOVED***
+    }
 
     let words = temp
         .map((word) => {
             return word;
-        ***REMOVED***)
+        })
         .join("+");
 
     let url = tenorUrlBase + words + "&key=" + process.env.TENOR_KEY + limit;
-    request.get(url, { json: true ***REMOVED***, (err, res, resp) => {
+    request.get(url, { json: true }, (err, res, resp) => {
         if (err) return console.error(err);
 
         if (!resp.results?.length) {
             channel
                 .send("```not found```")
-                .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), settings.autoDelDelay));
+                .then((mess) => setTimeout(() => mess.delete().catch(() => {}), settings.autoDelDelay));
             return;
-        ***REMOVED***
+        }
 
         let imageUrl = resp.results[0].media[0].gif.url;
         let embed = new discord.MessageEmbed().setImage(imageUrl);
-        //.setFooter({text: "Score: " + resp.score***REMOVED***);
-        channel.send({ embeds: [embed] ***REMOVED***);
-***REMOVED***
-***REMOVED***
+        //.setFooter({text: "Score: " + resp.score});
+        channel.send({ embeds: [embed] });
+    });
+}
 
 // _pf
 function danbooru(cmd, args, channel) {
     //https://danbooru.donmai.us/posts.json?tags=fuck&random=true&limit=100
     args = args.replace(/<@.+>/, "");
     let splitted = args.split(";");
-    let minScore = splitted[1***REMOVED***
+    let minScore = splitted[1];
 
     if (minScore == undefined) minScore = 5;
 
@@ -56,106 +56,106 @@ function danbooru(cmd, args, channel) {
     if (cmd.length == 2) {
         //gifA = anime option
         temp.push("gif");
-    ***REMOVED***
+    }
 
     console.log(temp);
 
     if (temp.length > 2) {
         channel.send("```You cannot search for more than 2 tags at a time```");
         return;
-    ***REMOVED***
+    }
 
     let words = temp
         .map((word) => {
             return word;
-        ***REMOVED***)
+        })
         .join("+");
 
     let url = booruUrlBase + "tags=" + words + "&random=true&limit=100";
 
-    request.get(url, { json: true ***REMOVED***, (err, res, resp) => {
+    request.get(url, { json: true }, (err, res, resp) => {
         if (err) return console.error(err);
 
         if (!resp.length) {
             channel
                 .send("```not found```")
-                .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), settings.autoDelDelay));
+                .then((mess) => setTimeout(() => mess.delete().catch(() => {}), settings.autoDelDelay));
             return;
-        ***REMOVED***
+        }
 
         let imageUrl, embed;
         for (let i = 0; i < resp.length; i++) {
             if (resp[i].score > minScore && resp[i].file_url != undefined) {
                 imageUrl = resp[i].file_url;
 
-                embed = new discord.MessageEmbed().setImage(imageUrl).setFooter({ text: "Score: " + resp[i].score ***REMOVED***);
+                embed = new discord.MessageEmbed().setImage(imageUrl).setFooter({ text: "Score: " + resp[i].score });
                 break;
-            ***REMOVED***
-        ***REMOVED***
+            }
+        }
 
-        channel.send({ embeds: [embed] ***REMOVED***);
-***REMOVED***
-***REMOVED***
+        channel.send({ embeds: [embed] });
+    });
+}
 
 function getBooty(url, channel) {
     if (!channel.nsfw) {
         channel.send("nsfw room only you pervert");
         return;
-    ***REMOVED***
+    }
 
     request(
         {
             method: "GET",
             json: true,
             url: url,
-        ***REMOVED***,
+        },
         (err, resp, data) => {
             if (err) return console.error(err);
 
             let picUrl = url.replace("api", "media").replace("0/1/random", "");
             let embed = getBootyEmbed(picUrl, data[0].id);
 
-            channel.send({ embeds: [embed] ***REMOVED***).then((mess) => {
+            channel.send({ embeds: [embed] }).then((mess) => {
                 mess.react("⬅").then(() => mess.react("➡"));
 
                 let message = new apis.defMessage(mess.id, data[0].id);
                 let collector = mess.createReactionCollector({
                     filter: settings.filter,
                     time: 100000,
-            ***REMOVED***
+                });
 
                 collector.on("collect", (r) => {
                     if (r.emoji.name == "⬅") {
                         message.pos--;
-                    ***REMOVED*** else if (r.emoji.name == "➡") {
+                    } else if (r.emoji.name == "➡") {
                         message.pos++;
-                    ***REMOVED***
+                    }
 
                     embed = getBootyEmbed(picUrl, message.pos);
 
                     channel.messages.fetch(message.id).then((mess) => {
-                        mess.edit({ embeds: [embed] ***REMOVED***);
-                ***REMOVED***
+                        mess.edit({ embeds: [embed] });
+                    });
 
                     mess.reactions.removeAll().then(() => {
                         mess.react("⬅").then(() => mess.react("➡"));
-                ***REMOVED***
-            ***REMOVED***
+                    });
+                });
 
                 collector.on("end", (collected) => {
                     channel.messages.fetch(message.id).then((mess) => mess.reactions.removeAll());
-            ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***
+                });
+            });
+        }
     );
-***REMOVED***
+}
 
 // https://github.com/RaphielHS/akaneko-wrapper
 async function hentaiAkaneko(cmd, arg, channel) {
     if (!channel.nsfw) {
         channel.send("```nsfw room only you pervert```");
         return;
-    ***REMOVED***
+    }
 
     let imgUrl;
 
@@ -206,8 +206,8 @@ async function hentaiAkaneko(cmd, arg, channel) {
                 default:
                     imgUrl = await akaneko.nsfw.hentai();
                     break;
-            ***REMOVED***
-        ***REMOVED*** else if (cmd == "anime") {
+            }
+        } else if (cmd == "anime") {
             //sfw
             switch (arg.toLowerCase()) {
                 case "tags":
@@ -225,29 +225,29 @@ async function hentaiAkaneko(cmd, arg, channel) {
                 case "foxgirl":
                     imgUrl = await akaneko.foxgirl();
                     break;
-            ***REMOVED***
-        ***REMOVED***
-    ***REMOVED*** catch (err) {
+            }
+        }
+    } catch (err) {
         console.log(err);
         channel.send("```Error has occured, try again later```");
 
         return;
-    ***REMOVED***
+    }
 
     let embed = new discord.MessageEmbed().setImage(imgUrl).setTitle(arg);
-    channel.send({ embeds: [embed] ***REMOVED***);
-***REMOVED***
+    channel.send({ embeds: [embed] });
+}
 
 function getBootyEmbed(url, id) {
     let myUrl = url + id.toString().padStart(5, "0") + ".jpg";
     let embed = new discord.MessageEmbed().setTitle(":flushed:").setImage(myUrl);
 
     return embed;
-***REMOVED***
+}
 
-***REMOVED***
+module.exports = {
     gifs,
     getBooty,
     danbooru,
     hentaiAkaneko,
-***REMOVED***
+};
