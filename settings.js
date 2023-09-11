@@ -64,8 +64,6 @@ module.exports = {
     leaveQuotes,
     gladosCheers,
     adminRoles,
-    Hel,
-    defaultGuild,
     filter,
     getLeaveQuote,
 };

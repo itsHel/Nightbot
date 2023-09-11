@@ -82,10 +82,6 @@ client.on("ready", async () => {
         }
     }
 
-    // if(channels[settings.defaultGuild]){
-    //     quotes.simpsons(client.channels.cache.get(channels[settings.defaultGuild].generalroom));
-    // }
-
     setIntervalsAll(guilds);
 });
 
@@ -97,8 +93,7 @@ client.on("messageCreate", async (message) => {
     if (message.guild) {
         guildId = message.guild.id;
     } else {
-        guildId = settings.defaultGuild;
-        // guildId = 0;
+        guildId = process.env.DEFAULT_GUILD_ID;
     }
 
     if (message.channel.type != "DM") {
@@ -873,8 +868,8 @@ function setIntervalsAll(guilds) {
     // Every 68 - 76 hours send quote to main channel
     (function autoSend() {
         setTimeout(function () {
-            if (channels[settings.defaultGuild]) {
-                quotes.simpsons(client.channels.cache.get(channels[settings.defaultGuild].generalroom));
+            if (channels[process.env.DEFAULT_GUILD_ID]) {
+                quotes.simpsons(client.channels.cache.get(channels[process.env.DEFAULT_GUILD_ID].generalroom));
             }
 
             autoSend();

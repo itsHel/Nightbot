@@ -112,60 +112,60 @@ function defMessage(id, pos, definitions = []) {
 }
 
 // Old translator
-function yandexTranslate(message, args) {
-    let text = args.toLowerCase().split(";");
-    let firstLang = "en";
-    let secondLang = "cs";
+// function yandexTranslate(message, args) {
+//     let text = args.toLowerCase().split(";");
+//     let firstLang = "en";
+//     let secondLang = "cs";
 
-    if (text.length == 2) {
-        // Language renaming
-        let index = text[1].indexOf(" ");
-        firstLang = text[1].slice(0, index);
-        secondLang = text[1].substring(index + 1);
-        if (firstLang != "en") firstLang = Object.keys(langs).find((key) => langs[key].toLowerCase() == firstLang);
-        if (secondLang != "en") secondLang = Object.keys(langs).find((key) => langs[key].toLowerCase() == secondLang);
-    }
+//     if (text.length == 2) {
+//         // Language renaming
+//         let index = text[1].indexOf(" ");
+//         firstLang = text[1].slice(0, index);
+//         secondLang = text[1].substring(index + 1);
+//         if (firstLang != "en") firstLang = Object.keys(langs).find((key) => langs[key].toLowerCase() == firstLang);
+//         if (secondLang != "en") secondLang = Object.keys(langs).find((key) => langs[key].toLowerCase() == secondLang);
+//     }
 
-    text[0] = specChars(text[0]);
-    let url =
-        "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" +
-        settings.yandexKey +
-        "&text=" +
-        text[0] +
-        "&lang=" +
-        firstLang +
-        "-" +
-        secondLang;
+//     text[0] = specChars(text[0]);
+//     let url =
+//         "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" +
+//         process.env.YANDEX_KEY +
+//         "&text=" +
+//         text[0] +
+//         "&lang=" +
+//         firstLang +
+//         "-" +
+//         secondLang;
 
-    request(
-        {
-            method: "GET",
-            json: true,
-            url: url,
-        },
-        (err, resp, data) => {
-            if (err) return console.error(err);
+//     request(
+//         {
+//             method: "GET",
+//             json: true,
+//             url: url,
+//         },
+//         (err, resp, data) => {
+//             if (err) return console.error(err);
 
-            if (data.code != 200) {
-                message.channel.send("```language not supported, use 'trlist' to get language list ```");
-                return;
-            }
+//             if (data.code != 200) {
+//                 message.channel.send("```language not supported, use 'trlist' to get language list ```");
+//                 return;
+//             }
 
-            let translated = data.text[0];
+//             let translated = data.text[0];
 
-            if ((firstLang == "cs" || secondLang == "cs") && message.author.id == settings.Hel) {
-                autoDelDelay = 4000;
-            } else {
-                autoDelDelay = 60000;
-            }
+//             if ((firstLang == "cs" || secondLang == "cs") && message.author.id == process.env.ADMIN_ID) {
+//                 autoDelDelay = 4000;
+//             } else {
+//                 autoDelDelay = 60000;
+//             }
 
-            message.channel.send("```" + translated + "```").then((mess) => {
-                if (mess.channel.type != "DM") setTimeout(() => mess.delete().catch(() => {}), autoDelDelay);
-            });
-            setTimeout(() => message.delete().catch(() => {}), autoDelDelay);
-        }
-    );
-}
+//             message.channel.send("```" + translated + "```").then((mess) => {
+//                 if (mess.channel.type != "DM") setTimeout(() => mess.delete().catch(() => {}), autoDelDelay);
+//             });
+//             setTimeout(() => message.delete().catch(() => {}), autoDelDelay);
+//         }
+//     );
+// }
 
 function googleTranslate(message, args) {
     let text = args.toLowerCase().split(";");
@@ -193,7 +193,7 @@ function googleTranslate(message, args) {
         console.log(res);
 
         let translated = res.text;
-        if ((firstLang == "cs" || secondLang == "cs") && message.author.id == settings.Hel) {
+        if ((firstLang == "cs" || secondLang == "cs") && message.author.id == process.env.ADMIN_ID) {
             autoDelDelay = 4000;
         } else {
             autoDelDelay = 60000;
@@ -417,7 +417,6 @@ function vocabulary(args, channel, author) {
 }
 
 module.exports = {
-    yandexTranslate,
     imdb,
     imdbSearch,
     vocabulary,
