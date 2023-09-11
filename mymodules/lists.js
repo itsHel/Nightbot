@@ -83,7 +83,7 @@ function listFunctions(cmd, args, message, guildSettings) {
                         if (mylist[o] == "\n") {
                             mylist = mylist.replace(
                                 mylist.substring(i + 1, o + 1),
-                        ***REMOVED***
+                                "",
                             );
                             if (temp[2] == "1") mylist = mylist.substr(1);
                             break;

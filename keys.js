@@ -6,10 +6,10 @@ const owlKey = "ae2b42df2302c9b4ef146ebc0778cd0a857da006";
 const redditUserAgent = "discord:kingdom-bot:v1.0.1 (by /u/mylittlehell)";
 
 ***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
+    token,
+    yandexKey,
+    imdbKey,
+    tenorKey,
+    owlKey,
+    redditUserAgent,
 ***REMOVED***

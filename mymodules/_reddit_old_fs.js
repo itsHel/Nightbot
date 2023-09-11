@@ -80,7 +80,7 @@ function picsDL(url, name, channel, minUps = 250) {
                             // Img/Gif
                             img = data.children[i].data.url.replace(
                                 /amp;/g,
-                        ***REMOVED***
+                                "",
                             );
                             console.log("img, url:");
                             console.log(data.children[i].data.url);
