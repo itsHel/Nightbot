@@ -1,7 +1,6 @@
 const request = require("request");
 const discord = require("discord.js");
 const settings = require("../settings.js");
-const keys = require("../keys.js");
 const apis = require("./APIs.js");
 const akaneko = require("akaneko");
 
@@ -25,20 +24,14 @@ function gifs(cmd, args, channel) {
         ***REMOVED***)
         .join("+");
 
-    let url = tenorUrlBase + words + "&key=" + keys.tenorKey + limit;
-    console.log(url);
+    let url = tenorUrlBase + words + "&key=" + process.env.TENOR_KEY + limit;
     request.get(url, { json: true ***REMOVED***, (err, res, resp) => {
         if (err) return console.error(err);
 
         if (!resp.results?.length) {
             channel
                 .send("```not found```")
-                .then((mess) =>
-                    setTimeout(
-                        () => mess.delete().catch(() => {***REMOVED***),
-                        settings.autoDelDelay,
-                    ),
-                );
+                .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), settings.autoDelDelay));
             return;
         ***REMOVED***
 
@@ -86,12 +79,7 @@ function danbooru(cmd, args, channel) {
         if (!resp.length) {
             channel
                 .send("```not found```")
-                .then((mess) =>
-                    setTimeout(
-                        () => mess.delete().catch(() => {***REMOVED***),
-                        settings.autoDelDelay,
-                    ),
-                );
+                .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), settings.autoDelDelay));
             return;
         ***REMOVED***
 
@@ -100,9 +88,7 @@ function danbooru(cmd, args, channel) {
             if (resp[i].score > minScore && resp[i].file_url != undefined) {
                 imageUrl = resp[i].file_url;
 
-                embed = new discord.MessageEmbed()
-                    .setImage(imageUrl)
-                    .setFooter({ text: "Score: " + resp[i].score ***REMOVED***);
+                embed = new discord.MessageEmbed().setImage(imageUrl).setFooter({ text: "Score: " + resp[i].score ***REMOVED***);
                 break;
             ***REMOVED***
         ***REMOVED***
@@ -157,12 +143,10 @@ function getBooty(url, channel) {
             ***REMOVED***
 
                 collector.on("end", (collected) => {
-                    channel.messages
-                        .fetch(message.id)
-                        .then((mess) => mess.reactions.removeAll());
+                    channel.messages.fetch(message.id).then((mess) => mess.reactions.removeAll());
             ***REMOVED***
         ***REMOVED***
-        ***REMOVED***,
+        ***REMOVED***
     );
 ***REMOVED***
 
@@ -183,7 +167,7 @@ async function hentaiAkaneko(cmd, arg, channel) {
                 case "info":
                 case "help":
                     channel.send(
-                        "```Avaible tags:\nass, bdsm, cum, femdom, doujin, maid, orgy, panties, wallpaper, pussy, succubus```",
+                        "```Avaible tags:\nass, bdsm, cum, femdom, doujin, maid, orgy, panties, wallpaper, pussy, succubus```"
                     );
                     break;
                 case "ass":
@@ -229,9 +213,7 @@ async function hentaiAkaneko(cmd, arg, channel) {
                 case "tags":
                 case "info":
                 case "help":
-                    channel.send(
-                        "```Avaible tags:\nwallpaper, girl, foxgirl```",
-                    );
+                    channel.send("```Avaible tags:\nwallpaper, girl, foxgirl```");
                     break;
                 case "wallpaper":
                 default:
@@ -258,9 +240,7 @@ async function hentaiAkaneko(cmd, arg, channel) {
 
 function getBootyEmbed(url, id) {
     let myUrl = url + id.toString().padStart(5, "0") + ".jpg";
-    let embed = new discord.MessageEmbed()
-        .setTitle(":flushed:")
-        .setImage(myUrl);
+    let embed = new discord.MessageEmbed().setTitle(":flushed:").setImage(myUrl);
 
     return embed;
 ***REMOVED***

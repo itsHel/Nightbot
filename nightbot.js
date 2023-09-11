@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const discord = require("discord.js"); // 13.12.0
 const reminder = require("./mymodules/reminder.js");
 const reddit = require("./mymodules/reddit.js");
@@ -10,7 +12,6 @@ const picapis = require("./mymodules/picAPIs.js");
 const list = require("./mymodules/lists.js");
 const duel = require("./mymodules/duel.js");
 const settings = require("./settings.js");
-const keys = require("./keys.js");
 const cah = require("./mymodules/cah.js");
 const mongo = require("./mymodules/mymongo.js");
 
@@ -30,8 +31,7 @@ const roomList = [
     "redditnsfw",
     "rateroom",
 ***REMOVED***
-const wrongCommandMessage =
-    "```Wrong command syntax, try " + settings.prefix + "help command```";
+const wrongCommandMessage = "```Wrong command syntax, try " + settings.prefix + "help command```";
 
 // Globals
 var reddits = {***REMOVED***
@@ -70,13 +70,11 @@ client.on("ready", async () => {
         if (reddits[guilds[i]]) {
             try {
                 reddit.redditAll(
-                    client.channels.cache.get(
-                        channels[guilds[i]]?.reddittheatre,
-                    ),
+                    client.channels.cache.get(channels[guilds[i]]?.reddittheatre),
                     client.channels.cache.get(channels[guilds[i]]?.reddittext),
                     client.channels.cache.get(channels[guilds[i]]?.redditnsfw),
                     reddits[guilds[i]],
-                    guilds[i],
+                    guilds[i]
                 );
             ***REMOVED*** catch (err) {
                 console.log(err);
@@ -91,7 +89,7 @@ client.on("ready", async () => {
     setIntervalsAll(guilds);
 ***REMOVED***);
 
-client.login(keys.token);
+client.login(process.env.DISCORD_TOKEN);
 
 client.on("messageCreate", async (message) => {
     let guildId;
@@ -109,20 +107,11 @@ client.on("messageCreate", async (message) => {
     ***REMOVED***
 
     try {
-        if (
-            message.type == "PINS_ADD" &&
-            guildSettings[guildId].pinning &&
-            channels[guildId]?.pinroom
-        ) {
-            mine.autoPin(
-                message.channel,
-                client.channels.cache.get(channels[guildId]?.pinroom),
-                guildId,
-            );
+        if (message.type == "PINS_ADD" && guildSettings[guildId].pinning && channels[guildId]?.pinroom) {
+            mine.autoPin(message.channel, client.channels.cache.get(channels[guildId]?.pinroom), guildId);
         ***REMOVED***
         if (
-            message.content.slice(0, settings.prefix.length) ==
-                settings.prefix &&
+            message.content.slice(0, settings.prefix.length) == settings.prefix &&
             message.content.slice(0, 3) != "_ _"
         ) {
             console.log(message.content);
@@ -130,28 +119,18 @@ client.on("messageCreate", async (message) => {
             return;
         ***REMOVED***
 
-        let cmd = message.content
-            .toLowerCase()
-            .split(" ")[0]
-            .substring(settings.prefix.length);
-        let args = message.content.substring(
-            cmd.length + settings.prefix.length + 1,
-        ); // String
+        let cmd = message.content.toLowerCase().split(" ")[0].substring(settings.prefix.length);
+        let args = message.content.substring(cmd.length + settings.prefix.length + 1); // String
 
         // Cah ending
-        if (
-            message.author == client.user &&
-            message.embeds.length &&
-            message.embeds[0].title == "Game ended"
-        ) {
+        if (message.author == client.user && message.embeds.length && message.embeds[0].title == "Game ended") {
             console.log("Cah ended, games left:");
 
             cahGames = cahGames.filter((game) => {
                 return game.channel != message.channel;
         ***REMOVED***
 
-            for (let i = 0; i < cahGames.length; i++)
-                console.log(cahGames[i].channel);
+            for (let i = 0; i < cahGames.length; i++) console.log(cahGames[i].channel);
         ***REMOVED***
 
         switch (cmd) {
@@ -165,11 +144,7 @@ client.on("messageCreate", async (message) => {
                 break;
             case "poll":
                 if (channels[guildId]?.pollroom) {
-                    mine.polls(
-                        client.channels.cache.get(channels[guildId]?.pollroom),
-                        args,
-                        message.author,
-                    );
+                    mine.polls(client.channels.cache.get(channels[guildId]?.pollroom), args, message.author);
                 ***REMOVED*** else {
                     message.channel.send("```Poll room not set```");
                 ***REMOVED***
@@ -206,10 +181,7 @@ client.on("messageCreate", async (message) => {
                 ) {
                     // Game doesnt exist in this channel - start new
                     cahGames.push({
-                        game: new cah.cardsAgainstHumanity(
-                            message.channel,
-                            guildSettings[guildId].modroles,
-                        ),
+                        game: new cah.cardsAgainstHumanity(message.channel, guildSettings[guildId].modroles),
                         channel: message.channel,
                 ***REMOVED***
 
@@ -235,21 +207,11 @@ client.on("messageCreate", async (message) => {
             case "emotelist":
             case "emotestats":
                 if (message.channel.type != "DM")
-                    mine.emotesShow(
-                        guildSettings[guildId].emoteshistory,
-                        message,
-                        client,
-                    );
+                    mine.emotesShow(guildSettings[guildId].emoteshistory, message, client);
                 break;
             case "glados":
                 message.channel.send(
-                    "```" +
-                        settings.gladosCheers[
-                            Math.floor(
-                                Math.random() * settings.gladosCheers.length,
-                            )
-                        ] +
-                        "```",
+                    "```" + settings.gladosCheers[Math.floor(Math.random() * settings.gladosCheers.length)] + "```"
                 );
                 break;
             case "list":
@@ -260,12 +222,7 @@ client.on("messageCreate", async (message) => {
                 if (args.length == 0) {
                     list.showList(lastList, message.channel);
                 ***REMOVED*** else {
-                    lastList = list.listFunctions(
-                        cmd,
-                        args,
-                        message,
-                        guildSettings[guildId],
-                    );
+                    lastList = list.listFunctions(cmd, args, message, guildSettings[guildId]);
                 ***REMOVED***
                 break;
             case "gif":
@@ -275,34 +232,19 @@ client.on("messageCreate", async (message) => {
             case "confess":
             case "c":
                 if (!args) break;
-                mine.sendToChannel(
-                    args,
-                    client.channels.cache.get(channels[guildId]?.confessroom),
-                    message.channel,
-                );
+                mine.sendToChannel(args, client.channels.cache.get(channels[guildId]?.confessroom), message.channel);
                 break;
             case "announce":
-                mine.sendToChannel(
-                    args,
-                    client.channels.cache.get(channels[guildId]?.announceroom),
-                    message.channel,
-                );
+                mine.sendToChannel(args, client.channels.cache.get(channels[guildId]?.announceroom), message.channel);
                 break;
             case "say":
-                mine.sendToChannel(
-                    args,
-                    client.channels.cache.get(channels[guildId]?.generalroom),
-                    message.channel,
-                );
+                mine.sendToChannel(args, client.channels.cache.get(channels[guildId]?.generalroom), message.channel);
                 break;
             case "countdown":
             case "cd":
                 mine.countDown(3, 1000, message.channel);
                 if (message.channel.type != "DM") {
-                    setTimeout(
-                        () => message.delete().catch(() => {***REMOVED***),
-                        settings.autoDelDelay * 10,
-                    );
+                    setTimeout(() => message.delete().catch(() => {***REMOVED***), settings.autoDelDelay * 10);
                 ***REMOVED***
                 break;
             case "quote":
@@ -391,13 +333,7 @@ client.on("messageCreate", async (message) => {
                     return;
                 ***REMOVED***
 
-                duel.duel(
-                    args,
-                    message.guild,
-                    message.author,
-                    message.channel,
-                    client,
-                );
+                duel.duel(args, message.guild, message.author, message.channel, client);
                 break;
             case "rate":
                 mine.rate(
@@ -405,7 +341,7 @@ client.on("messageCreate", async (message) => {
                     client.channels.cache.get(channels[guildId]?.rateroom),
                     message.author.toString(),
                     message.channel,
-                    guildSettings[guildId].ratepeoplecount,
+                    guildSettings[guildId].ratepeoplecount
                 );
                 break;
             case "rdr": // Refreshes reddits
@@ -414,7 +350,7 @@ client.on("messageCreate", async (message) => {
                     client.channels.cache.get(channels[guildId]?.reddittext),
                     client.channels.cache.get(channels[guildId]?.redditnsfw),
                     reddits[guildId],
-                    guildId,
+                    guildId
                 );
                 if (message.channel.type != "DM") {
                     setTimeout(() => message.delete().catch(() => {***REMOVED***), 500);
@@ -425,9 +361,7 @@ client.on("messageCreate", async (message) => {
                 message.channel.send(Math.floor(Math.random() * multiply) + 1);
                 break;
             case "toss":
-                message.channel.send(
-                    Math.floor(Math.random() * 2) == 0 ? "Heads" : "Tails",
-                );
+                message.channel.send(Math.floor(Math.random() * 2) == 0 ? "Heads" : "Tails");
                 break;
             case "del":
             case "delete":
@@ -448,14 +382,8 @@ client.on("messageCreate", async (message) => {
                     ***REMOVED***
 
                     guildSettings[guildId].leavebandays = args;
-                    mongo.updateSchema(
-                        { leavebandays: args ***REMOVED***,
-                        "settings",
-                        guildId,
-                    );
-                    message.channel.send(
-                        "```Leave ban set to " + args + " days```",
-                    );
+                    mongo.updateSchema({ leavebandays: args ***REMOVED***, "settings", guildId);
+                    message.channel.send("```Leave ban set to " + args + " days```");
                 ***REMOVED***
                 break;
             case "setrate":
@@ -467,27 +395,16 @@ client.on("messageCreate", async (message) => {
                     ***REMOVED***
 
                     guildSettings[guildId].ratepeoplecount = args;
-                    mongo.updateSchema(
-                        { ratepeoplecount: args ***REMOVED***,
-                        "settings",
-                        guildId,
-                    );
-                    message.channel.send(
-                        "```Rate people count set to " + args + " humans```",
-                    );
+                    mongo.updateSchema({ ratepeoplecount: args ***REMOVED***, "settings", guildId);
+                    message.channel.send("```Rate people count set to " + args + " humans```");
                 ***REMOVED***
 
                 console.log(guildSettings[guildId].ratepeoplecount);
                 break;
             case "pinstoggle":
                 if (mine.isAdmin(message, guildSettings[guildId].modroles)) {
-                    guildSettings[guildId].pinning =
-                        !guildSettings[guildId].pinning;
-                    message.channel.send(
-                        "```Pinning is " +
-                            (guildSettings[guildId].pinning ? "On" : "Off") +
-                            "```",
-                    );
+                    guildSettings[guildId].pinning = !guildSettings[guildId].pinning;
+                    message.channel.send("```Pinning is " + (guildSettings[guildId].pinning ? "On" : "Off") + "```");
                 ***REMOVED***
                 break;
             case "pin":
@@ -500,36 +417,20 @@ client.on("messageCreate", async (message) => {
                         return;
                     ***REMOVED***
 
-                    let channel = message.guild.channels.cache.find(
-                        (channel) => channel.id == args.match(/\d+/),
-                    );
+                    let channel = message.guild.channels.cache.find((channel) => channel.id == args.match(/\d+/));
                     if (channel == undefined) {
                         message.channel
                             .send("```Room not found```")
-                            .then((mess) =>
-                                setTimeout(
-                                    () => mess.delete().catch(() => {***REMOVED***),
-                                    settings.autoDelDelay,
-                                ),
-                            );
+                            .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), settings.autoDelDelay));
                         return;
                     ***REMOVED***
 
                     guildSettings[guildId].nopinsrooms.push(channel.id);
-                    mongo.updateSchema(
-                        { nopinsrooms: guildSettings[guildId].nopinsrooms ***REMOVED***,
-                        "settings",
-                        guildId,
-                    );
+                    mongo.updateSchema({ nopinsrooms: guildSettings[guildId].nopinsrooms ***REMOVED***, "settings", guildId);
 
                     message.channel
                         .send("```Added```")
-                        .then((mess) =>
-                            setTimeout(
-                                () => mess.delete().catch(() => {***REMOVED***),
-                                settings.autoDelDelay,
-                            ),
-                        );
+                        .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), settings.autoDelDelay));
                 ***REMOVED***
                 break;
             case "nopinslist":
@@ -545,11 +446,7 @@ client.on("messageCreate", async (message) => {
             case "defaultrole":
                 // Format: _baserole peasant
                 if (mine.isAdmin(message, guildSettings[guildId].modroles)) {
-                    rolesModule.setDefaultRole(
-                        guildSettings[guildId],
-                        args,
-                        message,
-                    ); // Modifies guildSettings[guildId] obj
+                    rolesModule.setDefaultRole(guildSettings[guildId], args, message); // Modifies guildSettings[guildId] obj
                 ***REMOVED***
                 break;
             case "role":
@@ -559,10 +456,7 @@ client.on("messageCreate", async (message) => {
             case "newrole":
             case "addrole":
                 if (mine.isAdmin(message, guildSettings[guildId].modroles)) {
-                    rolesModule.newRole(
-                        message.member,
-                        client.channels.cache.get(channels[guildId]?.rolesroom),
-                    );
+                    rolesModule.newRole(message.member, client.channels.cache.get(channels[guildId]?.rolesroom));
                 ***REMOVED***
                 break;
             case "kickrole":
@@ -589,27 +483,15 @@ client.on("messageCreate", async (message) => {
             case "removereddit":
             case "deletereddit":
                 // Format: _removereddit jokes
-                if (
-                    mine.isAdmin(message, guildSettings[guildId].modroles) &&
-                    reddits[guildId]
-                ) {
-                    reddit.removeRedditFromGuild(
-                        reddits[guildId],
-                        args,
-                        message,
-                    ); // Modifies reddits[guildId] array
+                if (mine.isAdmin(message, guildSettings[guildId].modroles) && reddits[guildId]) {
+                    reddit.removeRedditFromGuild(reddits[guildId], args, message); // Modifies reddits[guildId] array
                 ***REMOVED***
                 break;
             case "reddits":
             case "redditlist":
             case "redditslist":
                 if (mine.isAdmin(message, guildSettings[guildId].modroles)) {
-                    reddit.getRooms(
-                        channels[guildId],
-                        reddits[guildId],
-                        message.channel,
-                        client,
-                    );
+                    reddit.getRooms(channels[guildId], reddits[guildId], message.channel, client);
                 ***REMOVED***
                 break;
             case "removeroom":
@@ -628,13 +510,9 @@ client.on("messageCreate", async (message) => {
                         let values = { [args[0]]: "" ***REMOVED***
 
                         mongo.updateSchema(values, "room", guildId);
-                        message.channel.send(
-                            "```Room " + args[0] + " removed" + "```",
-                        );
+                        message.channel.send("```Room " + args[0] + " removed" + "```");
                     ***REMOVED*** else {
-                        message.channel.send(
-                            "```Room " + args[0] + " not found" + "```",
-                        );
+                        message.channel.send("```Room " + args[0] + " not found" + "```");
                     ***REMOVED***
                 ***REMOVED***
                 break;
@@ -654,15 +532,11 @@ client.on("messageCreate", async (message) => {
                     ***REMOVED***
 
                     if (!roomList.filter((room) => room == args[0]).length) {
-                        message.channel.send(
-                            "```Room " + args[0] + " not found```",
-                        );
+                        message.channel.send("```Room " + args[0] + " not found```");
                         break;
                     ***REMOVED***
 
-                    let newChannel = client.channels.cache.get(
-                        args[1].replace("<#", "").replace(">", ""),
-                    );
+                    let newChannel = client.channels.cache.get(args[1].replace("<#", "").replace(">", ""));
                     if (newChannel) {
                         if (!channels[guildId]) channels[guildId] = {***REMOVED***
 
@@ -672,13 +546,11 @@ client.on("messageCreate", async (message) => {
                         mongo.updateSchema(values, "room", guildId);
 
                         let embed = new discord.MessageEmbed().setDescription(
-                            args[0] + " set to " + newChannel.toString(),
+                            args[0] + " set to " + newChannel.toString()
                         );
                         message.channel.send({ embeds: [embed] ***REMOVED***);
                     ***REMOVED*** else {
-                        message.channel.send(
-                            "```Room " + args[1] + " not found```",
-                        );
+                        message.channel.send("```Room " + args[1] + " not found```");
                     ***REMOVED***
                 ***REMOVED***
                 break;
@@ -689,15 +561,11 @@ client.on("messageCreate", async (message) => {
                     let name = { name: "Name", value: "", inline: true ***REMOVED***
                     let channelObj = { name: "Room", value: "", inline: true ***REMOVED***
 
-                    for (let [channel, id] of Object.entries(
-                        channels[guildId],
-                    )) {
+                    for (let [channel, id] of Object.entries(channels[guildId])) {
                         try {
                             if (client.channels.cache.get(id)) {
                                 name.value += channel + "\n";
-                                channelObj.value +=
-                                    client.channels.cache.get(id).toString() +
-                                    "\n";
+                                channelObj.value += client.channels.cache.get(id).toString() + "\n";
                             ***REMOVED***
                         ***REMOVED*** catch (err) {
                             console.log(err);
@@ -723,33 +591,21 @@ client.on("messageCreate", async (message) => {
                     if (args.length) {
                         let newRole = args;
                         let modRole = message.guild.roles.cache.find(
-                            (role) =>
-                                role.name.toLowerCase() ===
-                                newRole.toLowerCase(),
+                            (role) => role.name.toLowerCase() === newRole.toLowerCase()
                         );
                         if (!modRole) {
                             message.channel
                                 .send("```Role '" + newRole + "' not found```")
-                                .then((mess) =>
-                                    setTimeout(
-                                        () => mess.delete().catch(() => {***REMOVED***),
-                                        settings.autoDelDelay,
-                                    ),
-                                );
+                                .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), settings.autoDelDelay));
                             break;
                         ***REMOVED***
 
                         guildSettings[guildId].modroles.push(modRole.name);
-                        mongo.updateSchema(
-                            { modroles: modRole.name ***REMOVED***,
-                            "settings",
-                            guildId,
-                        );
+                        mongo.updateSchema({ modroles: modRole.name ***REMOVED***, "settings", guildId);
                     ***REMOVED***
 
                     let embed = new discord.MessageEmbed().setDescription(
-                        "**Mod roles:** " +
-                            guildSettings[guildId].modroles.join(", "),
+                        "**Mod roles:** " + guildSettings[guildId].modroles.join(", ")
                     );
                     message.channel.send({ embeds: [embed] ***REMOVED***);
                 ***REMOVED***
@@ -761,36 +617,23 @@ client.on("messageCreate", async (message) => {
                     if (args.length) {
                         let newRole = args;
                         let modRole = message.guild.roles.cache.find(
-                            (role) =>
-                                role.name.toLowerCase() ===
-                                newRole.toLowerCase(),
+                            (role) => role.name.toLowerCase() === newRole.toLowerCase()
                         );
                         if (!modRole) {
                             message.channel
                                 .send("```Role '" + newRole + "' not found```")
-                                .then((mess) =>
-                                    setTimeout(
-                                        () => mess.delete().catch(() => {***REMOVED***),
-                                        settings.autoDelDelay,
-                                    ),
-                                );
+                                .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), settings.autoDelDelay));
                             break;
                         ***REMOVED***
 
-                        guildSettings[guildId].modroles = guildSettings[
-                            guildId
-                        ].modroles.filter((role) => role != modRole.name);
-                        mongo.updateSchema(
-                            { modroles: guildSettings[guildId].modroles ***REMOVED***,
-                            "settings",
-                            guildId,
-                            true,
+                        guildSettings[guildId].modroles = guildSettings[guildId].modroles.filter(
+                            (role) => role != modRole.name
                         );
+                        mongo.updateSchema({ modroles: guildSettings[guildId].modroles ***REMOVED***, "settings", guildId, true);
                     ***REMOVED***
 
                     let embed = new discord.MessageEmbed().setDescription(
-                        "**Mod roles:** " +
-                            guildSettings[guildId].modroles.join(", "),
+                        "**Mod roles:** " + guildSettings[guildId].modroles.join(", ")
                     );
                     message.channel.send({ embeds: [embed] ***REMOVED***);
                 ***REMOVED***
@@ -806,11 +649,7 @@ client.on("messageCreate", async (message) => {
                     help.commandHelp("russianroulette", message.channel);
                     return;
                 ***REMOVED***
-                mine.russianRoulette(
-                    args,
-                    message,
-                    guildSettings[guildId].modroles,
-                );
+                mine.russianRoulette(args, message, guildSettings[guildId].modroles);
                 break;
             case "save":
                 if (mine.isAdmin(message, guildSettings[guildId].modroles)) {
@@ -830,16 +669,10 @@ client.on("messageCreate", async (message) => {
                 picapis.hentaiAkaneko(cmd, args, message.channel);
                 break;
             case "butt":
-                picapis.getBooty(
-                    "http://api.obutts.ru/butts/0/1/random",
-                    message.channel,
-                );
+                picapis.getBooty("http://api.obutts.ru/butts/0/1/random", message.channel);
                 break;
             case "boobs":
-                picapis.getBooty(
-                    "http://api.oboobs.ru/boobs/0/1/random",
-                    message.channel,
-                );
+                picapis.getBooty("http://api.oboobs.ru/boobs/0/1/random", message.channel);
                 break;
             case "test":
                 // Only for testing
@@ -852,12 +685,7 @@ client.on("messageCreate", async (message) => {
             default:
                 message.channel
                     .send(wrongCommandMessage)
-                    .then((mess) =>
-                        setTimeout(
-                            () => mess.delete().catch(() => {***REMOVED***),
-                            settings.autoDelDelay,
-                        ),
-                    );
+                    .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), settings.autoDelDelay));
                 break;
         ***REMOVED***
     ***REMOVED*** catch (err) {
@@ -915,9 +743,7 @@ client.on("messageDelete", async (message) => {
             embed.setImage(img);
         ***REMOVED***
 
-        client.channels.cache
-            .get(channels[message.guild.id].delroom)
-            .send({ embeds: [embed] ***REMOVED***);
+        client.channels.cache.get(channels[message.guild.id].delroom).send({ embeds: [embed] ***REMOVED***);
     ***REMOVED*** catch (err) {
         listenerError(err);
     ***REMOVED***
@@ -932,12 +758,8 @@ client.on("guildMemberRemove", (member) => {
             let quoteIndex;
 
             do {
-                quoteIndex = Math.floor(
-                    Math.random() * settings.leaveQuotes.length,
-                );
-            ***REMOVED*** while (
-                quoteIndex == guildSettings[member.guild.id].leaveQuoteLastIndex
-            );
+                quoteIndex = Math.floor(Math.random() * settings.leaveQuotes.length);
+            ***REMOVED*** while (quoteIndex == guildSettings[member.guild.id].leaveQuoteLastIndex);
 
             guildSettings[member.guild.id].leaveQuoteLastIndex = quoteIndex;
 
@@ -950,11 +772,7 @@ client.on("guildMemberRemove", (member) => {
         // Bans
         if (guildSettings[member.guild.id].leavebandays != 0) {
             member
-                .ban(
-                    "leaving server temporary ban: " +
-                        guildSettings[member.guild.id].leavebandays +
-                        " days",
-                )
+                .ban("leaving server temporary ban: " + guildSettings[member.guild.id].leavebandays + " days")
                 .then(() => console.log(`Banned ${member.displayName***REMOVED***`))
                 .catch((err) => {
                     console.log(err);
@@ -962,10 +780,7 @@ client.on("guildMemberRemove", (member) => {
             ***REMOVED***
 
             let date = new Date();
-            date.setDate(
-                date.getDate() +
-                    parseFloat(guildSettings[member.guild.id].leavebandays),
-            );
+            date.setDate(date.getDate() + parseFloat(guildSettings[member.guild.id].leavebandays));
 
             let banData = member.id + ";;" + date;
             mongo.updateSchema({ bans: banData ***REMOVED***, "settings", member.guild.id);
@@ -973,11 +788,7 @@ client.on("guildMemberRemove", (member) => {
             setTimeout(function () {
                 member.guild
                     .unban(member.id)
-                    .then((user) =>
-                        console.log(
-                            `Unbanned "${user.username***REMOVED***" from ${guild***REMOVED***`,
-                        ),
-                    )
+                    .then((user) => console.log(`Unbanned "${user.username***REMOVED***" from ${guild***REMOVED***`))
                     .catch((err) => {
                         console.log(err);
                         mine.log("Ban error:\n" + err.message);
@@ -992,9 +803,7 @@ client.on("guildMemberRemove", (member) => {
 client.on("guildMemberAdd", (member) => {
     try {
         let role = member.guild.roles.cache.find(
-            (role) =>
-                role.name.toLowerCase() ===
-                guildSettings[member.guild.id].defaultrole.toLowerCase(),
+            (role) => role.name.toLowerCase() === guildSettings[member.guild.id].defaultrole.toLowerCase()
         );
 
         if (role) {
@@ -1035,12 +844,10 @@ function setIntervalsAll(guilds) {
         for (let i = 0; i < guilds.length; i++) {
             mongo.updateSchema(
                 {
-                    emoteshistory: JSON.stringify(
-                        guildSettings[guilds[i]].emoteshistory,
-                    ),
+                    emoteshistory: JSON.stringify(guildSettings[guilds[i]].emoteshistory),
                 ***REMOVED***,
                 "settings",
-                guilds[i],
+                guilds[i]
             );
         ***REMOVED***
     ***REMOVED***, 3600_000); // 1 hour
@@ -1051,17 +858,11 @@ function setIntervalsAll(guilds) {
             if (reddits[guilds[i]])
                 try {
                     reddit.redditAll(
-                        client.channels.cache.get(
-                            channels[guilds[i]].reddittheatre,
-                        ),
-                        client.channels.cache.get(
-                            channels[guilds[i]].reddittext,
-                        ),
-                        client.channels.cache.get(
-                            channels[guilds[i]].redditnsfw,
-                        ),
+                        client.channels.cache.get(channels[guilds[i]].reddittheatre),
+                        client.channels.cache.get(channels[guilds[i]].reddittext),
+                        client.channels.cache.get(channels[guilds[i]].redditnsfw),
                         reddits[guilds[i]],
-                        guilds[i],
+                        guilds[i]
                     );
                 ***REMOVED*** catch (err) {
                     console.log(err);
@@ -1071,20 +872,13 @@ function setIntervalsAll(guilds) {
 
     // Every 68 - 76 hours send quote to main channel
     (function autoSend() {
-        setTimeout(
-            function () {
-                if (channels[settings.defaultGuild]) {
-                    quotes.simpsons(
-                        client.channels.cache.get(
-                            channels[settings.defaultGuild].generalroom,
-                        ),
-                    );
-                ***REMOVED***
+        setTimeout(function () {
+            if (channels[settings.defaultGuild]) {
+                quotes.simpsons(client.channels.cache.get(channels[settings.defaultGuild].generalroom));
+            ***REMOVED***
 
-                autoSend();
-            ***REMOVED***,
-            (Math.floor(Math.random() * 9) + 68) * 3600_000,
-        );
+            autoSend();
+        ***REMOVED***, (Math.floor(Math.random() * 9) + 68) * 3600_000);
     ***REMOVED***)();
 ***REMOVED***
 
@@ -1108,11 +902,7 @@ async function loadBans() {
             setTimeout(function () {
                 guild.members
                     .unban(temp[0])
-                    .then((user) =>
-                        console.log(
-                            `Unbanned ${user.username***REMOVED*** from ${guild.name***REMOVED***`,
-                        ),
-                    )
+                    .then((user) => console.log(`Unbanned ${user.username***REMOVED*** from ${guild.name***REMOVED***`))
                     .catch((err) => {
                         console.log(err);
                         mine.log("Ban error:\n" + err.message);
@@ -1137,12 +927,7 @@ function listenerError(err) {
 function commandError(message, err) {
     message.channel
         .send(wrongCommandMessage)
-        .then((mess) =>
-            setTimeout(
-                () => mess.delete().catch(() => {***REMOVED***),
-                settings.autoDelDelay,
-            ),
-        );
+        .then((mess) => setTimeout(() => mess.delete().catch(() => {***REMOVED***), settings.autoDelDelay));
 
     console.log("****************** On message error ******************");
     console.log(err);

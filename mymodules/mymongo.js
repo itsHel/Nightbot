@@ -31,7 +31,7 @@ function updateSchema(values, schema, guildid, reset = false) {
                         type: values.type,
                     ***REMOVED***,
                     values,
-                    { upsert: true ***REMOVED***,
+                    { upsert: true ***REMOVED***
                 )
                 .then((result) => {***REMOVED***)
                 .catch((err) => console.log(err));
@@ -131,11 +131,9 @@ function deleteReddit(values) {
 async function getRedditHistory(guildid, reddit, type) {
     let newSchema = mongoose.model("reddit", redditSchema);
 
-    return await newSchema
-        .find({ guildid: guildid, reddit: reddit, type: type ***REMOVED***)
-        .then((res) => {
-            return res[0].history;
-    ***REMOVED***
+    return await newSchema.find({ guildid: guildid, reddit: reddit, type: type ***REMOVED***).then((res) => {
+        return res[0].history;
+***REMOVED***
 ***REMOVED***
 
 async function getSetting(guildid, type) {
@@ -178,9 +176,7 @@ async function getSettings(guilds) {
                     ***REMOVED***
                 ***REMOVED***
 
-                settings[row].emoteshistory = JSON.parse(
-                    settings[row].emoteshistory,
-                );
+                settings[row].emoteshistory = JSON.parse(settings[row].emoteshistory);
                 settings[row].pinning = true;
         ***REMOVED***
 
@@ -209,13 +205,7 @@ async function getRoleMessages() {
 ***REMOVED***
 ***REMOVED***
 
-async function saveRoleMessage(
-    description,
-    messageid,
-    channelid,
-    guildid,
-    unique,
-) {
+async function saveRoleMessage(description, messageid, channelid, guildid, unique) {
     let newSchema = mongoose.model("role", roleSchema);
     let values = {
         guildid: guildid,
@@ -421,29 +411,3 @@ const reminderSchema = new mongoose.Schema({
     saveRoleMessage,
     deleteRoleMessage,
 ***REMOVED***
-
-// var MongoClient = require('mongodb').MongoClient;
-// const blogSchema = new mongoose.Schema({title: {type: String***REMOVED***, title22: {type: String***REMOVED******REMOVED***);
-
-// MongoClient.connect(dbUrl, function(err, db) {
-// if (err) throw err;
-// let dbo = db.db("Nightbot");
-// dbo.createCollection("customers", function(err, res){
-//     if(err) throw err;
-// ***REMOVED***);
-// console.log("Database created!");
-// db.close();
-// ***REMOVED***);
-
-// const Blog = mongoose.model("Blog", blogSchema);
-
-// Blog.findOneAndUpdate({title:"-----title-----"***REMOVED***, {title22: "UPDATEEEEED"***REMOVED***, {upsert: true***REMOVED***)
-//     .then(result => console.log(result))
-//     .catch(err => console.log(err));
-
-// Blog.update({title:"-----title-----"***REMOVED***, {title22: "U"***REMOVED***)
-//     .then(result => console.log(result))
-//     .catch(err => console.log(err));
-
-// const blog = new Blog({title:"-----title-----",title22:"newroom"***REMOVED***);
-// blog.save();

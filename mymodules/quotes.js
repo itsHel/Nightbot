@@ -13,13 +13,9 @@ function quote(channel) {
             if (!data) return console.error(resp);
 
             if (channel) {
-                channel.send(
-                    "```" +
-                        data[Math.floor(Math.random() * data.length)].quote +
-                        "```",
-                );
+                channel.send("```" + data[Math.floor(Math.random() * data.length)].quote + "```");
             ***REMOVED***
-        ***REMOVED***,
+        ***REMOVED***
     );
 ***REMOVED***
 function chuckNorris(channel) {
@@ -38,7 +34,7 @@ function chuckNorris(channel) {
             if (channel) {
                 channel.send("```" + joke + "```");
             ***REMOVED***
-        ***REMOVED***,
+        ***REMOVED***
     );
 ***REMOVED***
 function simpsons(channel) {
@@ -58,7 +54,7 @@ function simpsons(channel) {
             if (channel) {
                 channel.send("```" + quote + "```");
             ***REMOVED***
-        ***REMOVED***,
+        ***REMOVED***
     );
 ***REMOVED***
 

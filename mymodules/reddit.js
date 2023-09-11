@@ -3,9 +3,12 @@ const discord = require("discord.js");
 const mongo = require("./mymongo.js");
 const help = require("./help.js");
 
-const ignoredTitleKeyswords = /MEMES MEME QUIZ/;
+const ignoredTitleKeywords = /MEMES MEME QUIZ/;
 const ignorePinned = true;
 const baseUrl = "https://www.reddit.com/r/";
+const headers = {
+    "User-Agent": process.env.REDDIT_USER_AGENT,
+***REMOVED***
 
 const roomTypes = [
     { name: "reddittheatre", type: "img" ***REMOVED***,
@@ -20,14 +23,7 @@ const roomTypes = [
 // after = next page - generated in response(response.data.after)
 // /top = all time
 
-async function picsDL(
-    name,
-    channel,
-    minUps = 250,
-    guideid,
-    type = "img",
-    ignoreVidsandGifs = true,
-) {
+async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignoreVidsandGifs = true) {
     try {
         let url = baseUrl + name + "/hot.json";
         let history = (await mongo.getRedditHistory(guideid, name, type)) || [***REMOVED***
@@ -35,6 +31,7 @@ async function picsDL(
         request(
             {
                 method: "GET",
+                headers: headers,
                 json: true,
                 url: url,
             ***REMOVED***,
@@ -53,9 +50,7 @@ async function picsDL(
                     ***REMOVED***
 
                     for (let o = 0; o < history.length; o++) {
-                        if (
-                            data.children[i].data.url.substring(8) == history[o]
-                        ) {
+                        if (data.children[i].data.url.substring(8) == history[o]) {
                             newHistory.push(history[o]);
                             same = true;
                             break;
@@ -63,29 +58,22 @@ async function picsDL(
                     ***REMOVED***
 
                     try {
-                        if (
-                            same ||
-                            data.children[i].data.ups < minUps ||
-                            data.children[i].data.thumbnail == "self"
-                        ) {
+                        if (same || data.children[i].data.ups < minUps || data.children[i].data.thumbnail == "self") {
                             // self = nopic
                             same = false;
                             continue;
                         ***REMOVED***
 
                         let title = data.children[i].data.title;
-                        if (title.match(ignoredTitleKeyswords)) continue;
+                        if (title.match(ignoredTitleKeywords)) continue;
 
-                        let url =
-                            "https://www.reddit.com" +
-                            data.children[i].data.permalink;
+                        let url = "https://www.reddit.com" + data.children[i].data.permalink;
                         let img;
                         let fileType = "img";
 
                         if (
                             data.children[i].data.is_video ||
-                            (data.children[i].data.post_hint &&
-                                data.children[i].data.post_hint.match("video"))
+                            (data.children[i].data.post_hint && data.children[i].data.post_hint.match("video"))
                         ) {
                             // Video
                             if (ignoreVidsandGifs) continue;
@@ -99,18 +87,10 @@ async function picsDL(
                             fileType = "gallery";
                         ***REMOVED*** else {
                             // Img/Gif
-                            img = data.children[i].data.url.replace(
-                                /amp;/g,
-                        ***REMOVED***
-                            );
+                            img = data.children[i].data.url.replace(/amp;/g, "");
                             if (!img) continue;
 
-                            if (
-                                img
-                                    .substring(img.lastIndexOf("/"))
-                                    .match(".") == null
-                            )
-                                img += ".jpg";
+                            if (img.substring(img.lastIndexOf("/")).match(".") == null) img += ".jpg";
 
                             // Discord wont show gifv
                             if (img.match(/\.gifv/)) {
@@ -123,12 +103,9 @@ async function picsDL(
 
                         if (img == "nsfw") continue;
 
-                        let desc =
-                            data.children[i].data.subreddit_name_prefixed; //data.children[i].data.selftext;
+                        let desc = data.children[i].data.subreddit_name_prefixed; //data.children[i].data.selftext;
                         let ups = data.children[i].data.ups;
-                        let time = new Date(
-                            data.children[i].data.created * 1000,
-                        );
+                        let time = new Date(data.children[i].data.created * 1000);
 
                         let embed = new discord.MessageEmbed()
                             .setColor("#ff6600")
@@ -139,19 +116,10 @@ async function picsDL(
                                     " (" +
                                     desc +
                                     ")" +
-                                    (fileType != "img"
-                                        ? " (" + fileType + ")"
-                                        : ""),
+                                    (fileType != "img" ? " (" + fileType + ")" : "")
                             )
                             .setFooter({
-                                text:
-                                    time
-                                        .toISOString()
-                                        .replace(/[A-Z]/, " ")
-                                        .slice(0, -8) +
-                                    "   " +
-                                    ups +
-                                    " upvotes",
+                                text: time.toISOString().replace(/[A-Z]/, " ").slice(0, -8) + "   " + ups + " upvotes",
                         ***REMOVED***
                         // console.log((title.substring(0, 200) + " (" + desc + ")"));
                         // console.log("SEND, URL:");
@@ -170,13 +138,9 @@ async function picsDL(
                     newHistory.push(data.children[i].data.url.substring(8));
                 ***REMOVED***
 
-                mongo.updateSchema(
-                    { reddit: name, type: type, history: newHistory ***REMOVED***,
-                    "reddit",
-                    guideid,
-                );
+                mongo.updateSchema({ reddit: name, type: type, history: newHistory ***REMOVED***, "reddit", guideid);
                 console.log(name + " reddit refreshed");
-            ***REMOVED***,
+            ***REMOVED***
         );
     ***REMOVED*** catch (err) {
         console.log(err);
@@ -186,13 +150,13 @@ async function picsDL(
 async function textDL(name, channel, minUps = 250, guideid) {
     try {
         let url = baseUrl + name + "/hot.json";
-        let history =
-            (await mongo.getRedditHistory(guideid, name, "text")) || [***REMOVED***
+        let history = (await mongo.getRedditHistory(guideid, name, "text")) || [***REMOVED***
         // console.log(history);
 
         request(
             {
                 method: "GET",
+                headers: headers,
                 json: true,
                 url: url,
             ***REMOVED***,
@@ -211,9 +175,7 @@ async function textDL(name, channel, minUps = 250, guideid) {
                     ***REMOVED***
 
                     for (let o = 0; o < history.length; o++) {
-                        if (
-                            data.children[i].data.url.substring(8) == history[o]
-                        ) {
+                        if (data.children[i].data.url.substring(8) == history[o]) {
                             newHistory.push(history[o]);
                             same = true;
                             break;
@@ -221,19 +183,13 @@ async function textDL(name, channel, minUps = 250, guideid) {
                     ***REMOVED***
 
                     let title = data.children[i].data.title;
-                    if (
-                        same ||
-                        data.children[i].data.ups < minUps ||
-                        data.children[i].data.thumbnail == "self"
-                    ) {
+                    if (same || data.children[i].data.ups < minUps || data.children[i].data.thumbnail == "self") {
                         //self = nopic
                         same = false;
                         continue;
                     ***REMOVED***
 
-                    let url =
-                        "https://www.reddit.com" +
-                        data.children[i].data.permalink;
+                    let url = "https://www.reddit.com" + data.children[i].data.permalink;
                     let desc = data.children[i].data.subreddit_name_prefixed;
                     let ups = data.children[i].data.ups;
                     let text = data.children[i].data.selftext;
@@ -253,27 +209,16 @@ async function textDL(name, channel, minUps = 250, guideid) {
                         .setDescription(text)
                         .setTitle(title.substring(0, 200) + " (" + desc + ")")
                         .setFooter({
-                            text:
-                                time
-                                    .toISOString()
-                                    .replace(/[A-Z]/, " ")
-                                    .slice(0, -8) +
-                                "   " +
-                                ups +
-                                " upvotes",
+                            text: time.toISOString().replace(/[A-Z]/, " ").slice(0, -8) + "   " + ups + " upvotes",
                     ***REMOVED***
 
                     channel.send({ embeds: [embed] ***REMOVED***);
                     newHistory.push(data.children[i].data.url.substring(8));
                 ***REMOVED***
 
-                mongo.updateSchema(
-                    { reddit: name, type: "text", history: newHistory ***REMOVED***,
-                    "reddit",
-                    guideid,
-                );
+                mongo.updateSchema({ reddit: name, type: "text", history: newHistory ***REMOVED***, "reddit", guideid);
                 console.log(name + " reddit refreshed");
-            ***REMOVED***,
+            ***REMOVED***
         );
     ***REMOVED*** catch (err) {
         console.log(err);
@@ -286,7 +231,7 @@ async function redditAll(
     redditNsfwChannel,
     reddits,
     guildId,
-    ignoreVidsandGifs,
+    ignoreVidsandGifs
 ) {
     // Reddits format - reddit: reddit, minUpvotes: minUpvotes, type: text/img
     if (!reddits) return;
@@ -300,26 +245,13 @@ async function redditAll(
                     reddits[i].minupvotes,
                     guildId,
                     "img",
-                    ignoreVidsandGifs,
+                    ignoreVidsandGifs
                 );
         ***REMOVED*** else if (reddits[i].type.toLowerCase() == "nsfw") {
             if (redditNsfwChannel)
-                picsDL(
-                    reddits[i].reddit,
-                    redditNsfwChannel,
-                    reddits[i].minupvotes,
-                    guildId,
-                    "nsfw",
-                    ignoreVidsandGifs,
-                );
+                picsDL(reddits[i].reddit, redditNsfwChannel, reddits[i].minupvotes, guildId, "nsfw", ignoreVidsandGifs);
         ***REMOVED*** else {
-            if (redditTextChannel)
-                textDL(
-                    reddits[i].reddit,
-                    redditTextChannel,
-                    reddits[i].minupvotes,
-                    guildId,
-                );
+            if (redditTextChannel) textDL(reddits[i].reddit, redditTextChannel, reddits[i].minupvotes, guildId);
         ***REMOVED***
     ***REMOVED***
 ***REMOVED***
@@ -335,13 +267,9 @@ function getRooms(channels, reddits, channel, client) {
     for (let i = 0; i < roomTypes.length; i++) {
         if (channels[roomTypes[i].name]) {
             if (client.channels.cache.get(channels[roomTypes[i].name])) {
-                let channelName = client.channels.cache
-                    .get(channels[roomTypes[i].name])
-                    .toString();
+                let channelName = client.channels.cache.get(channels[roomTypes[i].name]).toString();
 
-                let currentReddits = reddits.filter(
-                    (reddit) => reddit.type == roomTypes[i].type,
-                );
+                let currentReddits = reddits.filter((reddit) => reddit.type == roomTypes[i].type);
                 if (!currentReddits.length) return;
 
                 let reddit = { name: "Reddit", value: "", inline: true ***REMOVED***
@@ -360,11 +288,7 @@ function getRooms(channels, reddits, channel, client) {
                 ***REMOVED***).setFooter({ text: "\u2800".repeat(50) ***REMOVED***);
                 channel.send({ embeds: [embed] ***REMOVED***);
             ***REMOVED*** else {
-                channel.send(
-                    "```" +
-                        capitalize(roomTypes[i].type) +
-                        " room does not exist```",
-                );
+                channel.send("```" + capitalize(roomTypes[i].type) + " room does not exist```");
             ***REMOVED***
         ***REMOVED***
     ***REMOVED***
@@ -379,7 +303,7 @@ function getRooms(channels, reddits, channel, client) {
                             reddits[i].reddit +
                             "' cannot work without '" +
                             roomTypes[j].name +
-                            "' room being set```",
+                            "' room being set```"
                     );
                 ***REMOVED***
 
@@ -418,9 +342,7 @@ function addRedditToGuild(reddits, args, message) {
     ***REMOVED***
 
     mongo.updateSchema(redditObj, "reddit", message.guild.id);
-    message.channel.send(
-        "```Reddit " + args[0] + " set, minimum " + args[1] + " upvotes```",
-    );
+    message.channel.send("```Reddit " + args[0] + " set, minimum " + args[1] + " upvotes```");
 ***REMOVED***
 
 function removeRedditFromGuild(reddits, args, message) {
