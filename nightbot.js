@@ -237,7 +237,12 @@ client.on("messageCreate", async (message) => {
                 break;
             case "countdown":
             case "cd":
-                mine.countDown(3, 1000, message.channel);
+                if (args && !(parseInt(args) <= 100 && parseInt(args) >= 3)) {
+                    message.channel.send("```Please pick number in 3 - 100 range```");
+                    return;
+                }
+
+                mine.countDown(args || 3, 1000, message.channel);
                 if (message.channel.type != "DM") {
                     setTimeout(() => message.delete().catch(() => {}), settings.autoDelDelay * 10);
                 }

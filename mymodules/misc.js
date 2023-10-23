@@ -448,14 +448,16 @@ function getRatingMessage(ratingsAll) {
 
 function countDown(i, delay, channel) {
     setTimeout(function () {
-        if (!i) {
+        if (i == 0) {
             channel
                 .send("Now")
                 .then((mess) => setTimeout(() => mess.delete().catch(() => {}), settings.autoDelDelay * 10));
             return;
         }
 
-        channel.send(i--).then((mess) => setTimeout(() => mess.delete().catch(() => {}), settings.autoDelDelay * 10));
+        channel
+            .send((i--).toString())
+            .then((mess) => setTimeout(() => mess.delete().catch(() => {}), settings.autoDelDelay * 10));
         countDown(i, delay, channel);
     }, delay);
 }
