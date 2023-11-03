@@ -8,6 +8,7 @@ Default prefix: `_`
 
 -   Cards Against Humanity
 -   Rock Scissors Paper game
+-   Russian roulette
 -   Movie API
 -   Reddit memes
 -   Translator + some vocabulary functions
@@ -22,7 +23,6 @@ Default prefix: `_`
 -   Auto pinning
 -   Saving deleted messages
 -   Goodbye messages
--   Russian roulette
 
 # All Commands:
 
