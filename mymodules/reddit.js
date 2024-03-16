@@ -17,14 +17,11 @@ const roomTypes = [
 ];
 
 // Url examples
-// https://www.reddit.com/r/comic/top.json?t=week&limit=100
-// https://www.reddit.com/r/comic/top.json?t=week&limit=33&after=t3_kkn7gi
-// https://www.reddit.com/r/comic/hot.json
+// https://www.reddit.com/r/memes/top.json?t=week&limit=100
+// https://www.reddit.com/r/memes/top.json?t=week&limit=33&after=t3_kkn7gi
 
 // after = next page - generated in response(response.data.after)
 // /top = all time
-
-// TEST GIFS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignoreVidsandGifs = true) {
     try {
@@ -46,7 +43,6 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
 
                 let same = false;
                 let newHistory = [];
-                let images = [];
 
                 for (let i = 0; i < data.children.length; i++) {
                     if (ignorePinned && data.children[i].data.pinned) {
@@ -72,6 +68,7 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                         if (title.match(ignoredTitleKeywords)) continue;
 
                         let url = "https://www.reddit.com" + data.children[i].data.permalink;
+                        let img;
                         let fileType = "img";
 
                         if (
@@ -81,56 +78,42 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                             // Video
                             if (ignoreVidsandGifs) continue;
 
-                            images.push(data.children[i].data.thumbnail);
+                            img = data.children[i].data.thumbnail;
                             fileType = "video";
                             // console.log("video");
                         } else if (data.children[i].data.gallery_data) {
                             // Gallery
-                            // img = data.children[i].data.thumbnail;
-                            const imagesObject =data.children[i].data.media_metadata
-
-                            for (const property in imagesObject) {
-                                images.push(imagesObject[property].s.u)
-                                console.log(`${property}: ${imagesObject[property]}`);
-                              }
-                            
-
-                            
+                            img = data.children[i].data.thumbnail;
                             fileType = "gallery";
                         } else {
                             // Img/Gif
-                            images.push(data.children[i].data.url.replace(/amp;/g, ""));
-                            if (!images[0]) continue;
+                            img = data.children[i].data.url.replace(/amp;/g, "");
+                            if (!img) continue;
 
-                            if (images[0].substring(images[0].lastIndexOf("/")).match(".") == null) images[0] += ".jpg";
+                            if (img.substring(img.lastIndexOf("/")).match(".") == null) img += ".jpg";
 
                             // Discord wont show gifv
-                            if (images[0].match(/\.gifv/)) {
+                            if (img.match(/\.gifv/)) {
                                 if (ignoreVidsandGifs) continue;
 
-                                images[0] = data.children[i].data.thumbnail;
+                                img = data.children[i].data.thumbnail;
                                 fileType = "gif";
-                                console.log("------------------ GIF ------------------")
-                                console.log(title)
                             }
                         }
 
-                        if (images[0] == "nsfw") continue;
+                        if (img == "nsfw") continue;
 
                         let desc = data.children[i].data.subreddit_name_prefixed; //data.children[i].data.selftext;
                         let ups = data.children[i].data.ups;
                         let time = new Date(data.children[i].data.created * 1000);
 
-                        let embeds = []
-                        let index = 0
-                       do{
-                           let embed = new discord.MessageEmbed()
-                           .setColor("#ff6600")
-                           .setURL(url)
-                           .setImage(images[index])
-                           .setTitle(
+                        let embed = new discord.MessageEmbed()
+                            .setColor("#ff6600")
+                            .setURL(url)
+                            .setImage(img)
+                            .setTitle(
                                 title.substring(0, 200) +
-                                " (" +
+                                    " (" +
                                     desc +
                                     ")" +
                                     (fileType != "img" ? " (" + fileType + ")" : "")
@@ -138,10 +121,6 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                             .setFooter({
                                 text: time.toISOString().replace(/[A-Z]/, " ").slice(0, -8) + "   " + ups + " upvotes",
                             });
-
-                            embeds.push(embed)
-                            index++
-                        } while (images.length)
                         // console.log((title.substring(0, 200) + " (" + desc + ")"));
                         // console.log("SEND, URL:");
                         // console.log(data.children[i].data.url.substring(8));
@@ -150,7 +129,7 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                         // console.log("OLD_HISTORY");
                         // console.log(history);
 
-                        channel.send({ embeds: embeds });
+                        channel.send({ embeds: [embed] });
                     } catch (e) {
                         console.log("Reddit error:");
                         console.log(e);
