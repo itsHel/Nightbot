@@ -344,6 +344,15 @@ client.on("messageCreate", async (message) => {
                     guildSettings[guildId].ratepeoplecount
                 );
                 break;
+            case "secret":
+                mine.secret(
+                    args,
+                    client.channels.cache.get(channels[guildId]?.generalroom),
+                    message.author.toString(),
+                    message.channel,
+                    guildSettings[guildId].secretpeoplecount
+                );
+                break;
             case "rdr": // Refreshes reddits
                 reddit.redditAll(
                     client.channels.cache.get(channels[guildId]?.reddittheatre),
@@ -400,6 +409,21 @@ client.on("messageCreate", async (message) => {
                 }
 
                 console.log(guildSettings[guildId].ratepeoplecount);
+                break;
+            case "setsecret":
+            case "secretset":
+                if (mine.isAdmin(message, guildSettings[guildId].modroles)) {
+                    if (isNaN(parseInt(args))) {
+                        message.channel.send("```Not a number```");
+                        return;
+                    }
+
+                    guildSettings[guildId].secretpeoplecount = args;
+                    mongo.updateSchema({ secretpeoplecount: args }, "settings", guildId);
+                    message.channel.send("```Secret people count set to " + args + " humans```");
+                }
+
+                console.log(guildSettings[guildId].secretpeoplecount);
                 break;
             case "pinstoggle":
                 if (mine.isAdmin(message, guildSettings[guildId].modroles)) {

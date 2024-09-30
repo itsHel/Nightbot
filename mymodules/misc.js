@@ -435,6 +435,83 @@ function rate(args, rateChannel, user, channel, peopleCount) {
     }
 }
 
+function secret(args, secretChannel, user, channel, peopleCount) {
+    // const help = "Rating command example: '_rate 9.9/10'";
+    let resetTimeout;
+
+    if (args) {
+        // if (!args.match(/\d+/)) {
+        //     channel.send("```Wrong format\n" + help + "```");
+        //     return;
+        // }
+
+        // Check if user already rated
+        let found = false;
+        for (let i = 0; i < ratings.length; i++) {
+            if (ratings[i].user == user) {
+                ratings[i].rating = args;
+                found = true;
+                break;
+            }
+        }
+
+        let rate = { user: user, rating: args };
+
+        if (!found) {
+            clearTimeout(resetTimeout);
+            setTimeout(function () {
+                ratings = [];
+            }, 3_600_000); // 60 mins
+
+            ratings.push(rate);
+
+            channel.send(secretChannel.toString());
+            if (Math.floor(Math.random() * 10) == 0) {
+                channel.send("Yeah, well, that's just like your opinion, man");
+            }
+            // (:
+            setTimeout(function () {
+                if (Math.floor(Math.random() * 50) == 0) {
+                    channel
+                        .send("YOU'LL PAY FOR YOUR CRIMES AGAINST HUMANITY!!!")
+                        .then((mess) => setTimeout(() => mess.delete().catch(() => {}), 2000));
+                    return;
+                }
+            }, 1500);
+
+            // If all users rated and channel is set, show ratings
+            if (secretChannel && ratings.length == peopleCount) {
+                let msg = getRatingMessage(ratings);
+                secretChannel.send(msg);
+
+                clearTimeout(resetTimeout);
+                ratings = [];
+            }
+        }
+    } else {
+        // No args = show ratings and then clear
+        if (ratings.length == 0) {
+            channel.send("```No user has said something yet!\n" + help + "```");
+            return;
+        }
+
+        if (ratings.length == 1) {
+            channel.send("```Only one user said somethiong yet!```");
+            return;
+        }
+
+        if (channel.type == "DM") {
+            channel.send("```Cannot send to DM!```");
+            return;
+        }
+
+        let msg = getRatingMessage(ratings);
+        channel.send(msg);
+
+        ratings = [];
+    }
+}
+
 function getRatingMessage(ratingsAll) {
     // Private
     let msg = "";
@@ -851,6 +928,7 @@ module.exports = {
     saveImages,
     delMessages,
     russianRoulette,
+    secret,
 };
 
 // //https://dict.emojiall.com/cs/emoji/🇵###          https://emojipedia.org/regional-indicator-symbol-letter-m/

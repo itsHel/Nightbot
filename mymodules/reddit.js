@@ -23,7 +23,7 @@ const roomTypes = [
 // after = next page - generated in response(response.data.after)
 // /top = all time
 
-async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignoreVidsandGifs = true) {
+async function picsDL(name, channel, minUpvotes = 250, guideid, type = "img", ignoreVidsandGifs = true) {
     try {
         let url = baseUrl + name + "/hot.json";
         let history = (await mongo.getRedditHistory(guideid, name, type)) || [];
@@ -58,7 +58,11 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                     }
 
                     try {
-                        if (same || data.children[i].data.ups < minUps || data.children[i].data.thumbnail == "self") {
+                        if (
+                            same ||
+                            data.children[i].data.ups < minUpvotes ||
+                            data.children[i].data.thumbnail == "self"
+                        ) {
                             // self = nopic
                             same = false;
                             continue;
@@ -82,7 +86,8 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
                             fileType = "video";
                             // console.log("video");
                         } else if (data.children[i].data.gallery_data) {
-                            // Gallery
+                            // Gallery, needs 4x more upvotes
+                            if (data.children[i].data.ups < minUpvotes * 4) continue;
                             img = data.children[i].data.thumbnail;
                             fileType = "gallery";
                         } else {
@@ -147,7 +152,7 @@ async function picsDL(name, channel, minUps = 250, guideid, type = "img", ignore
     }
 }
 
-async function textDL(name, channel, minUps = 250, guideid) {
+async function textDL(name, channel, minUpvotes = 250, guideid) {
     try {
         let url = baseUrl + name + "/hot.json";
         let history = (await mongo.getRedditHistory(guideid, name, "text")) || [];
@@ -183,7 +188,7 @@ async function textDL(name, channel, minUps = 250, guideid) {
                     }
 
                     let title = data.children[i].data.title;
-                    if (same || data.children[i].data.ups < minUps || data.children[i].data.thumbnail == "self") {
+                    if (same || data.children[i].data.ups < minUpvotes || data.children[i].data.thumbnail == "self") {
                         //self = nopic
                         same = false;
                         continue;

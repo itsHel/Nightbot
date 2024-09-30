@@ -168,6 +168,7 @@ async function getSettings(guilds) {
                     settings[row] = {
                         leavebandays: res[i].leavebandays || 0,
                         ratepeoplecount: res[i].ratepeoplecount || 0,
+                        secretpeoplecount: res[i].secretpeoplecount || 0,
                         nopinsrooms: res[i].nopinsrooms || [],
                         modroles: res[i].modroles || [],
                         emoteshistory: res[i].emoteshistory || "{}",
@@ -339,6 +340,9 @@ const settingsSchema = new mongoose.Schema({
         type: Number,
     },
     ratepeoplecount: {
+        type: Number,
+    },
+    secretpeoplecount: {
         type: Number,
     },
     defaultrole: {
