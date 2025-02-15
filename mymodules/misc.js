@@ -220,7 +220,11 @@ function russianRoulette(args, message, modroles = []) {
             let embed = new discord.MessageEmbed()
                 .setColor("#31d2f2")
                 .setDescription(
-                    "----- **Round 1** -----\n1 bullet\n\nPlayer order: " +
+                    "----- **Round 1** -----\nbullet in **" +
+                        bullets[0] +
+                        "**/" +
+                        drumSize +
+                        "\n\nPlayer order: " +
                         activePlayers.map((member) => member.user.toString() + "  ").join("")
                 );
             message.channel.send({ embeds: [embed] });
@@ -237,7 +241,10 @@ function russianRoulette(args, message, modroles = []) {
         if (newRound) {
             setTimeout(function () {
                 if (round != 1) {
-                    for (let i = 0; i < step; i++) {
+                    let currentSize = bullets.length;
+                    bullets = [];
+
+                    for (let i = 0; i < currentSize + step; i++) {
                         if (bullets.length == drumSize) break;
 
                         do {
@@ -247,10 +254,11 @@ function russianRoulette(args, message, modroles = []) {
                         bullets.push(newBullet);
                     }
                 }
+                bullets.sort((a, b) => a - b);
 
                 let text = "----- **Round " + round + "**-----";
-                if (bullets.length > 1) {
-                    text += "\n" + bullets.length + " bullet(s)";
+                for (let i = 0; i < bullets.length; i++) {
+                    text += "\nbullet in **" + bullets[i] + "**/" + drumSize;
                 }
 
                 let embed = new discord.MessageEmbed().setColor("#31d2f2").setDescription(text);
@@ -277,12 +285,12 @@ function russianRoulette(args, message, modroles = []) {
                     });
                     if (bullets.filter((bullet) => bullet == roll).length) {
                         // Bullet hit player
-                        nextRollDelay = 600;
+                        nextRollDelay = 750;
 
                         setTimeout(function () {
                             let embed = new discord.MessageEmbed()
                                 .setColor("#cc0000")
-                                .setDescription(player.user.toString() + " falls down dead...");
+                                .setDescription(player.user.toString() + " falls down dead 💀");
                             message.channel.send({ embeds: [embed] });
 
                             try {
@@ -311,7 +319,7 @@ function russianRoulette(args, message, modroles = []) {
                             setTimeout(function () {
                                 let embed = new discord.MessageEmbed()
                                     .setColor("#31d2f2")
-                                    .setDescription(activePlayers[0].user.toString() + " lives to see another day");
+                                    .setDescription(activePlayers[0].user.toString() + " lives to see another day...");
                                 message.channel.send({ embeds: [embed] });
                             }, 1250);
                             return;
