@@ -106,7 +106,11 @@ async function picsDL(name, channel, minUpvotes = 250, guideid, type = "img", ig
                             }
                         }
 
-                        if (img == "nsfw") continue;
+                        if (img == "nsfw") {
+                            console.log('img == "nsfw"');
+                            console.log(data.children[i].data);
+                            continue;
+                        }
 
                         let desc = data.children[i].data.subreddit_name_prefixed; //data.children[i].data.selftext;
                         let ups = data.children[i].data.ups;

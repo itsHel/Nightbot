@@ -8,12 +8,11 @@ const help = require("./help.js");
 const emojis = {
     noU: "693684338952241195",
     faceHoof: "677496035551215637",
-    upvote: "692108118531768391",
-    thisTbh: "693228128620773536",
+    thinkDown: "846786842972258315",
+    //thisTbh: "693228128620773536",
     iLovePandas: "708649941987360818",
     thinkLurk: "705108642617229353",
     milkBow: "822160031905611796",
-    check: "939593789000011917",
 };
 // Classic emojis
 const emojisClassic = {
@@ -233,7 +232,7 @@ function russianRoulette(args, message, modroles = []) {
     function rrRoll(player) {
         if (!player) return;
 
-        let nextDelay = newRound ? 2750 : 1000; // new round delay / next player delay
+        let nextDelay = newRound ? 2750 : 1250; // new round delay / next player delay
 
         if (newRound) {
             setTimeout(function () {
@@ -278,7 +277,7 @@ function russianRoulette(args, message, modroles = []) {
                     });
                     if (bullets.filter((bullet) => bullet == roll).length) {
                         // Bullet hit player
-                        nextRollDelay = 500;
+                        nextRollDelay = 600;
 
                         setTimeout(function () {
                             let embed = new discord.MessageEmbed()
@@ -322,7 +321,7 @@ function russianRoulette(args, message, modroles = []) {
                     setTimeout(function () {
                         rrRoll(activePlayers[nextPos()]);
                     }, nextRollDelay);
-                }, 750); // roll delay
+                }, 1000); // roll delay
             });
         }, nextDelay); // next person delay
     }
@@ -605,13 +604,13 @@ function reactions(message) {
         if (Math.floor(Math.random() * 3) == 0) message.react(emoji(emojis.iLovePandas, message));
     }
     if (text.match(/\bhelsworth\b/)) {
-        if (Math.floor(Math.random() * 2) == 0) message.react(emoji(emojis.thinkLurk, message));
+        if (Math.floor(Math.random() * 3) == 0) message.react(emoji(emojis.thinkLurk, message));
     }
     if (text.match(/\blame\b/)) {
         if (Math.floor(Math.random() * 3) == 0) message.react(emoji(emojis.noU, message));
     }
     if (text[0] != "<" && text[text.length - 1] != ">" && text[text.length - 2] != ">") {
-        if (Math.floor(Math.random() * 250) == 0) message.react(emoji(emojis.upvote, message));
+        if (Math.floor(Math.random() * 100) == 0) message.react(emoji(emojis.thinkDown, message));
     }
 }
 
