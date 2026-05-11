@@ -1,0 +1,19 @@
+[9:41:52 am]
+On message error:
+Request to use token, but token was unavailable to the client.[9:54:27 am]
+On message error:
+message.channel.sendMessage is not a function[6:22:52 pm]
+Addemoji error:
+Maximum number of emojis reached (50)[6:26:22 pm]
+Addemoji error:
+Maximum number of emojis reached (50)[11:32:23 pm]
+Addemoji error:
+Maximum number of emojis reached (50)[11:37:40 pm]
+Addemoji error:
+Maximum number of emojis reached (50)[12:03:03 am]
+Addemoji error:
+Maximum number of emojis reached (50)[7:34:22 pm]
+Addemoji error:
+Maximum number of emojis reached (50)[2:30:01 pm]
+On message error:
+dominion.addRedditToGuild is not a function

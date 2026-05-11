@@ -3,6 +3,7 @@ require("dotenv").config();
 const discord = require("discord.js"); // 13.12.0
 const reminder = require("./mymodules/reminder.js");
 const reddit = require("./mymodules/reddit.js");
+const dominion = require("./mymodules/dominion.js");
 const mine = require("./mymodules/misc.js");
 const help = require("./mymodules/help.js");
 const rolesModule = require("./mymodules/roles.js");
@@ -66,24 +67,38 @@ client.on("ready", async () => {
     console.log(channels);
 
     // Refresh reddits and send quote
-    for (let i = 0; i < guilds.length; i++) {
-        if (reddits[guilds[i]]) {
-            try {
-                reddit.redditAll(
-                    client.channels.cache.get(channels[guilds[i]]?.reddittheatre),
-                    client.channels.cache.get(channels[guilds[i]]?.reddittext),
-                    client.channels.cache.get(channels[guilds[i]]?.redditnsfw),
-                    reddits[guilds[i]],
-                    guilds[i]
-                );
-            } catch (err) {
-                console.log(err);
+    setTimeout(() => {
+        for (let i = 0; i < guilds.length; i++) {
+            if (reddits[guilds[i]]) {
+                try {
+                    reddit.redditAll(
+                        client.channels.cache.get(channels[guilds[i]]?.reddittheatre),
+                        client.channels.cache.get(channels[guilds[i]]?.reddittext),
+                        client.channels.cache.get(channels[guilds[i]]?.redditnsfw),
+                        reddits[guilds[i]],
+                        guilds[i]
+                    );
+                } catch (err) {
+                    console.log(err);
+                }
             }
         }
-    }
 
-    setIntervalsAll(guilds);
+        setIntervalsAll(guilds);
+    }, 4500);
 });
+
+// temp fix
+setTimeout(() => {
+    client.token = process.env.DISCORD_TOKEN;
+}, 4000);
+// setInterval(() => {
+//     client.token = process.env.DISCORD_TOKEN;
+//     console.log(client.token);
+// }, 1000);
+// setInterval(() => {
+//     console.log(client.token);
+// }, 100);
 
 client.login(process.env.DISCORD_TOKEN);
 
@@ -492,6 +507,26 @@ client.on("messageCreate", async (message) => {
                 if (mine.isAdmin(message, guildSettings[guildId].modroles)) {
                     mine.kickOnlyRole(message); //client.channels.cache.get(channels[guildId]?.rolesroom));
                 }
+                break;
+            case "dom":
+            case "dominion":
+                dominion.DominionGetCards(message);
+                break;
+            case "domaddban":
+            case "domban":
+                dominion.DominionAddBan(args, message); 
+               break;
+            case "domremoveban":
+            case "domdeleteban":
+                dominion.DominionRemoveBan(args, message); // Modifies reddits[guildId] array
+                break;
+            case "dommax":
+            case "domcount":
+                dominion.DominionSetCardCount(args, message); // Modifies reddits[guildId] array            
+                break;
+            case "dombans":
+            case "dombanned":
+                dominion.DominionGetBans(message); // Modifies reddits[guildId] array            
                 break;
             case "reddit":
             case "editreddit":

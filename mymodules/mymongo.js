@@ -9,7 +9,8 @@ function mongoDb() {
         .catch((err) => console.log(err));
 }
 
-function updateSchema(values, schema, guildid, reset = false) {
+
+async function updateSchema(values, schema, guildid, reset = false) {
     let newSchema;
     switch (schema) {
         case "room":
@@ -29,6 +30,19 @@ function updateSchema(values, schema, guildid, reset = false) {
                         guildid: guildid,
                         reddit: values.reddit,
                         type: values.type,
+                    },
+                    values,
+                    { upsert: true }
+                )
+                .then((result) => {})
+                .catch((err) => console.log(err));
+            break;
+        case "dominion":
+            newSchema = mongoose.model("dominion", dominionSchema);
+            await newSchema
+                .findOneAndUpdate(
+                    {
+                        guildid: guildid
                     },
                     values,
                     { upsert: true }
@@ -79,6 +93,16 @@ async function getReminders(userid) {
 
     return await newSchema.find().then((res) => {
         return res;
+    });
+}
+
+async function getDominionData(guildid) {
+    let newSchema = mongoose.model("dominion", dominionSchema);
+
+    return await newSchema.find({ guildid: guildid }).then((res) => {
+        for(let i = 0; i < res.length; i++)
+            if(res[i].guildid == guildid) return res[i];
+        return undefined
     });
 }
 
@@ -321,6 +345,21 @@ const redditSchema = new mongoose.Schema({
     ],
 });
 
+const dominionSchema = new mongoose.Schema({
+    guildid: {
+        type: String,
+    },
+    cardCount: {
+        type: Number,
+        default:26
+    },
+    bannedCards: [
+        {
+            type: Number,
+        },
+    ],
+});
+
 const settingsSchema = new mongoose.Schema({
     guildid: {
         type: String,
@@ -414,4 +453,5 @@ module.exports = {
     getRoleMessages,
     saveRoleMessage,
     deleteRoleMessage,
+    getDominionData
 };

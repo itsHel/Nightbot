@@ -256,7 +256,7 @@ function russianRoulette(args, message, modroles = []) {
                 }
                 bullets.sort((a, b) => a - b);
 
-                let text = "----- **Round " + round + "**-----";
+                let text = "----- **Round " + round + "** -----";
                 for (let i = 0; i < bullets.length; i++) {
                     text += "\nbullet in **" + bullets[i] + "**/" + drumSize;
                 }
@@ -393,15 +393,15 @@ function rate(args, rateChannel, user, channel, peopleCount) {
 
             ratings.push(rate);
 
-            if (Math.floor(Math.random() * 10) == 0) {
+            if (Math.floor(Math.random() * 25) == 0) {
                 channel.send("Yeah, well, that's just like your opinion, man");
             } else {
-                channel.send("Thank you for watching <a:milkBow:" + emojis.milkBow + ">");
+                // channel.send("Thank you for watching <a:milkBow:" + emojis.milkBow + ">");
             }
 
             // (:
             setTimeout(function () {
-                if (Math.floor(Math.random() * 50) == 0) {
+                if (Math.floor(Math.random() * 100) == 0) {
                     channel
                         .send("YOU'LL PAY FOR YOUR CRIMES AGAINST HUMANITY!!!")
                         .then((mess) => setTimeout(() => mess.delete().catch(() => {}), 2000));
@@ -547,6 +547,7 @@ function countDown(i, delay, channel) {
 }
 
 function emotesCount(message, stats) {
+    if (!stats) return
     if (message.author.bot || message.content == "" || message.guild == null) return;
 
     let matches = message.content.match(/<a*:[^\s]+?:/gi);
