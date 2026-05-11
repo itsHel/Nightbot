@@ -68,14 +68,14 @@ client.on("ready", async () => {
 
     // Refresh reddits and send quote
     setTimeout(() => {
-        for (let i = 0; i < guilds.length; i++) {
-            if (reddits[guilds[i]]) {
-                try {
-                    reddit.redditAll(
-                        client.channels.cache.get(channels[guilds[i]]?.reddittheatre),
-                        client.channels.cache.get(channels[guilds[i]]?.reddittext),
-                        client.channels.cache.get(channels[guilds[i]]?.redditnsfw),
-                        reddits[guilds[i]],
+    for (let i = 0; i < guilds.length; i++) {
+    if (reddits[guilds[i]]) {
+    try {
+    reddit.redditAll(
+    client.channels.cache.get(channels[guilds[i]]?.reddittheatre),
+    client.channels.cache.get(channels[guilds[i]]?.reddittext),
+    client.channels.cache.get(channels[guilds[i]]?.redditnsfw),
+    reddits[guilds[i]],
                         guilds[i]
                     );
                 } catch (err) {
@@ -518,15 +518,37 @@ client.on("messageCreate", async (message) => {
                break;
             case "domremoveban":
             case "domdeleteban":
-                dominion.DominionRemoveBan(args, message); // Modifies reddits[guildId] array
+                dominion.DominionRemoveBan(args, message);
                 break;
             case "dommax":
             case "domcount":
-                dominion.DominionSetCardCount(args, message); // Modifies reddits[guildId] array            
+                dominion.DominionSetCardCount(args, message);           
                 break;
             case "dombans":
             case "dombanned":
-                dominion.DominionGetBans(message); // Modifies reddits[guildId] array            
+                dominion.DominionGetBans(message);      
+                break;
+            case "domsave":
+            case "domsavelast":
+                dominion.DominionSaveLast(args, message);           
+                break;
+            case "domshow":
+            case "domshowsaved":
+            case "domsaved":
+                dominion.DominionShowSets(message);          
+                break;
+            case "domhelp":
+            case "dominfo":
+                dominion.DominionHelp(message);           
+                break;
+            case "domadd":
+            case "domaddset":
+                dominion.DominionAddSet(args, message);           
+                break;
+            case "domclear":
+                if (mine.isAdmin(message, guildSettings[guildId].modroles)) {
+                    dominion.DominionClearSets(message);           
+                }
                 break;
             case "reddit":
             case "editreddit":

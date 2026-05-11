@@ -349,6 +349,11 @@ const dominionSchema = new mongoose.Schema({
     guildid: {
         type: String,
     },
+    lastCards: [
+        {
+            type: Number,
+        },
+    ],
     cardCount: {
         type: Number,
         default:26
@@ -356,6 +361,18 @@ const dominionSchema = new mongoose.Schema({
     bannedCards: [
         {
             type: Number,
+        },
+    ],
+    savedSets: [
+        {
+            cards: [
+                {
+                    type: Number,
+                },
+            ],
+            note: {
+                type: String,
+            },
         },
     ],
 });

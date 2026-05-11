@@ -16,4 +16,6 @@ Maximum number of emojis reached (50)[7:34:22 pm]
 Addemoji error:
 Maximum number of emojis reached (50)[2:30:01 pm]
 On message error:
-dominion.addRedditToGuild is not a function
+dominion.addRedditToGuild is not a function[9:40:56 pm]
+On message error:
+dominion.DominionClearSets is not a function
