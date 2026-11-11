@@ -2,12 +2,13 @@ const request = require("request");
 const discord = require("discord.js");
 const mongo = require("./mymongo.js");
 const help = require("./help.js");
+const fs = require("fs");
 
 const ignoredTitleKeywords = /MEMES MEME QUIZ/;
 const ignorePinned = true;
 const baseUrl = "https://www.reddit.com/r/";
 const headers = {
-    "User-Agent": process.env.REDDIT_USER_AGENT,
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
 };
 
 const roomTypes = [
@@ -24,136 +25,141 @@ const roomTypes = [
 // /top = all time
 
 async function picsDL(name, channel, minUpvotes = 250, guideid, type = "img", ignoreVidsandGifs = true) {
-    try {
-        let url = baseUrl + name + "/hot.json";
-        let history = (await mongo.getRedditHistory(guideid, name, type)) || [];
+    let url = baseUrl + name + "/hot.json";
+    let history = (await mongo.getRedditHistory(guideid, name, type)) || [];
+    const filePath = `./redditScrapper/reddits/${name}.json`;
 
-        request(
-            {
-                method: "GET",
-                headers: headers,
-                json: true,
-                url: url,
-            },
-            (err, resp, data) => {
-                if (err) return console.error(err);
+    fs.readFile(filePath, "utf8", (err, fileData) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+    
+        let data;
+    
+        try {
+            data = JSON.parse(fileData);
+        }
+        catch (e) {
+            console.error(`${name} - invalid JSON`);
+            return;
+        }
+    
+        data = data?.data;
+    
+        if (!data) {
+            console.log(name + " - no data");
+            return;
+        }
 
-                data = data.data;
-                if (!data) return;
+        let same = false;
+        let newHistory = [];
 
-                let same = false;
-                let newHistory = [];
+        for (let i = 0; i < data.children.length; i++) {
+            if (ignorePinned && data.children[i].data.pinned) {
+                continue;
+            }
 
-                for (let i = 0; i < data.children.length; i++) {
-                    if (ignorePinned && data.children[i].data.pinned) {
-                        continue;
-                    }
+            for (let o = 0; o < history.length; o++) {
+                if (data.children[i].data.url.substring(8) == history[o]) {
+                    newHistory.push(history[o]);
+                    same = true;
+                    break;
+                }
+            }
 
-                    for (let o = 0; o < history.length; o++) {
-                        if (data.children[i].data.url.substring(8) == history[o]) {
-                            newHistory.push(history[o]);
-                            same = true;
-                            break;
-                        }
-                    }
-
-                    try {
-                        if (
-                            same ||
-                            data.children[i].data.ups < minUpvotes ||
-                            data.children[i].data.thumbnail == "self"
-                        ) {
-                            // self = nopic
-                            same = false;
-                            continue;
-                        }
-
-                        let title = data.children[i].data.title;
-                        if (title.match(ignoredTitleKeywords)) continue;
-
-                        let url = "https://www.reddit.com" + data.children[i].data.permalink;
-                        let img;
-                        let fileType = "img";
-
-                        if (
-                            data.children[i].data.is_video ||
-                            (data.children[i].data.post_hint && data.children[i].data.post_hint.match("video"))
-                        ) {
-                            // Video
-                            if (ignoreVidsandGifs) continue;
-
-                            img = data.children[i].data.thumbnail;
-                            fileType = "video";
-                            // console.log("video");
-                        } else if (data.children[i].data.gallery_data) {
-                            // Gallery, needs 4x more upvotes
-                            if (data.children[i].data.ups < minUpvotes * 4) continue;
-                            img = data.children[i].data.thumbnail;
-                            fileType = "gallery";
-                        } else {
-                            // Img/Gif
-                            img = data.children[i].data.url.replace(/amp;/g, "");
-                            if (!img) continue;
-
-                            if (img.substring(img.lastIndexOf("/")).match(".") == null) img += ".jpg";
-
-                            // Discord wont show gifv
-                            if (img.match(/\.gifv/)) {
-                                if (ignoreVidsandGifs) continue;
-
-                                img = data.children[i].data.thumbnail;
-                                fileType = "gif";
-                            }
-                        }
-
-                        if (img == "nsfw") {
-                            console.log('img == "nsfw"');
-                            console.log(data.children[i].data);
-                            continue;
-                        }
-
-                        let desc = data.children[i].data.subreddit_name_prefixed; //data.children[i].data.selftext;
-                        let ups = data.children[i].data.ups;
-                        let time = new Date(data.children[i].data.created * 1000);
-
-                        let embed = new discord.MessageEmbed()
-                            .setColor("#ff6600")
-                            .setURL(url)
-                            .setImage(img)
-                            .setTitle(
-                                title.substring(0, 200) +
-                                    " (" +
-                                    desc +
-                                    ")" +
-                                    (fileType != "img" ? " (" + fileType + ")" : "")
-                            )
-                            .setFooter({
-                                text: time.toISOString().replace(/[A-Z]/, " ").slice(0, -8) + "   " + ups + " upvotes",
-                            });
-                        // console.log((title.substring(0, 200) + " (" + desc + ")"));
-                        // console.log("SEND, URL:");
-                        // console.log(data.children[i].data.url.substring(8));
-                        // console.log("IMG:");
-                        // console.log(img);
-                        // console.log("OLD_HISTORY");
-                        // console.log(history);
-
-                        channel.send({ embeds: [embed] });
-                    } catch (e) {
-                        console.log("Reddit error:");
-                        console.log(e);
-                    }
-
-                    newHistory.push(data.children[i].data.url.substring(8));
+            try {
+                if (
+                    same ||
+                    data.children[i].data.ups < minUpvotes ||
+                    data.children[i].data.thumbnail == "self"
+                ) {
+                    // self = nopic
+                    same = false;
+                    continue;
                 }
 
-                mongo.updateSchema({ reddit: name, type: type, history: newHistory }, "reddit", guideid);
-                console.log(name + " reddit refreshed");
+                let title = data.children[i].data.title;
+                if (title.match(ignoredTitleKeywords)) continue;
+
+                let url = "https://www.reddit.com" + data.children[i].data.permalink;
+                let img;
+                let fileType = "img";
+
+                if (
+                    data.children[i].data.is_video ||
+                    (data.children[i].data.post_hint && data.children[i].data.post_hint.match("video"))
+                ) {
+                    // Video
+                    if (ignoreVidsandGifs) continue;
+
+                    img = data.children[i].data.thumbnail;
+                    fileType = "video";
+                    // console.log("video");
+                } else if (data.children[i].data.gallery_data) {
+                    // Gallery, needs 4x more upvotes
+                    if (data.children[i].data.ups < minUpvotes * 4) continue;
+                    img = data.children[i].data.thumbnail;
+                    fileType = "gallery";
+                } else {
+                    // Img/Gif
+                    img = data.children[i].data.url.replace(/amp;/g, "");
+                    if (!img) continue;
+
+                    if (img.substring(img.lastIndexOf("/")).match(".") == null) img += ".jpg";
+
+                    // Discord wont show gifv
+                    if (img.match(/\.gifv/)) {
+                        if (ignoreVidsandGifs) continue;
+
+                        img = data.children[i].data.thumbnail;
+                        fileType = "gif";
+                    }
+                }
+
+                if (img == "nsfw") {
+                    console.log('img == "nsfw"');
+                    console.log(data.children[i].data);
+                    continue;
+                }
+
+                let desc = data.children[i].data.subreddit_name_prefixed; //data.children[i].data.selftext;
+                let ups = data.children[i].data.ups;
+                let time = new Date(data.children[i].data.created * 1000);
+
+                let embed = new discord.MessageEmbed()
+                    .setColor("#ff6600")
+                    .setURL(url)
+                    .setImage(img)
+                    .setTitle(
+                        title.substring(0, 200) +
+                            " (" +
+                            desc +
+                            ")" +
+                            (fileType != "img" ? " (" + fileType + ")" : "")
+                    )
+                    .setFooter({
+                        text: time.toISOString().replace(/[A-Z]/, " ").slice(0, -8) + "   " + ups + " upvotes",
+                    });
+                // console.log((title.substring(0, 200) + " (" + desc + ")"));
+                // console.log("SEND, URL:");
+                // console.log(data.children[i].data.url.substring(8));
+                // console.log("IMG:");
+                // console.log(img);
+                // console.log("OLD_HISTORY");
+                // console.log(history);
+
+                channel.send({ embeds: [embed] });
+                newHistory.push(data.children[i].data.url.substring(8));
+            } catch (e) {
+                console.log("Reddit error:");
+                console.log(e);
             }
-        );
-    } catch (err) {
-        console.log(err);
-    }
+        }
+
+        mongo.updateSchema({ reddit: name, type: type, history: newHistory }, "reddit", guideid);
+        console.log(name + " reddit refreshed");
+    });
 }
 
 async function textDL(name, channel, minUpvotes = 250, guideid) {
@@ -172,8 +178,12 @@ async function textDL(name, channel, minUpvotes = 250, guideid) {
             (err, resp, data) => {
                 if (err) return console.error(err);
 
-                data = data.data;
-                if (!data) return;
+                data = data?.data;
+                if (!data){
+                    console.log(name + " - no data");
+                    // console.log(url)
+                    return;
+                } 
 
                 let same = false;
                 let newHistory = [];
@@ -260,7 +270,7 @@ async function redditAll(
             if (redditNsfwChannel)
                 picsDL(reddits[i].reddit, redditNsfwChannel, reddits[i].minupvotes, guildId, "nsfw", ignoreVidsandGifs);
         } else {
-            if (redditTextChannel) textDL(reddits[i].reddit, redditTextChannel, reddits[i].minupvotes, guildId);
+            // if (redditTextChannel) textDL(reddits[i].reddit, redditTextChannel, reddits[i].minupvotes, guildId);
         }
     }
 }

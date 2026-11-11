@@ -40,7 +40,7 @@ const leaveQuotes = [
     ["*Goodbye* ", ", maybe this was how things had to be"],
     ["The song has ended for ", " but the melody lingers on"],
     ["*Goodbye* ", ", we'll miss you a lot, then a little, then not really"],
-    ["", " went out to pick up a pack of cigarettes, he will be back anytime soon..."],
+    ["", " went out to pick up a pack of cigarettes, he will be back anytime soon"],
     ["*Goodbye* ", ", we have a sad feeling for a moment, then it passes"],
 ];
 
@@ -58,6 +58,16 @@ const gladosCheers = [
     "Unbelievable. You, [subject name here], must be the pride of [subject hometown here]!]",
 ];
 
+const responseQuotes = [
+    "I'ts not that im lazy, I'ts just that I dont care",
+    "If you died, nothing in my life would change",
+    "Here, let me engrave a trophy for you: nobody cares.",
+    "Why do you lay these troubles on an already troubled mind?",
+    "Im programmed to find everything u say interresting",
+    "Good evening sir. Would you please leave, without a fuss, right now?",
+    "You should all feel terrible and hate yourselves"
+]
+
 module.exports = {
     prefix,
     autoDelDelay,
@@ -66,4 +76,5 @@ module.exports = {
     adminRoles,
     filter,
     getLeaveQuote,
+    responseQuotes
 };

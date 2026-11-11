@@ -619,7 +619,7 @@ function reactions(message) {
         if (Math.floor(Math.random() * 3) == 0) message.react(emoji(emojis.noU, message));
     }
     if (text[0] != "<" && text[text.length - 1] != ">" && text[text.length - 2] != ">") {
-        if (Math.floor(Math.random() * 100) == 0) message.react(emoji(emojis.thinkDown, message));
+        if (Math.floor(Math.random() * 2000) == 0) message.react(emoji(emojis.thinkLurk, message));
     }
 }
 

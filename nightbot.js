@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const discord = require("discord.js"); // 13.12.0
 const reminder = require("./mymodules/reminder.js");
-const reddit = require("./mymodules/reddit.js");
+const reddit = require("./mymodules/_reddit_old_fs.js");
 const dominion = require("./mymodules/dominion.js");
 const mine = require("./mymodules/misc.js");
 const help = require("./mymodules/help.js");
@@ -68,14 +68,14 @@ client.on("ready", async () => {
 
     // Refresh reddits and send quote
     setTimeout(() => {
-    for (let i = 0; i < guilds.length; i++) {
-    if (reddits[guilds[i]]) {
-    try {
-    reddit.redditAll(
-    client.channels.cache.get(channels[guilds[i]]?.reddittheatre),
-    client.channels.cache.get(channels[guilds[i]]?.reddittext),
-    client.channels.cache.get(channels[guilds[i]]?.redditnsfw),
-    reddits[guilds[i]],
+        for (let i = 0; i < guilds.length; i++) {
+            if (reddits[guilds[i]]) {
+                try {
+                    reddit.redditAll(
+                        client.channels.cache.get(channels[guilds[i]]?.reddittheatre),
+                        client.channels.cache.get(channels[guilds[i]]?.reddittext),
+                        client.channels.cache.get(channels[guilds[i]]?.redditnsfw),
+                        reddits[guilds[i]],
                         guilds[i]
                     );
                 } catch (err) {
@@ -83,9 +83,8 @@ client.on("ready", async () => {
                 }
             }
         }
-
         setIntervalsAll(guilds);
-    }, 4500);
+    }, 6000);
 });
 
 // temp fix
@@ -103,6 +102,16 @@ setTimeout(() => {
 client.login(process.env.DISCORD_TOKEN);
 
 client.on("messageCreate", async (message) => {
+    if (message.mentions.has(client.user)) {
+        const now = Date.now();
+        const cooldown = 24 * 60 * 60 * 1000;    // 24 hours
+        if (client.lastMentionReply == undefined || (now - client.lastMentionReply) >= cooldown) {
+            client.lastMentionReply = now;
+            return message.reply(responseQuotes[Math.floor(Math.random() * responseQuotes.length)]);
+        }
+        return;
+    }
+
     let guildId;
 
     if (message.guild) {
@@ -934,22 +943,22 @@ function setIntervalsAll(guilds) {
     }, 3600_000); // 1 hour
 
     // Refresh reddits every 6 hours
-    setInterval(function () {
-        for (let i = 0; i < guilds.length; i++) {
-            if (reddits[guilds[i]])
-                try {
-                    reddit.redditAll(
-                        client.channels.cache.get(channels[guilds[i]].reddittheatre),
-                        client.channels.cache.get(channels[guilds[i]].reddittext),
-                        client.channels.cache.get(channels[guilds[i]].redditnsfw),
-                        reddits[guilds[i]],
-                        guilds[i]
-                    );
-                } catch (err) {
-                    console.log(err);
-                }
-        }
-    }, 6 * 3600_000); // 6 hours
+    // setInterval(function () {
+    //     for (let i = 0; i < guilds.length; i++) {
+    //         if (reddits[guilds[i]])
+    //             try {
+    //                 reddit.redditAll(
+    //                     client.channels.cache.get(channels[guilds[i]].reddittheatre),
+    //                     client.channels.cache.get(channels[guilds[i]].reddittext),
+    //                     client.channels.cache.get(channels[guilds[i]].redditnsfw),
+    //                     reddits[guilds[i]],
+    //                     guilds[i]
+    //                 );
+    //             } catch (err) {
+    //                 console.log(err);
+    //             }
+    //     }
+    // }, 6 * 3600_000); // 6 hours
 
     // Every 68 - 76 hours send quote to main channel
     (function autoSend() {

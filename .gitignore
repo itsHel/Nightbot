@@ -1,4 +1,6 @@
-/node_modules
-/.env
+node_modules
+.env
 /bfg.jar
 /temp
+/redditScrapper/*
+/!redditScrapper/test.js
